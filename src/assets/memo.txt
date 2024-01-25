@@ -1,0 +1,11 @@
+현재 스코어보드(축구의 특정 주)
+http://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard
+
+모든 College Division I 게임의 현재 스코어보드(그룹=80은 모든 컨퍼런스, 최대 200개 게임)
+https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?groups= 80&한도=200
+
+특정 날짜의 모든 NFL 게임에 대한 스코어보드(YYYYMMDD 형식)(제한 문제로 인해 한 번에 1일을 사용하는 것이 좋지만 재량에 따라 날짜 범위, 더 빠른 날짜부터 사용)
+http://site.api. espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=20231029-20231029
+
+점수판 호출에서 ['events'][game_number]['id']를 사용하여 특정 게임에 대한 event_id를 검색합니다. 그런 다음 게임 후 또는 진행 중인 전체 박스 스코어 데이터를 받거나 게임이 시작되기 전에 미리보기 데이터를 받으려면(게임 후 이 호출에서 일반적으로 제공되는 업데이트된 순위도 참고하세요):
+http://site.api.espn. com/apis/site/v2/sports/football/nfl/summary?event=[event_id]

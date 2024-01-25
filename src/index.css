@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#root{
+  font-size:14px;
+}
+
+.inner{
+  width:1200px;
+  margin:20px auto;
+
+}
+
