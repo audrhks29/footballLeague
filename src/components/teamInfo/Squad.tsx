@@ -4,7 +4,7 @@ import GoalKeeper from './Squad/GoalKeeper';
 import OutfieldPlayer from './Squad/OutfieldPlayer';
 
 interface Props {
-  data: PlayerDataType[];
+  data: PlayerDataType[] | null;
 }
 
 const Squad = memo(({ data }: Props) => {

@@ -83,27 +83,18 @@ interface TeamInfoType {
   uid: string;
 }
 
+interface ResponseScoreboard {
+  events: MatchResultType[]
+}
+// MatchResult ----
 interface MatchResultType {
   competitions: {
     id: string;
     date: string;
-    competitors: {
-      form: string;
-      homeAway: string;
-      id: string;
-      order: number;
-      records: [];
-      score: string;
-      statistics: [];
-      team: { id: string, uid: string, abbreviation: string, displayName: string, shortDisplayName: string, logo: string }
-      type: string;
-      uid: string;
-      winner: boolean;
-    }[]
+    competitors: Competitors[];
   }[];
   date: string;
   id: string;
-  links: [];
   name: string;
   season: { year: number, type: number, slug: string }
   shortName: string;
@@ -112,21 +103,19 @@ interface MatchResultType {
   venue: { displayName: string }
 }
 
+interface Competitors {
+  form: string;
+  homeAway: string;
+  id: string;
+  order: number;
+  score: string;
+  team: { id: string, uid: string, abbreviation: string, displayName: string, shortDisplayName: string, logo: string }
+  type: string;
+  uid: string;
+  winner: boolean;
+}
+// PlayerData ----
 interface PlayerDataType {
-  statistics: {
-    splits: {
-      categories: {
-        name: string;
-        stats: {
-          name: string;
-          value: number
-        }[]
-      }[]
-    }
-  }
-  position: {
-    name: string;
-  }
   displayName: string;
   jersey: string;
   age: number;
@@ -136,5 +125,34 @@ interface PlayerDataType {
     alt: string;
     href: string;
   }
+  position: {
+    abbreviation: string
+    displayName: string
+    id: string
+    leaf: boolean
+    name: string
+  }
+  statistics: {
+    splits: {
+      abbreviation: string;
+      categories: Category[];
+      id: string;
+      name: string;
+      type: string;
+    }
+  }
+}
 
+interface Category {
+  abbreviation: string;
+  displayName: string;
+  name: string;
+  shortDisplayName: string;
+  stats: Stats[];
+  summary: string;
+}
+
+interface Stats {
+  name: string;
+  value: number;
 }

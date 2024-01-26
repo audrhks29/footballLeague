@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
-import { memo, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
@@ -16,14 +16,14 @@ const TeamInfo = memo(() => {
 
   // data관련 state
   const [playerData, setPlayerData] = useState(null)
-  const [coachData, setCoachData] = useState(null)
+  // const [coachData, setCoachData] = useState(null)
   const [teamData, setTeamData] = useState<TeamInfoType | null>(null);
   const [matchResult, setMatchResult] = useState<MatchResultType[]>([]);
 
   // menu관련 state
   const [selectedMenu, setSelectedMenu] = useState<number>(1)
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     // 팀 관련
     try {
       const responseTeam = await axios.get(`https://site.api.espn.com/apis/site/v2/sports/soccer/${slugId}/teams/${teamId}`);
@@ -32,7 +32,7 @@ const TeamInfo = memo(() => {
 
 
       // 팀 경기결과 관련
-      const responseScoreboard = await axios.get(`http://site.api.espn.com/apis/site/v2/sports/soccer/${slugId}/scoreboard?dates=2024&limit=1000`)
+      const responseScoreboard: AxiosResponse<ResponseScoreboard> = await axios.get(`http://site.api.espn.com/apis/site/v2/sports/soccer/${slugId}/scoreboard?dates=2024&limit=1000`)
       if (responseScoreboard.data.events) {
         const attachData = responseScoreboard.data.events.filter(item =>
           item.competitions[0].competitors.some(competitor => competitor.id === teamId)
@@ -43,18 +43,19 @@ const TeamInfo = memo(() => {
       // 선수 로스터 관련
       const responseRoster = await axios.get(`https://site.api.espn.com/apis/site/v2/sports/soccer/${slugId}/teams/${teamId}/roster`);
       const player = responseRoster.data.athletes;
-      const coach = responseRoster.data.coach;
+      // const coach = responseRoster.data.coach;
       setPlayerData(player)
-      setCoachData(coach)
+      // setCoachData(coach)
 
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  }
+  }, [teamId, slugId])
+
   // console.log(matchResult);
   useEffect(() => {
     fetchData();
-  }, [])
+  }, [fetchData, teamId, slugId])
 
   // console.log(matchResult);
   return (
