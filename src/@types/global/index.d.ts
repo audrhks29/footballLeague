@@ -67,7 +67,20 @@ interface TeamInfoType {
   location: string;
   logos: { href: string }[];
   name: string;
-  nextEvent: []
+  nextEvent: {
+    date: string;
+    competitions: {
+      competitors: {
+        id: string;
+        type: string;
+        homeAway: string;
+        team: {
+          abbreviation: string;
+          logos: { href: string; }[]
+        }
+      }[]
+    }[]
+  }[]
   nickname: string;
   record: {
     items: {
@@ -155,4 +168,40 @@ interface Category {
 interface Stats {
   name: string;
   value: number;
+}
+
+// seasonData
+interface SeasonDataType {
+  year: number;
+  displayName: string;
+}
+
+// stanadingsData
+interface StandingDataType {
+  entries: Entries[]
+}
+
+interface Entries {
+  stats: Stats[];
+  note: {
+    color: string;
+    description: string;
+  }
+  team: {
+    name: string;
+    logos: { href: string; }[]
+  }
+}
+
+interface DateTimeFormatOptions {
+  localeMatcher?: 'best fit' | 'lookup';
+  weekday?: 'long' | 'short' | 'narrow';
+  era?: 'long' | 'short' | 'narrow';
+  year?: 'numeric' | '2-digit';
+  month?: 'numeric' | '2-digit' | 'long' | 'short' | 'narrow';
+  day?: 'numeric' | '2-digit';
+  hour?: 'numeric' | '2-digit';
+  minute?: 'numeric' | '2-digit';
+  second?: 'numeric' | '2-digit';
+  timeZoneName?: 'long' | 'short';
 }

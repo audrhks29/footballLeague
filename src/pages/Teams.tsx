@@ -6,6 +6,8 @@ import { FaRegQuestionCircle } from 'react-icons/fa';
 
 import { Link } from 'react-router-dom';
 
+import { leagueSelectArray } from '../assets/ArrayData';
+
 const Teams = memo(() => {
   const [teamsData, setTeamsData] = useState<TeamDataType | null>(null)
 
@@ -13,77 +15,9 @@ const Teams = memo(() => {
   const [selectedNation, setSelectedNation] = useState("eng");
   const [selectedDivision, setSelectedDivision] = useState("1");
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(`https://site.api.espn.com/apis/site/v2/sports/soccer/${selectedNation}.${selectedDivision}/teams`);
-      const data = response.data.sports[0].leagues[0]
-      setTeamsData(data)
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  }
-
   const handleMouseEnter = (index: number) => setHoveredIndex(index);
 
   const handleMouseLeave = () => setHoveredIndex(null);
-
-  const leagueSelectArray = [
-    {
-      id: 1, nation: "England", abbreviation: "ENG", value: "eng",
-      league: [
-        { id: 1, name: "Premier League", division: "1", },
-        { id: 2, name: "EFL Championship", division: "2", },
-        { id: 3, name: "EFL League One", division: "3", },
-        { id: 4, name: "EFL League Two", division: "4", },
-      ]
-    },
-    {
-      id: 2, nation: "Spain", abbreviation: "ESP", value: "esp",
-      league: [
-        { id: 1, name: "Laliga", division: "1", },
-        { id: 2, name: "Laliga 2", division: "2", },
-      ]
-    },
-    {
-      id: 3, nation: "Germany", abbreviation: "GER", value: "ger",
-      league: [
-        { id: 1, name: "Bundesliga", division: "1", },
-      ]
-    },
-    {
-      id: 4, nation: "Italy", abbreviation: "ITA", value: "ita",
-      league: [
-        { id: 1, name: "Serie A", division: "1", },
-        { id: 2, name: "Serie B", division: "2", },
-      ]
-    },
-    {
-      id: 5, nation: "France", abbreviation: "FRA", value: "fra",
-      league: [
-        { id: 1, name: "Ligue 1", division: "1", },
-        { id: 2, name: "Ligue 2", division: "2", },
-      ]
-    },
-    {
-      id: 6, nation: "Netherlands", abbreviation: "NED", value: "ned",
-      league: [
-        { id: 1, name: "Eredivisie", division: "1", },
-        { id: 2, name: "Eerste Divisie", division: "2", },
-      ]
-    },
-    {
-      id: 7, nation: "Portugal", abbreviation: "POR", value: "por",
-      league: [
-        { id: 1, name: "Primeira Liga", division: "1", },
-      ]
-    },
-    {
-      id: 8, nation: "Belgium", abbreviation: "BEL", value: "bel",
-      league: [
-        { id: 1, name: "Belgian Pro League", division: "1", },
-      ]
-    },
-  ]
 
   const changeNation = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const nationValue = e.target.value;
@@ -97,12 +31,23 @@ const Teams = memo(() => {
   }
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`https://site.api.espn.com/apis/site/v2/sports/soccer/${selectedNation}.${selectedDivision}/teams`);
+        const data = response.data.sports[0].leagues[0]
+        setTeamsData(data)
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
     setTeamsData(null)
     fetchData()
   }, [selectedNation, selectedDivision])
 
   return (
     <div className='inner'>
+
       <div className='m-auto'>
         <select
           onChange={changeNation}
@@ -131,6 +76,7 @@ const Teams = memo(() => {
       </div>
 
       <h2 className='text-[30px] p-5'>{teamsData && teamsData.name}</h2>
+
       <ul className='grid grid-cols-5'>
         {teamsData && teamsData.teams && teamsData.teams.map((item, index) => {
           const isHovered = index === hoveredIndex;
@@ -158,6 +104,7 @@ const Teams = memo(() => {
           )
         })}
       </ul>
+
     </div>
   );
 });

@@ -5,46 +5,48 @@ import axios from 'axios';
 import { FaRegQuestionCircle } from "react-icons/fa";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
+import { leagueSelectArray } from '../assets/ArrayData';
+
 const Standings = memo(() => {
-  const [standingsData, setStandingsData] = useState([]);
+  const [standingsData, setStandingsData] = useState<StandingDataType | null>(null);
   const [selectedNation, setSelectedNation] = useState("eng");
   const [selectedDivision, setSelectedDivision] = useState("1");
   const [selectedYear, setSelectedYear] = useState(2023);
-  const [seasonData, setSeasonData] = useState([])
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(`https://site.web.api.espn.com/apis/v2/sports/soccer/${selectedNation}.${selectedDivision}/standings?season=${selectedYear}`);
-      if (response.data.children) {
-        const data = response.data.children[0].standings
-        setStandingsData(data)
-      }
-      else setStandingsData([])
-      const season = response.data.seasons
-      setSeasonData(season);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  }
+  const [seasonData, setSeasonData] = useState<SeasonDataType[]>([])
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`https://site.web.api.espn.com/apis/v2/sports/soccer/${selectedNation}.${selectedDivision}/standings?season=${selectedYear}`);
+        if (response.data.children) {
+          const data = response.data.children[0].standings
+          setStandingsData(data)
+        }
+        else setStandingsData(null)
+        const season = response.data.seasons
+        setSeasonData(season);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
     fetchData()
   }, [selectedNation, selectedDivision, selectedYear])
 
-  const changeNation = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeNation: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
     const nationValue = e.target.value;
     setSelectedNation(nationValue)
     setSelectedDivision("1")
     setSelectedYear(2023)
   }
 
-  const changeDivision = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeDivision: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
     const divisionValue = e.target.value;
     setSelectedDivision(divisionValue)
     setSelectedYear(2023)
   }
 
-  const changeYear = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeYear: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
     const year = Number(e.target.value);
     setSelectedYear(year)
   }
@@ -54,64 +56,6 @@ const Standings = memo(() => {
     else if (num < 0 && seasonData[seasonData.length - 1].year >= selectedYear) return
     else setSelectedYear(selectedYear + num)
   }
-
-  const leagueSelectArray = [
-    {
-      id: 1, nation: "England", abbreviation: "ENG", value: "eng",
-      league: [
-        { id: 1, name: "Premier League", division: "1", },
-        { id: 2, name: "EFL Championship", division: "2", },
-        { id: 3, name: "EFL League One", division: "3", },
-        { id: 4, name: "EFL League Two", division: "4", },
-      ]
-    },
-    {
-      id: 2, nation: "Spain", abbreviation: "ESP", value: "esp",
-      league: [
-        { id: 1, name: "Laliga", division: "1", },
-        { id: 2, name: "Laliga 2", division: "2", },
-      ]
-    },
-    {
-      id: 3, nation: "Germany", abbreviation: "GER", value: "ger",
-      league: [
-        { id: 1, name: "Bundesliga", division: "1", },
-      ]
-    },
-    {
-      id: 4, nation: "Italy", abbreviation: "ITA", value: "ita",
-      league: [
-        { id: 1, name: "Serie A", division: "1", },
-        { id: 2, name: "Serie B", division: "2", },
-      ]
-    },
-    {
-      id: 5, nation: "France", abbreviation: "FRA", value: "fra",
-      league: [
-        { id: 1, name: "Ligue 1", division: "1", },
-        { id: 2, name: "Ligue 2", division: "2", },
-      ]
-    },
-    {
-      id: 6, nation: "Netherlands", abbreviation: "NED", value: "ned",
-      league: [
-        { id: 1, name: "Eredivisie", division: "1", },
-        { id: 2, name: "Eerste Divisie", division: "2", },
-      ]
-    },
-    {
-      id: 7, nation: "Portugal", abbreviation: "POR", value: "por",
-      league: [
-        { id: 1, name: "Primeira Liga", division: "1", },
-      ]
-    },
-    {
-      id: 8, nation: "Belgium", abbreviation: "BEL", value: "bel",
-      league: [
-        { id: 1, name: "Belgian Pro League", division: "1", },
-      ]
-    },
-  ]
 
   const thArray = ["Rank", "Team Name", "P", "GP", "W", "D", "L", "GD", "NOTE"]
 
@@ -164,7 +108,7 @@ const Standings = memo(() => {
       </div>
 
       {
-        standingsData.entries && Array.isArray(standingsData.entries) ? (
+        standingsData?.entries && Array.isArray(standingsData.entries) ? (
           <table className='text-center m-auto'>
             <colgroup>
               <col width={70} />
@@ -186,7 +130,7 @@ const Standings = memo(() => {
             </thead>
             <tbody>
               {
-                standingsData.entries.map((entry, entryIndex) => {
+                standingsData.entries.map((entry: Entries, entryIndex: number) => {
                   const rankArray = Array.from({ length: standingsData.entries.length }, (_, index) => index + 1);
                   const statsOrderArray = ["points", "gamesPlayed", "wins", "ties", "losses", "pointDifferential", "note"];
                   return (

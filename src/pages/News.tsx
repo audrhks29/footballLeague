@@ -14,8 +14,8 @@ const News = memo(() => {
       <ul>
         {newsData && newsData.length > 0 &&
           newsData.map((item: NewsItemType, index: number) => (
-            <Link to={`/news/${index + 1}`}>
-              <li key={index}>
+            <Link to={`/news/${index + 1}`} key={index}>
+              <li>
                 <div>
                   <img
                     src={item.images[0].url}

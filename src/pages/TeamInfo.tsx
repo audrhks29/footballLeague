@@ -24,12 +24,12 @@ const TeamInfo = memo(() => {
   const [selectedMenu, setSelectedMenu] = useState<number>(1)
 
   const fetchData = useCallback(async () => {
-    // 팀 관련
+
     try {
+      // 팀 관련
       const responseTeam = await axios.get(`https://site.api.espn.com/apis/site/v2/sports/soccer/${slugId}/teams/${teamId}`);
       const data = responseTeam.data.team
       setTeamData(data)
-
 
       // 팀 경기결과 관련
       const responseScoreboard: AxiosResponse<ResponseScoreboard> = await axios.get(`http://site.api.espn.com/apis/site/v2/sports/soccer/${slugId}/scoreboard?dates=2024&limit=1000`)
@@ -43,26 +43,21 @@ const TeamInfo = memo(() => {
       // 선수 로스터 관련
       const responseRoster = await axios.get(`https://site.api.espn.com/apis/site/v2/sports/soccer/${slugId}/teams/${teamId}/roster`);
       const player = responseRoster.data.athletes;
-      // const coach = responseRoster.data.coach;
       setPlayerData(player)
-      // setCoachData(coach)
 
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   }, [teamId, slugId])
 
-  // console.log(matchResult);
   useEffect(() => {
     fetchData();
   }, [fetchData, teamId, slugId])
 
-  // console.log(matchResult);
   return (
     <div className='inner'>
       {teamData && <Banner data={teamData} />}
       <Menu setSelectedMenu={setSelectedMenu} />
-      {/* <MatchResult data={matchResult} /> */}
       {selectedMenu === 1 && <TeamInfoHome teamData={teamData} matchResult={matchResult} />}
       {selectedMenu === 2 && <Squad data={playerData} />}
       {selectedMenu === 3 && <Fixtures data={matchResult} />}

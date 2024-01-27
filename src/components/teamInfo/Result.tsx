@@ -5,7 +5,6 @@ interface Props {
 }
 
 const Result = memo(({ data }: Props) => {
-  console.log(data);
   return (
     <table>
       <colgroup>

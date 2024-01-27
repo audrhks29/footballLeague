@@ -5,8 +5,8 @@ interface Props {
 }
 
 const SummarizeStats = memo(({ data }: Props) => {
-  console.log(data);
   const statList = ["rank", "gamesPlayed", "wins", "ties", "losses", "points",]
+
   return (
     <div className='pb-5'>
 

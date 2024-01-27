@@ -6,7 +6,6 @@ interface Props {
 
 const Banner = memo(({ data }: Props) => {
 
-  // console.log(data);
   return (
     <div className='bg-white h-48'>
       <div className='w-full h-full flex relative'>
