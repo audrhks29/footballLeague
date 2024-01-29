@@ -97,14 +97,18 @@ interface TeamInfoType {
 }
 
 interface ResponseScoreboard {
-  events: MatchResultType[]
+  events: ResultType[]
+  leagues: {
+    slug: string;
+  }[]
 }
-// MatchResult ----
-interface MatchResultType {
+// Result ----
+interface ResultType {
   competitions: {
     id: string;
     date: string;
     competitors: Competitors[];
+    venue: { fullName: string }
   }[];
   date: string;
   id: string;
@@ -113,7 +117,9 @@ interface MatchResultType {
   shortName: string;
   status: { clock: number, displayClock: string, period: number, type: object }
   uid: string;
-  venue: { displayName: string }
+  venue: {
+    displayName: string;
+  }
 }
 
 interface Competitors {
@@ -176,7 +182,7 @@ interface SeasonDataType {
   displayName: string;
 }
 
-// stanadingsData
+// standingsData
 interface StandingDataType {
   entries: Entries[]
 }
@@ -193,6 +199,53 @@ interface Entries {
   }
 }
 
+// matchResult
+interface MatchResultType {
+  header: {
+    competitions: {
+      competitors: {
+        score: string;
+      }[]
+    }[]
+  }
+  boxscore: {
+    teams: {
+      displayOrder: number;
+      statistics: {
+        name: string;
+        displayValue: string;
+        label: string;
+      }[]
+      team: {
+        logo: string;
+        shortDisplayName: string;
+        displayName: string;
+      }
+    }[]
+  }
+  gameInfo: {
+    attendance: number;
+    venue: {
+      fullName: string;
+      address: {
+        city: string;
+        country: string;
+      }
+    }
+  }
+  commentary: {
+    play?: {
+      team?: {
+        displayName: string
+      }
+    }
+    text: string;
+    time: {
+      displayValue: string
+    }
+  }[]
+
+}
 interface DateTimeFormatOptions {
   localeMatcher?: 'best fit' | 'lookup';
   weekday?: 'long' | 'short' | 'narrow';

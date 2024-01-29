@@ -9,6 +9,8 @@ import News from './pages/News';
 import Board from './components/News/Board';
 import Teams from './pages/Teams';
 import TeamInfo from './pages/TeamInfo';
+import Match from './pages/Match';
+import MatchResult from './pages/MatchResult';
 
 const App = memo(() => {
   return (
@@ -21,6 +23,8 @@ const App = memo(() => {
         <Route path="/news/:newsId" element={<Board />} />
         <Route path="/teams" element={<Teams />} />
         <Route path="/teams/:slugId/:teamId" element={<TeamInfo />} />
+        <Route path='/match' element={<Match />} />
+        <Route path='/match/:slugId/:gameId' element={<MatchResult />} />
       </Routes>
     </HashRouter>
   );

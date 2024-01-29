@@ -1,7 +1,7 @@
 import { memo } from 'react';
 
 interface Props {
-  data: MatchResultType[];
+  data: ResultType[];
 }
 
 const Fixtures = memo(({ data }: Props) => {

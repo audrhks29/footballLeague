@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
@@ -18,41 +18,40 @@ const TeamInfo = memo(() => {
   const [playerData, setPlayerData] = useState(null)
   // const [coachData, setCoachData] = useState(null)
   const [teamData, setTeamData] = useState<TeamInfoType | null>(null);
-  const [matchResult, setMatchResult] = useState<MatchResultType[]>([]);
+  const [matchResult, setMatchResult] = useState<ResultType[]>([]);
 
   // menu관련 state
   const [selectedMenu, setSelectedMenu] = useState<number>(1)
 
-  const fetchData = useCallback(async () => {
-
-    try {
-      // 팀 관련
-      const responseTeam = await axios.get(`https://site.api.espn.com/apis/site/v2/sports/soccer/${slugId}/teams/${teamId}`);
-      const data = responseTeam.data.team
-      setTeamData(data)
-
-      // 팀 경기결과 관련
-      const responseScoreboard: AxiosResponse<ResponseScoreboard> = await axios.get(`http://site.api.espn.com/apis/site/v2/sports/soccer/${slugId}/scoreboard?dates=2024&limit=1000`)
-      if (responseScoreboard.data.events) {
-        const attachData = responseScoreboard.data.events.filter(item =>
-          item.competitions[0].competitors.some(competitor => competitor.id === teamId)
-        );
-        setMatchResult(attachData);
-      }
-
-      // 선수 로스터 관련
-      const responseRoster = await axios.get(`https://site.api.espn.com/apis/site/v2/sports/soccer/${slugId}/teams/${teamId}/roster`);
-      const player = responseRoster.data.athletes;
-      setPlayerData(player)
-
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  }, [teamId, slugId])
-
   useEffect(() => {
-    fetchData();
-  }, [fetchData, teamId, slugId])
+    const fetchData = async () => {
+      try {
+        // 팀 관련
+        const responseTeam = await axios.get(`https://site.api.espn.com/apis/site/v2/sports/soccer/${slugId}/teams/${teamId}`);
+        const data = responseTeam.data.team
+        setTeamData(data)
+
+        // 팀 경기결과 관련 -> TeamInfoHome에서만 사용
+        const responseScoreboard: AxiosResponse<ResponseScoreboard> = await axios.get(`http://site.api.espn.com/apis/site/v2/sports/soccer/${slugId}/scoreboard?dates=2024&limit=1000`)
+        if (responseScoreboard.data.events) {
+          const attachData = responseScoreboard.data.events.filter(item =>
+            item.competitions[0].competitors.some(competitor => competitor.id === teamId)
+          );
+          setMatchResult(attachData);
+        }
+
+        // 선수 로스터 관련
+        const responseRoster = await axios.get(`https://site.api.espn.com/apis/site/v2/sports/soccer/${slugId}/teams/${teamId}/roster`);
+        const player = responseRoster.data.athletes;
+        setPlayerData(player)
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    fetchData()
+  }, [teamId, slugId])
 
   return (
     <div className='inner'>
@@ -61,7 +60,7 @@ const TeamInfo = memo(() => {
       {selectedMenu === 1 && <TeamInfoHome teamData={teamData} matchResult={matchResult} />}
       {selectedMenu === 2 && <Squad data={playerData} />}
       {selectedMenu === 3 && <Fixtures data={matchResult} />}
-      {selectedMenu === 4 && <Result data={matchResult} />}
+      {selectedMenu === 4 && <Result />}
     </div>
   );
 });

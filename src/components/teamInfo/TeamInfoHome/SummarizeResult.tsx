@@ -2,7 +2,7 @@ import { memo } from 'react';
 
 interface Props {
   data: TeamInfoType;
-  matchResult: MatchResultType[];
+  matchResult: ResultType[];
 }
 
 const SummarizeResult = memo(({ data, matchResult }: Props) => {

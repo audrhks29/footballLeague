@@ -6,7 +6,7 @@ import SummarizeResult from './TeamInfoHome/SummarizeResult';
 
 interface Props {
   teamData: TeamInfoType | null;
-  matchResult: MatchResultType[];
+  matchResult: ResultType[];
 }
 
 const TeamInfoHome = memo(({ teamData, matchResult }: Props) => {
