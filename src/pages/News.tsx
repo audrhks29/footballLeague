@@ -17,11 +17,11 @@ const News = memo(() => {
             <Link to={`/news/${index + 1}`} key={index}>
               <li>
                 <div>
-                  <img
+                  {item.images.length > 0 && <img
                     src={item.images[0].url}
                     alt={item.images[0].art}
                     title={item.images[0].caption}
-                    className='w-40' />
+                    className='w-40' />}
                   <h3>{item.headline}</h3>
                   <h4>{item.description}</h4>
                 </div>
