@@ -1,10 +1,13 @@
 import { memo } from 'react';
 
-interface Props {
-  data: TeamInfoType;
-}
+import { Link } from 'react-router-dom';
 
-const SummarizeStats = memo(({ data }: Props) => {
+import useTeamDataStore from '../../../store/teamData-store';
+
+
+const SummarizeStats = memo(() => {
+  const { teamData } = useTeamDataStore()
+
   const statList = ["rank", "gamesPlayed", "wins", "ties", "losses", "points",]
 
   return (
@@ -12,10 +15,10 @@ const SummarizeStats = memo(({ data }: Props) => {
 
       <ul className='w-full flex justify-around'>
         <li className='p-2 w-40 flex justify-center items-center h-20 border rounded-2xl'>
-          <img src={data.defaultLeague.logos[0].href} alt="" className='w-16' />
+          {teamData && <img src={teamData.defaultLeague.logos[0].href} alt="" className='w-16' />}
         </li>
         {/* {data.standingSummary} */}
-        {data.record.items.map((item) => (
+        {teamData && teamData.record.items.map((item) => (
           statList.map((statName, index) => {
             const stats = item.stats.find(stat => stat.name === statName);
             if (stats) {
@@ -32,7 +35,7 @@ const SummarizeStats = memo(({ data }: Props) => {
       </ul>
 
       <div className='text-right'>
-        <span className='cursor-pointer'>more +</span>
+        <Link to={"/standings"} className='cursor-pointer'>more +</Link>
       </div>
 
     </div>

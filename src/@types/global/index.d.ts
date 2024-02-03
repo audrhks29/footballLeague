@@ -35,20 +35,21 @@ interface TeamDataType {
   season: { year: number, displayName: string };
   shortName: string;
   slug: string;
-  teams: {
-    team: {
-      id: string;
-      name: string;
-      color: string;
-      alternateColor: string;
-      logos: { href: string }[];
-      displayName: string
-    };
-  }[];
+  teams: Teams
   uid: string;
   year: number;
 }
 
+interface Teams {
+  team: {
+    id: string;
+    name: string;
+    color: string;
+    alternateColor: string;
+    logos: { href: string }[];
+    displayName: string
+  };
+}[]
 interface TeamInfoType {
   abbreviation: string;
   alternateColor: string;
@@ -115,7 +116,14 @@ interface ResultType {
   name: string;
   season: { year: number, type: number, slug: string }
   shortName: string;
-  status: { clock: number, displayClock: string, period: number, type: object }
+  status: {
+    clock: number,
+    displayClock: string,
+    period: number,
+    type: {
+      completed: boolean;
+    }
+  }
   uid: string;
   venue: {
     displayName: string;
@@ -203,10 +211,12 @@ interface Entries {
 interface MatchResultType {
   header: {
     competitions: {
+      date: string;
       competitors: {
         score: string;
       }[]
     }[]
+    season: { name: string }
   }
   boxscore: {
     teams: {
@@ -236,15 +246,39 @@ interface MatchResultType {
   commentary: {
     play?: {
       team?: {
-        displayName: string
+        displayName: string;
       }
     }
     text: string;
     time: {
-      displayValue: string
+      displayValue: string;
     }
   }[]
+  rosters: Rosters[];
+  keyEvents: {
+    id: string;
+    clock: { displayValue: string; }
+    team?: { displayName: string; };
+    type: { text: string }
+    text?: string;
+  }[]
+}
 
+interface Rosters {
+  roster: {
+    stats: {
+      abbreviation: string;
+      displayName: string;
+      value: number;
+    }[]
+    position: {
+      abbreviation: string;
+    }
+    jersey: string;
+    athlete: {
+      fullName: string;
+    }
+  }[]
 }
 interface DateTimeFormatOptions {
   localeMatcher?: 'best fit' | 'lookup';

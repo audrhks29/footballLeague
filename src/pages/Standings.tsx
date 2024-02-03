@@ -60,7 +60,6 @@ const Standings = memo(() => {
   const thArray = ["Rank", "Team Name", "P", "GP", "W", "D", "L", "GD", "NOTE"]
 
   const filter = seasonData.filter(item => item.year == selectedYear)
-  console.log(seasonData);
 
   return (
     <div className='inner'>

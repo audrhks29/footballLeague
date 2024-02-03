@@ -1,15 +1,20 @@
 import { memo } from 'react';
 
-import GoalKeeper from './Squad/GoalKeeper';
-import OutfieldPlayer from './Squad/OutfieldPlayer';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 
-import { goalKeeperTh, outfieldPlayerTh } from '../../assets/ArrayData';
+import useRosterDataStore from '../../../store/rosterData-store';
+import { goalKeeperTh, outfieldPlayerTh } from '../../../assets/ArrayData';
 
-interface Props {
-  data: PlayerDataType[] | null;
-}
+import OutfieldPlayer from '../Squad/OutfieldPlayer';
+import GoalKeeper from '../Squad/GoalKeeper';
 
-const Squad = memo(({ data }: Props) => {
+const Squad = memo(() => {
+  const { teamId, slugId } = useParams<string>();
+  const { fetchRosterData } = useRosterDataStore()
+
+  const { data: rosterData }
+    = useSuspenseQuery({ queryKey: ['rosterData', slugId, teamId], queryFn: () => fetchRosterData(slugId, teamId) });
 
   return (
     <div>
@@ -33,7 +38,7 @@ const Squad = memo(({ data }: Props) => {
           </tr>
         </thead>
         <tbody>
-          {data && data.map((item, index) => {
+          {rosterData && rosterData.map((item, index) => {
             return (
               <GoalKeeper item={item} index={index} key={index} />
             )
@@ -61,7 +66,7 @@ const Squad = memo(({ data }: Props) => {
           </tr>
         </thead>
         <tbody>
-          {data && data.map((item, index) => {
+          {rosterData && rosterData.map((item, index) => {
             return (
               <OutfieldPlayer item={item} index={index} key={index} />
             )
