@@ -16,7 +16,7 @@ const Header = memo(() => {
         <Link to={"/"}>
           <li>
             <img
-              src="/public/images/loading/soccerBall.webp"
+              src="images/loading/soccerBall.webp"
               className='h-16 cursor-pointer mr-5'
             />
           </li>
