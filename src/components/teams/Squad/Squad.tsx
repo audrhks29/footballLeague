@@ -6,8 +6,8 @@ import { useParams } from 'react-router-dom';
 import useRosterDataStore from '../../../store/rosterData-store';
 import { goalKeeperTh, outfieldPlayerTh } from '../../../assets/ArrayData';
 
-import OutfieldPlayer from '../Squad/OutfieldPlayer';
-import GoalKeeper from '../Squad/GoalKeeper';
+import OutfieldPlayer from './OutfieldPlayer';
+import GoalKeeper from './GoalKeeper';
 
 const Squad = memo(() => {
   const { teamId, slugId } = useParams<string>();

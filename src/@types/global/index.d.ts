@@ -191,7 +191,7 @@ interface SeasonDataType {
 }
 
 // standingsData
-interface StandingDataType {
+interface StandingsDataType {
   entries: Entries[]
 }
 

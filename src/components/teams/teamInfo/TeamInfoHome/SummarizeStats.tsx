@@ -2,8 +2,7 @@ import { memo } from 'react';
 
 import { Link } from 'react-router-dom';
 
-import useTeamDataStore from '../../../store/teamData-store';
-
+import useTeamDataStore from '../../../../store/teamData-store';
 
 const SummarizeStats = memo(() => {
   const { teamData } = useTeamDataStore()

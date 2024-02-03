@@ -3,7 +3,7 @@ import { Suspense, memo, useState } from 'react';
 import NationSelectBox from '../components/teams/NationSelectBox';
 import DivisionSelectBox from '../components/teams/DivisionSelectBox';
 
-import TeamList from '../components/teams/TeamList';
+import TeamList from '../components/teams/teamInfo/TeamList';
 import Loading from '../components/Loading';
 
 const Teams = memo(() => {
@@ -44,12 +44,14 @@ const Teams = memo(() => {
   return (
     <div className='inner'>
       <div className='flex'>
+
         <NationSelectBox
           selectedName={selectedNationName}
           change={changeNation}
           isSelectBox={isNationSelectBox}
           handleSelectBox={handleNationSelectBox}
         />
+
         <DivisionSelectBox
           selectedName={selectedDivisionName}
           change={changeDivision}
@@ -57,6 +59,7 @@ const Teams = memo(() => {
           nationValue={selectedNationValue}
           handleSelectBox={handleDivisionSelectBox}
         />
+
       </div>
 
       <Suspense fallback={<Loading />}>

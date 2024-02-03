@@ -4,11 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import axios, { AxiosResponse } from 'axios';
 
-import { leagueSelectArray } from '../../../assets/ArrayData';
-
-import useTeamDataStore from '../../../store/teamData-store';
 import { useSuspenseQuery } from '@tanstack/react-query';
+
 import { FaRegQuestionCircle } from 'react-icons/fa';
+
+import { leagueSelectArray } from '../../../../assets/ArrayData';
+
+import useTeamDataStore from '../../../../store/teamData-store';
 
 
 const SummarizeResult = memo(() => {

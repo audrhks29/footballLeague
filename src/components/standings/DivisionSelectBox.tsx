@@ -14,7 +14,7 @@ interface Props {
 
 const DivisionSelectBox = memo((props: Props) => {
   return (
-    <div className='relative w-56 h-10 border'>
+    <div className='relative w-56 h-10 border mr-3'>
 
       <div
         onClick={props.handleSelectBox}

@@ -1,109 +1,119 @@
-import { memo, useEffect, useState } from 'react';
-
-import axios from 'axios';
+import { memo, useState } from 'react';
 
 import { FaRegQuestionCircle } from "react-icons/fa";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
-import { leagueSelectArray } from '../assets/ArrayData';
+import { useSuspenseQuery } from '@tanstack/react-query';
+
+import useStandingsDataStore from '../store/standings-store';
+
+import NationSelectBox from '../components/standings/NationSelectBox';
+import DivisionSelectBox from '../components/standings/DivisionSelectBox';
+import YearSelectBox from '../components/standings/YearSelectBox';
 
 const Standings = memo(() => {
-  const [standingsData, setStandingsData] = useState<StandingDataType | null>(null);
   const [selectedNation, setSelectedNation] = useState("eng");
+  const [selectedNationName, setSelectedNationName] = useState("England");
+
   const [selectedDivision, setSelectedDivision] = useState("1");
+  const [selectedDivisionName, setSelectedDivisionName] = useState("Premier League");
+
   const [selectedYear, setSelectedYear] = useState(2023);
-  const [seasonData, setSeasonData] = useState<SeasonDataType[]>([])
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`https://site.web.api.espn.com/apis/v2/sports/soccer/${selectedNation}.${selectedDivision}/standings?season=${selectedYear}`);
-        if (response.data.children) {
-          const data = response.data.children[0].standings
-          setStandingsData(data)
-        }
-        else setStandingsData(null)
-        const season = response.data.seasons
-        setSeasonData(season);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    }
+  const [isNationSelectBox, setIsNationSelectBox] = useState(false);
+  const [isDivisionSelectBox, setIsDivisionSelectBox] = useState(false);
+  const [isYearSelectBox, setIsYearSelectBox] = useState(false);
 
-    fetchData()
-  }, [selectedNation, selectedDivision, selectedYear])
+  const { fetchStandingsData, seasonData } = useStandingsDataStore()
 
-  const changeNation: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
-    const nationValue = e.target.value;
-    setSelectedNation(nationValue)
-    setSelectedDivision("1")
-    setSelectedYear(2023)
-  }
-
-  const changeDivision: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
-    const divisionValue = e.target.value;
-    setSelectedDivision(divisionValue)
-    setSelectedYear(2023)
-  }
-
-  const changeYear: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
-    const year = Number(e.target.value);
-    setSelectedYear(year)
-  }
+  const { data: standingsData }
+    = useSuspenseQuery({
+      queryKey: ['standingData', selectedNation, selectedDivision, selectedYear],
+      queryFn: () => fetchStandingsData(selectedNation, selectedDivision, selectedYear)
+    });
 
   const handleCountYear = (num: number) => {
-    if (num > 0 && seasonData[0].year <= selectedYear) return
-    else if (num < 0 && seasonData[seasonData.length - 1].year >= selectedYear) return
+    if (num > 0 && seasonData && seasonData[0].year <= selectedYear) return
+    else if (num < 0 && seasonData && seasonData[seasonData.length - 1].year >= selectedYear) return
     else setSelectedYear(selectedYear + num)
   }
 
   const thArray = ["Rank", "Team Name", "P", "GP", "W", "D", "L", "GD", "NOTE"]
 
-  const filter = seasonData.filter(item => item.year == selectedYear)
+  const filter = seasonData ? seasonData.filter(item => item.year == selectedYear) : null
 
+  const changeNation = (value: string, name: string, firstDivision: string) => {
+    setSelectedNation(value)
+    setSelectedNationName(name)
+    setSelectedDivision("1")
+    setSelectedDivisionName(firstDivision);
+    setSelectedYear(2023)
+    setIsNationSelectBox(false);
+    setIsYearSelectBox(false)
+  }
+
+  const changeDivision = (division: string, name: string) => {
+    setSelectedDivision(division);
+    setSelectedDivisionName(name);
+    setIsDivisionSelectBox(false);
+    setIsYearSelectBox(false)
+  }
+
+  const changeYear = (year: number) => {
+    setSelectedYear(year)
+    setIsNationSelectBox(false);
+    setIsYearSelectBox(false)
+  }
+
+  const handleNationSelectBox = () => {
+    setIsNationSelectBox(!isNationSelectBox);
+    setIsDivisionSelectBox(false);
+    setIsYearSelectBox(false);
+  }
+
+  const handleDivisionSelectBox = () => {
+    setIsNationSelectBox(false);
+    setIsDivisionSelectBox(!isDivisionSelectBox);
+    setIsYearSelectBox(false);
+  }
+
+  const handleYearSelectBox = () => {
+    setIsNationSelectBox(false);
+    setIsDivisionSelectBox(false);
+    setIsYearSelectBox(!isYearSelectBox);
+
+  }
   return (
     <div className='inner'>
-      <div className='w-[1030px] m-auto'>
-        <select
-          onChange={changeNation}
-          value={selectedNation}
-          className='w-28 h-6 border border-black mr-2'
-        >
-          {leagueSelectArray.map((item, index) => (
-            <option value={item.value} key={index}>{item.nation}</option>
-          ))}
-        </select>
+      <div className='flex'>
 
-        <select
-          onChange={changeDivision}
-          value={selectedDivision}
-          className='w-40 h-6 border border-black mr-2'
-        >
-          {leagueSelectArray.map(item => {
-            if (item.value === selectedNation)
-              return (
-                item.league.map((item, index) => (
-                  <option value={item.division} key={index}>{item.name}</option>
-                ))
-              )
-          })}
-        </select>
+        <NationSelectBox
+          handleSelectBox={handleNationSelectBox}
+          change={changeNation}
+          selectedName={selectedNationName}
+          isSelectBox={isNationSelectBox}
+        />
 
-        {seasonData &&
-          <select
-            onChange={changeYear}
-            value={selectedYear}
-            className='w-20 h-6 border border-black'
-          >
-            {seasonData.map((item, index) => (
-              <option value={item.year} key={index}>{item.year}</option>
-            ))
-            }
-          </select>}
+        <DivisionSelectBox
+          selectedName={selectedDivisionName}
+          change={changeDivision}
+          isSelectBox={isDivisionSelectBox}
+          nationValue={selectedNation}
+          handleSelectBox={handleDivisionSelectBox}
+        />
+
+        <YearSelectBox
+          handleSelectBox={handleYearSelectBox}
+          seasonData={seasonData}
+          change={changeYear}
+          selectedYear={selectedYear}
+          isSelectBox={isYearSelectBox}
+        />
+
       </div>
-      <div className='flex items-center text-3xl justify-around w-[700px] m-auto p-5'>
+      <div className='flex items-center text-3xl justify-around w-[700px] m-auto p-8'>
         <span onClick={() => handleCountYear(-1)} className='cursor-pointer'><MdKeyboardArrowLeft /></span>
-        {filter.length > 0 && filter[0].displayName && <h2>{filter[0].displayName}</h2>}
+        {filter && filter.length > 0 && filter[0].displayName && <h2>{filter[0].displayName}</h2>}
         <span onClick={() => handleCountYear(1)} className='cursor-pointer'><MdKeyboardArrowRight /></span>
       </div>
 

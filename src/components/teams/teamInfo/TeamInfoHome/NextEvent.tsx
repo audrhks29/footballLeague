@@ -1,7 +1,8 @@
 import { memo } from 'react';
 
-import useTeamDataStore from '../../../store/teamData-store';
 import { FaRegQuestionCircle } from 'react-icons/fa';
+
+import useTeamDataStore from '../../../../store/teamData-store';
 
 const NextEvent = memo(() => {
   const { teamData } = useTeamDataStore();
