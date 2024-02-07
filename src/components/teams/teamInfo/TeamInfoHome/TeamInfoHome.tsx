@@ -2,7 +2,7 @@ import { memo } from 'react';
 
 import SummarizeStats from './SummarizeStats';
 import NextEvent from './NextEvent';
-import SummarizeResult from './SummarizeResult';
+import SummarizeResult from './summarizeResult/SummarizeResult';
 
 const TeamInfoHome = memo(() => {
   return (

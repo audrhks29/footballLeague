@@ -1,6 +1,5 @@
 import { memo, useState } from 'react';
 
-import { FaRegQuestionCircle } from "react-icons/fa";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -11,14 +10,17 @@ import NationSelectBox from '../components/standings/NationSelectBox';
 import DivisionSelectBox from '../components/standings/DivisionSelectBox';
 import YearSelectBox from '../components/standings/YearSelectBox';
 
+import { useNavigate, useParams } from 'react-router-dom';
+
+import StandingsTable from '../components/standings/StandingsTable';
+
 const Standings = memo(() => {
-  const [selectedNation, setSelectedNation] = useState("eng");
-  const [selectedNationName, setSelectedNationName] = useState("England");
+  const { slugId, yearId } = useParams()
 
-  const [selectedDivision, setSelectedDivision] = useState("1");
-  const [selectedDivisionName, setSelectedDivisionName] = useState("Premier League");
+  const navigate = useNavigate()
 
-  const [selectedYear, setSelectedYear] = useState(2023);
+  const paramsNation = slugId?.slice(0, 3)
+  const paramsDivision = slugId?.slice(4, 5)
 
   const [isNationSelectBox, setIsNationSelectBox] = useState(false);
   const [isDivisionSelectBox, setIsDivisionSelectBox] = useState(false);
@@ -28,41 +30,34 @@ const Standings = memo(() => {
 
   const { data: standingsData }
     = useSuspenseQuery({
-      queryKey: ['standingData', selectedNation, selectedDivision, selectedYear],
-      queryFn: () => fetchStandingsData(selectedNation, selectedDivision, selectedYear)
+      queryKey: ['standingData', slugId, yearId],
+      queryFn: () => fetchStandingsData(slugId, yearId)
     });
 
   const handleCountYear = (num: number) => {
-    if (num > 0 && seasonData && seasonData[0].year <= selectedYear) return
-    else if (num < 0 && seasonData && seasonData[seasonData.length - 1].year >= selectedYear) return
-    else setSelectedYear(selectedYear + num)
+    if (num > 0 && seasonData && seasonData[0].year <= Number(yearId)) return
+    else if (num < 0 && seasonData && seasonData[seasonData.length - 1].year >= Number(yearId)) return
+    else navigate(`/standings/${paramsNation}.${paramsDivision}/${Number(yearId) + num}`)
   }
 
-  const thArray = ["Rank", "Team Name", "P", "GP", "W", "D", "L", "GD", "NOTE"]
+  const filter = seasonData ? seasonData.filter(item => item.year == Number(yearId)) : null
 
-  const filter = seasonData ? seasonData.filter(item => item.year == selectedYear) : null
-
-  const changeNation = (value: string, name: string, firstDivision: string) => {
-    setSelectedNation(value)
-    setSelectedNationName(name)
-    setSelectedDivision("1")
-    setSelectedDivisionName(firstDivision);
-    setSelectedYear(2023)
+  const changeNation = (nation: string) => {
     setIsNationSelectBox(false);
     setIsYearSelectBox(false)
+    navigate(`/standings/${nation}.1/2023`)
   }
 
-  const changeDivision = (division: string, name: string) => {
-    setSelectedDivision(division);
-    setSelectedDivisionName(name);
+  const changeDivision = (division: string) => {
     setIsDivisionSelectBox(false);
     setIsYearSelectBox(false)
+    navigate(`/standings/${paramsNation}.${division}/2023`)
   }
 
   const changeYear = (year: number) => {
-    setSelectedYear(year)
     setIsNationSelectBox(false);
     setIsYearSelectBox(false)
+    navigate(`/standings/${paramsNation}.${paramsDivision}/${year}`)
   }
 
   const handleNationSelectBox = () => {
@@ -81,24 +76,23 @@ const Standings = memo(() => {
     setIsNationSelectBox(false);
     setIsDivisionSelectBox(false);
     setIsYearSelectBox(!isYearSelectBox);
-
   }
+
   return (
     <div className='inner'>
       <div className='flex'>
-
         <NationSelectBox
           handleSelectBox={handleNationSelectBox}
           change={changeNation}
-          selectedName={selectedNationName}
+          paramsNation={paramsNation}
           isSelectBox={isNationSelectBox}
         />
 
         <DivisionSelectBox
-          selectedName={selectedDivisionName}
           change={changeDivision}
           isSelectBox={isDivisionSelectBox}
-          nationValue={selectedNation}
+          paramsNation={paramsNation}
+          paramsDivision={paramsDivision}
           handleSelectBox={handleDivisionSelectBox}
         />
 
@@ -106,7 +100,6 @@ const Standings = memo(() => {
           handleSelectBox={handleYearSelectBox}
           seasonData={seasonData}
           change={changeYear}
-          selectedYear={selectedYear}
           isSelectBox={isYearSelectBox}
         />
 
@@ -119,61 +112,11 @@ const Standings = memo(() => {
 
       {
         standingsData?.entries && Array.isArray(standingsData.entries) ? (
-          <table className='text-center m-auto'>
-            <colgroup>
-              <col width={70} />
-              <col width={300} />
-              <col width={60} />
-              <col width={60} />
-              <col width={60} />
-              <col width={60} />
-              <col width={60} />
-              <col width={60} />
-              <col width={300} />
-            </colgroup>
-            <thead>
-              <tr>
-                {thArray.map((item, index) => (
-                  <th key={index} className='p-2 border-y border-black'>{item}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {
-                standingsData.entries.map((entry: Entries, entryIndex: number) => {
-                  const rankArray = Array.from({ length: standingsData.entries.length }, (_, index) => index + 1);
-                  const statsOrderArray = ["points", "gamesPlayed", "wins", "ties", "losses", "pointDifferential", "note"];
-                  return (
-                    <tr key={entryIndex} className='border-b h-9'>
-                      <td className='font-bold'>{rankArray[entryIndex]}</td>
-                      {entry.team &&
-                        <td className='flex items-center px-3 h-9'>
-                          {entry.team.logos ?
-                            <img src={entry.team.logos[0].href} alt={entry.team.name} title={entry.team.name} className='h-7 mr-2' />
-                            : <i className='text-[28px] mr-2'><FaRegQuestionCircle /></i>}
-                          {entry.team.name}
-                        </td>}
-                      {entry.stats && (
-                        <>
-                          {statsOrderArray.map((statName, index) => {
-                            const stat = entry.stats.find(stat => stat.name === statName);
-                            return (
-                              stat && (
-                                <td key={index}>
-                                  {stat.value}
-                                </td>
-                              )
-                            );
-                          })}
-                        </>
-                      )}
-                      {entry.note && <td style={{ backgroundColor: `${entry.note.color}` }}>{entry.note.description}</td>}
-                    </tr>
-                  )
-                })
-              }
-            </tbody>
-          </table>
+          <StandingsTable
+            paramsNation={paramsNation}
+            paramsDivision={paramsDivision}
+            standingsData={standingsData}
+          />
         ) : (
           <p>Invalid standingsData structure</p>
         )

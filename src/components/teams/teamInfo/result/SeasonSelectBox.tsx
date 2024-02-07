@@ -1,17 +1,17 @@
 import { memo } from 'react';
 
 import { AiOutlineCaretDown, AiOutlineCaretUp } from 'react-icons/ai';
-import { useParams } from 'react-router-dom';
 
 interface Props {
   handleSelectBox: () => void;
   change: (year: number) => void;
   seasonData: SeasonDataType[] | null,
+  selectedYear: number;
   isSelectBox: boolean;
 }
 
-const YearSelectBox = memo((props: Props) => {
-  const { yearId } = useParams()
+const SeasonSelectBox = memo((props: Props) => {
+
   return (
     <div className='relative w-56 h-10 border mr-3'>
 
@@ -19,7 +19,7 @@ const YearSelectBox = memo((props: Props) => {
         onClick={props.handleSelectBox}
         className='w-full h-full flex items-center p-3 justify-between cursor-pointer'
       >
-        <span>{yearId}</span>
+        <span>{props.selectedYear}-{props.selectedYear + 1}</span>
         <span>{props.isSelectBox ? <AiOutlineCaretUp /> : <AiOutlineCaretDown />}</span>
       </div>
 
@@ -35,7 +35,7 @@ const YearSelectBox = memo((props: Props) => {
                 <button type="button"
                   className='w-full text-left h-10 px-3'
                 >
-                  {item.year}
+                  {item.year}-{item.year + 1}
                 </button>
               </li>
             )
@@ -45,4 +45,4 @@ const YearSelectBox = memo((props: Props) => {
   );
 });
 
-export default YearSelectBox;
+export default SeasonSelectBox;

@@ -5,9 +5,9 @@ const Header = memo(() => {
   const location = useLocation();
 
   const headerArray = [
-    { id: 1, text: "standings" },
-    { id: 2, text: "news" },
-    { id: 3, text: "teams" },
+    { id: 1, text: "standings", link: "standings/eng.1/2023" },
+    { id: 2, text: "news", link: "news" },
+    { id: 3, text: "teams", link: "teams" },
   ]
 
   return (
@@ -24,7 +24,7 @@ const Header = memo(() => {
         {headerArray.map(item => {
           const isAttachStyle = location.pathname.includes(item.text);
           return (
-            <Link to={`${item.text}`} key={item.id}>
+            <Link to={`${item.link}`} key={item.id}>
               <li
                 className='headerLi'>
                 <span

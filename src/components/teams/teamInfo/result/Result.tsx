@@ -2,21 +2,20 @@ import { memo, useState } from 'react';
 
 import axios, { AxiosResponse } from 'axios';
 
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-import { MdArrowForwardIos } from 'react-icons/md';
-
-import { leagueSelectArray } from '../../../assets/ArrayData';
+import { leagueSelectArray } from '../../../../assets/ArrayData';
 
 import { useSuspenseQuery } from '@tanstack/react-query';
+import SeasonSelectBox from './SeasonSelectBox';
+import ResultList from './ResultList';
 
 const Result = memo(() => {
-  const navigate = useNavigate()
-
   const { teamId, slugId } = useParams()
 
   const [selectedYear, setSelectedYear] = useState(2023)
   const [matchDivision, setMatchDivision] = useState<string | undefined>(slugId)
+  const [isSelectBox, setIsSelectBox] = useState(false)
 
   const fetchSeasonData = async (slugId: string | undefined, selectedYear: number) => {
     const response = await axios.get(`https://site.web.api.espn.com/apis/v2/sports/soccer/${slugId}/standings?season=${selectedYear}`);
@@ -50,7 +49,8 @@ const Result = memo(() => {
 
           if (filterMatchCurrentYear.length > 0 && filterMatchNextYear.length > 0) {
             setMatchDivision(currentYearScoreboard.data.leagues[0].slug);
-            return filterMatchCurrentYear.concat(filterMatchNextYear)
+            const data = filterMatchCurrentYear.concat(filterMatchNextYear).sort((a, b) => parseInt(b.id) - parseInt(a.id));
+            return data
           }
         }
       }
@@ -64,78 +64,45 @@ const Result = memo(() => {
   const { data: resultData }
     = useSuspenseQuery({ queryKey: ['resultData', teamId, slugId, selectedYear], queryFn: () => fetchTeamResultData(teamId, slugId, selectedYear) });
 
-  const changeYear: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
-    const value = parseInt(e.target.value);
-    setSelectedYear(value);
+  const handleSelectBox = () => {
+    setIsSelectBox(!isSelectBox);
   }
 
-  const goToMatchIdPage = (gameId: string) => {
-    navigate(`/match/${matchDivision}/${gameId}`)
+  const changeYear = (selectedYear: number) => {
+    setSelectedYear(selectedYear);
+    setIsSelectBox(false)
   }
 
   return (
     <div>
-      <span className='font-bold'>Season</span>
 
-      <select
-        onChange={changeYear}
-        value={selectedYear}
-        className='w-28 h-6 border border-black ml-2'
-      >
-        {seasonData.map((item: TeamDataType, index: number) => (
-          <option value={item.year} key={index}>{item.year}-{item.year + 1}</option>
-        ))
-        }
-      </select>
+      <div className='flex items-center'>
+        <span className='font-bold mr-3'>Season</span>
+        <SeasonSelectBox
+          handleSelectBox={handleSelectBox}
+          change={changeYear}
+          seasonData={seasonData}
+          selectedYear={selectedYear}
+          isSelectBox={isSelectBox}
+        />
+      </div>
 
       <ul className='mt-5'>
         {resultData && resultData.length === 0 && <li>there is no data, please retry</li>}
         {resultData && resultData.map((item, index) => {
           const isCompletedMatch = item.status.type.completed;
-
-          const matchInfo = item.competitions[0];
-
-          const homeTeamData = item.competitions[0].competitors.find(competitor => competitor.homeAway === "home");
-          const awayTeamData = item.competitions[0].competitors.find(competitor => competitor.homeAway === "away");
-
-          const date = new Date(matchInfo.date);
-          const options: DateTimeFormatOptions = { year: 'numeric', weekday: 'long', month: 'long', day: 'numeric' };
-          const outputDateString = date.toLocaleDateString('en-US', options);
-
           if (resultData && isCompletedMatch) {
             return (
-              <li
+              <ResultList
                 key={index}
-                className='border-b hover:border-black cursor-pointer p-1'
-                onClick={() => goToMatchIdPage(item.id)}
-              >
-                <div className='text-[16px] p-2 font-bold flex justify-between'>
-                  <span>{outputDateString}</span>
-                  <span className='text-[14px] font-medium'>{item.season.slug}</span>
-                </div>
-                <div className='flex items-center p-2 justify-between'>
-                  <span className='text-[16px] font-bold'>{index + 1}R</span>
-                  <div className='flex items-center '>
-                    <span className='font-bold mr-2'>{homeTeamData?.team.abbreviation}</span>
-                    <img src={homeTeamData?.team.logo} className='h-8 mr-2' />
-                    <div className='border p-1 bg-black text-white text-bold'>
-                      <span>{homeTeamData?.score} - {awayTeamData?.score}</span>
-                    </div>
-                    <img src={awayTeamData?.team.logo} className='h-8 ml-2' />
-                    <span className='font-bold ml-2'>{awayTeamData?.team.abbreviation}</span>
-                  </div>
-                  <div className='w-96 font-bold'>
-                    {matchInfo.venue && <span>{matchInfo.venue.fullName}</span>}
-                  </div>
-                  <div className='w-10'>
-                    <i><MdArrowForwardIos /></i>
-                  </div>
-                </div>
-              </li>
+                item={item}
+                index={index}
+                matchDivision={matchDivision}
+                round={resultData.length - index}
+              />
             )
           }
         })}
-
       </ul>
     </div>
   );

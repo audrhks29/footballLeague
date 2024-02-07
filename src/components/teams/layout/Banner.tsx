@@ -8,10 +8,7 @@ interface Props {
 
 const Banner = memo(({ data }: Props) => {
   return (
-    <div
-      className='h-48 flex flex-col items-center justify-center shadow-orange-300 shadow-xl'
-    // style={{ background: `linear-gradient(to bottom right, #${data.color}, #${data.alternateColor})` }}
-    >
+    <div className='h-48 flex flex-col items-center justify-center shadow-slate-300 shadow-md'>
       {data.logos
         ? <img
           src={data.logos[0].href}

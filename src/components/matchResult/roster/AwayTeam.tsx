@@ -9,25 +9,28 @@ const AwayTeam = memo(({ data }: Props) => {
   const hideFieldTh = ["FC", "FA", "OG", "SHF", "SUB", "GA", "OF", "SV"]
 
   return (
-    <div>
-      <table className='text-center'>
+    <div className='w-auto'>
+      <table className='text-center mb-3'>
         <colgroup>
-          <col width={37} />
+          <col width={45} />
           <col width={32} />
           <col width={140} />
-          <col width={28} />
-          <col width={28} />
-          <col width={28} />
-          <col width={28} />
-          <col width={28} />
-          <col width={28} />
+          {data.roster[1].stats &&
+            <>
+              <col width={28} />
+              <col width={28} />
+              <col width={28} />
+              <col width={28} />
+              <col width={28} />
+              <col width={28} />
+            </>}
         </colgroup>
         <thead>
-          <tr className='h-8'>
+          <tr className='h-8  border-b border-black'>
             <th title='position'>POS</th>
             <th title='jersey'>NO</th>
             <th>Name</th>
-            {data.roster[0].stats.map((item, index) =>
+            {data.roster[0].stats && data.roster[0].stats.map((item, index) =>
               hideGKTh.includes(item.abbreviation)
                 ? "" : <th title={item.displayName} key={index}>{item.abbreviation}</th>)}
           </tr>
@@ -40,7 +43,7 @@ const AwayTeam = memo(({ data }: Props) => {
                   <td>{item.position.abbreviation}</td>
                   <td>{item.jersey}</td>
                   <td>{item.athlete.fullName}</td>
-                  {item.stats.map((stat, idx) =>
+                  {item.stats && item.stats.map((stat, idx) =>
                     hideGKTh.includes(stat.abbreviation)
                       ? "" : <td key={idx}>{stat.value}</td>)}
                 </tr>
@@ -51,23 +54,26 @@ const AwayTeam = memo(({ data }: Props) => {
 
       <table className='text-center'>
         <colgroup>
-          <col width={37} />
+          <col width={45} />
           <col width={32} />
           <col width={140} />
-          <col width={28} />
-          <col width={28} />
-          <col width={28} />
-          <col width={28} />
-          <col width={28} />
-          <col width={28} />
-          <col width={28} />
+          {data.roster[1].stats &&
+            <>
+              <col width={28} />
+              <col width={28} />
+              <col width={28} />
+              <col width={28} />
+              <col width={28} />
+              <col width={28} />
+              <col width={28} />
+            </>}
         </colgroup>
         <thead>
-          <tr className='h-8'>
+          <tr className='h-8 border-b border-black'>
             <th title='position'>POS</th>
             <th title='jersey'>NO</th>
             <th>Name</th>
-            {data.roster[1].stats.map((item, index) =>
+            {data.roster[1].stats && data.roster[1].stats.map((item, index) =>
               hideFieldTh.includes(item.abbreviation)
                 ? "" : <th title={item.displayName} key={index}>{item.abbreviation}</th>)}
           </tr>
@@ -76,11 +82,11 @@ const AwayTeam = memo(({ data }: Props) => {
           {data.roster.map((item, index) => {
             if (item.position.abbreviation !== "G")
               return (
-                <tr key={index}>
+                <tr key={index} className='border-b h-7'>
                   <td>{item.position.abbreviation}</td>
                   <td>{item.jersey}</td>
                   <td>{item.athlete.fullName}</td>
-                  {item.stats.map((stat, idx) =>
+                  {item.stats && item.stats.map((stat, idx) =>
                     hideFieldTh.includes(stat.abbreviation)
                       ? "" : <td key={idx}>{stat.value}</td>)}
                 </tr>

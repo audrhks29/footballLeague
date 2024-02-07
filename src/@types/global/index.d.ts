@@ -58,6 +58,7 @@ interface TeamInfoType {
     id: string;
     alternateId: string;
     logos: { href: string }[];
+    slug: string;
   }
   displayName: string;
   groups: { id: string };
@@ -136,7 +137,16 @@ interface Competitors {
   id: string;
   order: number;
   score: string;
-  team: { id: string, uid: string, abbreviation: string, displayName: string, shortDisplayName: string, logo: string }
+  team: {
+    id: string,
+    uid: string,
+    abbreviation: string,
+    displayName: string,
+    shortDisplayName: string,
+    logo: string,
+    color: string,
+    alternateColor: string
+  }
   type: string;
   uid: string;
   winner: boolean;
@@ -197,19 +207,27 @@ interface StandingsDataType {
 
 interface Entries {
   stats: Stats[];
-  note: {
+  note?: {
     color: string;
     description: string;
   }
   team: {
+    id: string;
     name: string;
     logos: { href: string; }[]
   }
 }
 
+interface SummarizeStatsType {
+  stats: { name: string, value: string }[];
+  team: { id: string };
+}
 // matchResult
 interface MatchResultType {
   header: {
+    league: {
+      slug: string
+    }
     competitions: {
       date: string;
       competitors: {
@@ -227,9 +245,12 @@ interface MatchResultType {
         label: string;
       }[]
       team: {
+        color: string;
+        alternateColor: string;
         logo: string;
         shortDisplayName: string;
         displayName: string;
+        id: string;
       }
     }[]
   }
