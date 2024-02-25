@@ -91,6 +91,7 @@ const Result = memo(() => {
         {resultData && resultData.length === 0 && <li>there is no data, please retry</li>}
         {resultData && resultData.map((item, index) => {
           const isCompletedMatch = item.status.type.completed;
+
           if (resultData && isCompletedMatch) {
             return (
               <ResultList

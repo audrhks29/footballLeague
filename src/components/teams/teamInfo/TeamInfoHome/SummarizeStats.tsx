@@ -19,12 +19,13 @@ const SummarizeStats = memo(() => {
       queryFn: () => fetchSummarizeStatsData(slugId, teamId)
     });
 
+  const leagueLogo = teamData && teamData.defaultLeague.logos[1] ? teamData.defaultLeague.logos[1] : teamData?.defaultLeague.logos[0]
   return (
     <div className='pb-5'>
 
       <ul className='w-full flex justify-around'>
         <li className='p-2 w-40 flex justify-center items-center h-20 border rounded-2xl'>
-          {teamData && <img src={teamData.defaultLeague.logos[0].href} alt="" className='w-16' />}
+          {teamData && <img src={leagueLogo?.href} alt="" className='w-16' />}
         </li>
 
         {teamData && teamData.record.items && teamData.record.items.map((item) => (

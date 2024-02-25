@@ -30,6 +30,7 @@ const TeamList = memo(({ selectedNationValue, selectedDivisionValue }: Props) =>
           return (
             <TeamListItem
               item={item}
+              key={index}
               index={index}
               selectedNationValue={selectedNationValue}
               selectedDivisionValue={selectedDivisionValue}

@@ -26,9 +26,9 @@ const Header = memo(() => {
           return (
             <Link to={`${item.link}`} key={item.id}>
               <li
-                className='headerLi'>
+                className='w-40 text-[18px] uppercase hover:border-b'>
                 <span
-                  style={{ borderBottom: isAttachStyle ? '1px solid #000' : 'none' }}
+                  style={{ borderBottom: isAttachStyle ? '1px solid #fff' : 'none' }}
                   className='p-1'>
                   {item.text}
                 </span>

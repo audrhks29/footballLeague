@@ -7,7 +7,7 @@ interface Props {
 const Commentary = memo(({ data }: Props) => {
 
   return (
-    <ul className='my-10'>
+    <ul className='mt-10'>
       {data.keyEvents.map(item => {
         // console.log(item.play.team);
         let style: CSSProperties | undefined = undefined;
@@ -19,10 +19,10 @@ const Commentary = memo(({ data }: Props) => {
         }
         else style = { textAlign: "center", margin: "auto" }
         return (
-          <li className='py-2 w-1/2' style={style}>
+          <li className='my-2 w-2/5 bg-[#3f3f3f]' style={style}>
             <div className='flex flex-col border p-2'>
               <span className='font-bold'>{item.clock.displayValue}</span>
-              <span>[{item.type.text}]</span>
+              <span className='font-bold'>[{item.type.text}]</span>
               <span>{item.text}</span>
             </div>
           </li>

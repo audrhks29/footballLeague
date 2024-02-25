@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from 'react';
+import { memo } from 'react';
 
 import { FaRegQuestionCircle } from 'react-icons/fa';
 
@@ -7,25 +7,15 @@ import useTeamDataStore from '../../../../store/teamData-store';
 const NextEvent = memo(() => {
   const { teamData } = useTeamDataStore();
 
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  const handleMouseEnter = useCallback((index: number) => setHoveredIndex(index), [])
-
-  const handleMouseLeave = useCallback(() => setHoveredIndex(null), [])
   return (
-    <div className='w-64 rounded-t-lg pb-5'>
+    <div className='w-64 rounded-t-lg mb-5 bg-[#282828]'>
 
-      <div
-        className='p-2 rounded-t-lg'
-        style={{
-          background: `linear-gradient(to bottom right, #${teamData && teamData.color}, #${teamData && teamData.alternateColor})`
-        }}
-      >
+      <div className='p-2 rounded-t-lg border'>
         <h2 className='text-[20px] text-center text-white text-bold'>Next Match</h2>
       </div>
 
       <ul>
-        {teamData && teamData.nextEvent.map((item, index) => {
+        {teamData && teamData.nextEvent.length > 0 ? teamData.nextEvent.map((item, index) => {
           const homeTeamData = item.competitions[0].competitors.find(competitor => competitor.homeAway === "home");
           const awayTeamData = item.competitions[0].competitors.find(competitor => competitor.homeAway === "away");
 
@@ -34,44 +24,31 @@ const NextEvent = memo(() => {
           const outputDateString = date.toLocaleDateString('en-US', options);
           const outputTime = item.date.substr(11, 5);
 
-          const isHovered = index === hoveredIndex;
-
           return (
-            <li key={index}
-              className='border cursor-pointer'
-              style={{
-                background: isHovered
-                  ? `linear-gradient(to bottom right, #${teamData?.color}, #${teamData?.alternateColor})`
-                  : "",
-                color: isHovered ? "white" : "black",
-              }}
-              onMouseEnter={() => handleMouseEnter(index)}
-              onMouseLeave={handleMouseLeave}
-            >
+            <li key={index} className='border cursor-pointer hover:bg-hoverColor'            >
+
               <div className='text-[18px] text-center p-2 font-bold'>{outputDateString}</div>
+
               <div className='flex items-center justify-center p-2'>
                 <span className='font-bold mr-2'>{homeTeamData?.team.abbreviation}</span>
+
                 {homeTeamData?.team.logos
                   ? <img src={homeTeamData?.team.logos[0].href} className='h-8 mr-1' />
                   : <i className='text-[32px] mr-1'><FaRegQuestionCircle /></i>}
-                <div
-                  className='p-1 text-bold'
-                  style={{
-                    border: isHovered ? '' : '1px solid',
-                    background: isHovered ? 'white' : 'black',
-                    color: isHovered ? "black" : "white"
-                  }}
-                >
+
+                <div className='p-1 text-bold border'>
                   <span>{outputTime}</span>
                 </div>
+
                 {awayTeamData?.team.logos
                   ? <img src={awayTeamData?.team.logos[0].href} className='h-8 ml-1' />
                   : <i className='text-[32px] ml-1'><FaRegQuestionCircle /></i>}
+
                 <span className='font-bold ml-2'>{awayTeamData?.team.abbreviation}</span>
               </div>
             </li>
           )
-        })}
+        }) : <li className='text-[18px] text-center p-2 font-bold border'>There is no information on the Next Match</li>}
       </ul>
 
     </div>

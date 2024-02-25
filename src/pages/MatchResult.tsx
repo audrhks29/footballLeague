@@ -88,7 +88,7 @@ const MatchResult = memo(() => {
       </div>
 
       <div
-        className='w-full text-center border h-10 leading-10 cursor-pointer my-10'
+        className='w-full text-center border h-10 leading-10 cursor-pointer mt-10'
         onClick={toggleViewCommentary}
       >
         <span>{!isCommentary ? "View Commentary" : "Hide Commentary"}</span>

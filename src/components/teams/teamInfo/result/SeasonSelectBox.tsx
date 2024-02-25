@@ -24,13 +24,13 @@ const SeasonSelectBox = memo((props: Props) => {
       </div>
 
       {props.isSelectBox &&
-        <ul className='absolute top-11 border w-56 bg-white max-h-[200px] overflow-y-auto'>
+        <ul className='absolute top-11 border w-56 bg-white max-h-[200px] overflow-y-auto bg-[#282828]'>
           {props.seasonData && props.seasonData.map((item, index) => {
             return (
               <li
                 key={index}
                 onClick={() => props.change(item.year)}
-                className='w-full text-left hover:bg-slate-300'
+                className='w-full text-left hover:bg-hoverColor'
               >
                 <button type="button"
                   className='w-full text-left h-10 px-3'

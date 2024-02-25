@@ -18,6 +18,7 @@ import Loading from './components/Loading';
 const queryClient = new QueryClient()
 
 const App = memo(() => {
+
   return (
     <QueryClientProvider client={queryClient}>
       <HashRouter>

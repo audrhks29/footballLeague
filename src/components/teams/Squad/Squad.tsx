@@ -28,7 +28,7 @@ const Squad = memo(() => {
           <col width={75} />
           <col width={190} />
         </colgroup>
-        <thead className='border-y border-black h-8'>
+        <thead className='border-y h-8'>
           <tr>
             {goalKeeperTh.map((item, index) => (
               <th className='font-medium' key={index} title={item.title}>
@@ -56,7 +56,7 @@ const Squad = memo(() => {
           <col width={75} />
           <col width={190} />
         </colgroup>
-        <thead className='border-y border-black h-8'>
+        <thead className='border-y h-8'>
           <tr>
             {outfieldPlayerTh.map((item, index) => (
               <th className='font-medium' key={index} title={item.title}>

@@ -4,20 +4,12 @@
 
 #root{
   font-size:14px;
+  background-color:#282828;
+  color:#eee;
+  min-height:100vh;
 }
 
 .inner{
   width:1300px;
   margin:0 auto;
-}
-
-.headerLi{
-  width:160px;
-  font-size:18px;
-  text-transform:uppercase;
-}
-
-.headerLi:hover {
-  border-bottom:1px solid #000;
-  color: rgba(0, 35, 122, 0.7);
 }

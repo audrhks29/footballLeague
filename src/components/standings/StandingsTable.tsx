@@ -35,7 +35,7 @@ const StandingsTable = memo(({ paramsNation, paramsDivision, standingsData }: Pr
       <thead>
         <tr>
           {thArray.map((item, index) => (
-            <th key={index} className='p-2 border-y border-black'>{item}</th>
+            <th key={index} className='p-2 border-y border-tableBorderColor'>{item}</th>
           ))}
         </tr>
       </thead>
@@ -46,7 +46,7 @@ const StandingsTable = memo(({ paramsNation, paramsDivision, standingsData }: Pr
             const statsOrderArray = ["points", "gamesPlayed", "wins", "ties", "losses", "pointDifferential", "note"];
 
             return (
-              <tr key={entryIndex} className='border-b h-9 cursor-pointer hover:bg-slate-300' onClick={() => goToTeamInfoPage(entry.team.id)}>
+              <tr key={entryIndex} className='border-b border-tableBorderColor h-9 cursor-pointer hover:bg-hoverColor' onClick={() => goToTeamInfoPage(entry.team.id)}>
                 <td className='font-bold'>{rankArray[entryIndex]}</td>
                 {entry.team &&
                   <td className='flex items-center px-3 h-9'>
@@ -70,7 +70,10 @@ const StandingsTable = memo(({ paramsNation, paramsDivision, standingsData }: Pr
                     })}
                   </>
                 )}
-                {entry.note && <td style={{ backgroundColor: `${entry.note.color}` }}>{entry.note.description}</td>}
+                {entry.note
+                  && <td
+                    style={{ backgroundColor: `${entry.note.color}` }}
+                    className='text-[#282828]'>{entry.note.description}</td>}
               </tr>
             )
           })

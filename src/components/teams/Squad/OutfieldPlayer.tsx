@@ -30,11 +30,11 @@ const OutfieldPlayer = memo(({ item, index }: Props) => {
     const yellowCard = generalCategory?.stats.find(stat => stat.name === 'yellowCards');
     const redCard = generalCategory?.stats.find(stat => stat.name === 'redCards');
     return (
-      <tr key={index} className='h-7 border-b'>
+      <tr key={index} className='h-7 border-b border-tableBorderColor'>
         <td className='text-left'>{name}</td>
         <td>{no}</td>
         <td>{age}</td>
-        <td>{height}cm</td>
+        <td>{height !== "NaN" ? height + "cm" : "-"}</td>
         <td>{weight !== "NaN" ? weight + "kg" : "-"}</td>
         <td className='text-left indent-2'><img src={countryImage} alt="" className='h-4 inline-block mr-2' />{country} </td>
         <td>{app?.value}</td>

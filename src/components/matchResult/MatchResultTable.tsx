@@ -60,10 +60,7 @@ const MatchResultTable = memo(({ data }: Props) => {
                     }}
                     className='absolute right-0 -translate-y-1/2'
                   ></div>
-                  <span
-                    className='absolute right-1 -translate-y-1/2'
-                    style={{ color: homeGraphWidth ? "white" : "black" }}
-                  >
+                  <span className='absolute right-1 -translate-y-1/2'>
                     {item.homeTeamValue}</span>
                 </td>
                 <td className='text-center'>{item.label}</td>
@@ -79,9 +76,7 @@ const MatchResultTable = memo(({ data }: Props) => {
                     }}
                     className='absolute left-0 -translate-y-1/2'
                   ></div>
-                  <span
-                    className='absolute left-1 -translate-y-1/2'
-                    style={{ color: awayGraphWidth ? "white" : "black" }}>
+                  <span className='absolute left-1 -translate-y-1/2'>
                     {item.awayTeamValue}
                   </span>
                 </td>

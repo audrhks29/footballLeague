@@ -7,11 +7,12 @@ interface Props {
 }
 
 const Banner = memo(({ data }: Props) => {
+  const teamLogo = data.logos[1] ? data.logos[1] : data.logos[0]
   return (
-    <div className='h-48 flex flex-col items-center justify-center shadow-slate-300 shadow-md'>
+    <div className='h-48 flex flex-col items-center justify-center shadow-[#ffffff] shadow-md'>
       {data.logos
         ? <img
-          src={data.logos[0].href}
+          src={teamLogo.href}
           alt={data.displayName}
           title={data.displayName}
           className='w-24 '

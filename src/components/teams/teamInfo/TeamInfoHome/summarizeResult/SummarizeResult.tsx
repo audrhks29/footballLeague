@@ -9,6 +9,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { leagueSelectArray } from '../../../../../assets/ArrayData';
 
 import useTeamDataStore from '../../../../../store/teamData-store';
+
 import ResultList from './ResultList';
 
 const SummarizeResult = memo(() => {
@@ -63,12 +64,7 @@ const SummarizeResult = memo(() => {
   return (
     <div className='w-64 rounded-t-lg'>
 
-      <div
-        className='p-2 rounded-t-lg'
-        style={{
-          background: `linear-gradient(to bottom right, #${teamData && teamData.color}, #${teamData && teamData.alternateColor})`
-        }}
-      >
+      <div className='p-2 rounded-t-lg border'>
         <h2 className='text-[20px] text-center text-white text-bold'>Recent Match Result</h2>
       </div>
 

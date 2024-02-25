@@ -25,7 +25,7 @@ const DivisionSelectBox = memo((props: Props) => {
       </div>
 
       {props.isSelectBox &&
-        <ul className='absolute top-11 border w-56 bg-white max-h-[200px] overflow-y-auto'>
+        <ul className='absolute top-11 border w-56 bg-[#282828] max-h-[200px] overflow-y-auto'>
           {leagueSelectArray.map(item => {
             if (item.value === props.nationValue) {
               return (
@@ -33,7 +33,7 @@ const DivisionSelectBox = memo((props: Props) => {
                   <li
                     key={idx}
                     onClick={() => props.change(league.division, league.name)}
-                    className='w-full text-left hover:bg-slate-300'
+                    className='w-full text-left hover:bg-hoverColor'
                   >
                     <button
                       type="button"
