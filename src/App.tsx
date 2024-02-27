@@ -8,7 +8,6 @@ import Header from './layout/Header';
 import Main from './pages/Main';
 import Standings from './pages/Standings';
 import News from './pages/News';
-import Board from './components/news/Board';
 import Teams from './pages/Teams';
 import TeamInfo from './pages/TeamInfo';
 import Match from './pages/Match';
@@ -27,8 +26,7 @@ const App = memo(() => {
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/standings/:slugId/:yearId" element={<Standings />} />
-            <Route path="/news" element={<News />} />
-            <Route path="/news/:newsId" element={<Board />} />
+            <Route path="/news/:slugId" element={<News />} />
             <Route path="/teams" element={<Teams />} />
             <Route path="/teams/:slugId/:teamId" element={<TeamInfo />} />
             <Route path='/match' element={<Match />} />

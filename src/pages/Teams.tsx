@@ -1,10 +1,9 @@
-import { Suspense, memo, useState } from 'react';
+import { memo, useState } from 'react';
 
 import NationSelectBox from '../components/teams/NationSelectBox';
 import DivisionSelectBox from '../components/teams/DivisionSelectBox';
 
 import TeamList from '../components/teams/teamInfo/TeamList';
-import Loading from '../components/Loading';
 
 const Teams = memo(() => {
 
@@ -61,14 +60,10 @@ const Teams = memo(() => {
         />
 
       </div>
-
-      <Suspense fallback={<Loading />}>
-        <TeamList
-          selectedNationValue={selectedNationValue}
-          selectedDivisionValue={selectedDivisionValue}
-        />
-      </Suspense>
-
+      <TeamList
+        selectedNationValue={selectedNationValue}
+        selectedDivisionValue={selectedDivisionValue}
+      />
     </div >
   );
 });

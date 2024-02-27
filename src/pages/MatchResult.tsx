@@ -22,9 +22,7 @@ const MatchResult = memo(() => {
     queryFn: () => fetchMatchResultData(slugId, gameId)
   });
 
-  const toggleViewCommentary = () => {
-    SetIsCommentary(!isCommentary)
-  }
+  const toggleViewCommentary = () => SetIsCommentary(!isCommentary)
 
   const date = new Date(matchResultData.header.competitions[0].date);
   const options: DateTimeFormatOptions = { year: 'numeric', weekday: 'long', month: 'long', day: 'numeric' };
@@ -60,7 +58,7 @@ const MatchResult = memo(() => {
             </li>
           </Link>
 
-          <li className='w-[100px] text-center flex items-center justify-center text-[24px] font-bold'>
+          <li className='w-[100px] text-center flex items-center justify-center text-[40px] font-bold'>
             {matchResultData.header.competitions[0].competitors[0].score} : {matchResultData.header.competitions[0].competitors[1].score}
           </li>
 

@@ -26,7 +26,7 @@ const AwayTeam = memo(({ data }: Props) => {
             </>}
         </colgroup>
         <thead>
-          <tr className='h-8  border-b border-black'>
+          <tr className='h-8 border-y'>
             <th title='position'>POS</th>
             <th title='jersey'>NO</th>
             <th>Name</th>
@@ -39,7 +39,7 @@ const AwayTeam = memo(({ data }: Props) => {
           {data.roster.map((item, index) => {
             if (item.position.abbreviation === "G")
               return (
-                <tr key={index}>
+                <tr key={index} className='border-b h-7 border-tableBorderColor'>
                   <td>{item.position.abbreviation}</td>
                   <td>{item.jersey}</td>
                   <td>{item.athlete.fullName}</td>
@@ -69,7 +69,7 @@ const AwayTeam = memo(({ data }: Props) => {
             </>}
         </colgroup>
         <thead>
-          <tr className='h-8 border-b border-black'>
+          <tr className='h-8 border-y'>
             <th title='position'>POS</th>
             <th title='jersey'>NO</th>
             <th>Name</th>
@@ -82,7 +82,7 @@ const AwayTeam = memo(({ data }: Props) => {
           {data.roster.map((item, index) => {
             if (item.position.abbreviation !== "G")
               return (
-                <tr key={index} className='border-b h-7'>
+                <tr key={index} className='border-b h-7 border-tableBorderColor'>
                   <td>{item.position.abbreviation}</td>
                   <td>{item.jersey}</td>
                   <td>{item.athlete.fullName}</td>

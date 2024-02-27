@@ -1,14 +1,15 @@
 import axios from 'axios';
 import create from 'zustand';
-import { NewsStore } from './types/newsTypes';
+import { NewsStoreType } from './types/newsTypes';
 
-const useNewsStore = create<NewsStore>(set => ({
+const useNewsStore = create<NewsStoreType>(set => ({
   newsData: [],
-  fetchData: async () => {
+  fetchNewsData: async (slugId) => {
     try {
-      const response = await axios.get(`https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/news`);
+      const response = await axios.get(`https://site.api.espn.com/apis/site/v2/sports/soccer/${slugId}/news`);
       const data = response.data.articles
       set({ newsData: data })
+      return response.data.articles
     } catch (error) {
       console.error('Error fetching data:', error);
     }

@@ -1,5 +1,5 @@
-export type NewsStore = {
+export type NewsStoreType = {
   newsData: NewsItemType[];
-  fetchData: () => void;
+  fetchNewsData: (slugId: string | undefined) => Promise<NewsItemType[]>;
 }
 
