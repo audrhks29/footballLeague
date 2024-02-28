@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   item: PlayerDataType;
@@ -6,6 +7,11 @@ interface Props {
 }
 
 const OutfieldPlayer = memo(({ item, index }: Props) => {
+  const navigate = useNavigate()
+
+  const goToPlayerPage = () => {
+    navigate(`player/${item.id}`)
+  }
 
   if (item.position.name !== "Goalkeeper" && item.statistics) {
     const name = item.displayName;
@@ -30,7 +36,11 @@ const OutfieldPlayer = memo(({ item, index }: Props) => {
     const yellowCard = generalCategory?.stats.find(stat => stat.name === 'yellowCards');
     const redCard = generalCategory?.stats.find(stat => stat.name === 'redCards');
     return (
-      <tr key={index} className='h-7 border-b border-tableBorderColor hover:bg-hoverColor cursor-pointer'>
+      <tr
+        key={index}
+        className='h-7 border-b border-tableBorderColor hover:bg-hoverColor cursor-pointer'
+        onClick={goToPlayerPage}
+      >
         <td className='text-left'>{name}</td>
         <td>{no}</td>
         <td>{age}</td>

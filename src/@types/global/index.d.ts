@@ -153,6 +153,7 @@ interface Competitors {
 }
 // PlayerData ----
 interface PlayerDataType {
+  id: string;
   displayName: string;
   jersey: string;
   age: number;

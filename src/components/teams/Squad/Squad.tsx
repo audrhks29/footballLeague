@@ -14,7 +14,10 @@ const Squad = memo(() => {
   const { fetchRosterData } = useRosterDataStore()
 
   const { data: rosterData }
-    = useSuspenseQuery({ queryKey: ['rosterData', slugId, teamId], queryFn: () => fetchRosterData(slugId, teamId) });
+    = useSuspenseQuery({
+      queryKey: ['rosterData', slugId, teamId],
+      queryFn: () => fetchRosterData(slugId, teamId)
+    });
 
   return (
     <div>
