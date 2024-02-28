@@ -13,6 +13,7 @@ import TeamInfo from './pages/TeamInfo';
 import Match from './pages/Match';
 import MatchResult from './pages/MatchResult';
 import Loading from './components/Loading';
+import NewsBoard from './components/news/NewsBoard';
 
 const queryClient = new QueryClient()
 
@@ -27,6 +28,7 @@ const App = memo(() => {
             <Route path="/" element={<Main />} />
             <Route path="/standings/:slugId/:yearId" element={<Standings />} />
             <Route path="/news/:slugId" element={<News />} />
+            <Route path="/news/:slugId/:newsId" element={<NewsBoard />} />
             <Route path="/teams" element={<Teams />} />
             <Route path="/teams/:slugId/:teamId" element={<TeamInfo />} />
             <Route path='/match' element={<Match />} />

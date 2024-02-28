@@ -30,7 +30,7 @@ const OutfieldPlayer = memo(({ item, index }: Props) => {
     const yellowCard = generalCategory?.stats.find(stat => stat.name === 'yellowCards');
     const redCard = generalCategory?.stats.find(stat => stat.name === 'redCards');
     return (
-      <tr key={index} className='h-7 border-b border-tableBorderColor'>
+      <tr key={index} className='h-7 border-b border-tableBorderColor hover:bg-hoverColor cursor-pointer'>
         <td className='text-left'>{name}</td>
         <td>{no}</td>
         <td>{age}</td>
