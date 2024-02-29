@@ -2,8 +2,9 @@ import { useSuspenseQueries } from '@tanstack/react-query';
 import axios from 'axios';
 import { memo } from 'react';
 import { useParams } from 'react-router-dom';
-import Stats from './Stats';
+import Stats from '../components/teams/Squad/player/CurrentSeasonStats';
 import { FaRegQuestionCircle } from 'react-icons/fa';
+import Transactions from '../components/teams/Squad/player/Transactions';
 
 const Player = memo(() => {
   const { slugId, teamId, playerId } = useParams()
@@ -41,7 +42,7 @@ const Player = memo(() => {
   const height = (playerData.height * 2.54).toFixed(1);
   const weight = (playerData.weight * 0.453592).toFixed(1);
   const name = playerData.displayName.split(" ")
-
+  console.log(playerData);
   return (
     <div className='inner'>
       <div className='h-48 py-3 px-5 flex shadow-[#ffffff] shadow-md overflow-hidden'>
@@ -80,7 +81,10 @@ const Player = memo(() => {
         <Stats
           fetchUrl={playerData.statistics.$ref} />
       </div>
-
+      <Transactions
+        fetchUrl={playerData.transactions.$ref}
+        playerData={playerData}
+      />
     </div >
   );
 });

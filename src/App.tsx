@@ -14,7 +14,7 @@ import Match from './pages/Match';
 import MatchResult from './pages/MatchResult';
 import Loading from './components/Loading';
 import NewsBoard from './components/news/NewsBoard';
-import Player from './components/teams/Squad/player/Player';
+import Player from './pages/Player';
 
 const queryClient = new QueryClient()
 

@@ -1,12 +1,14 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { memo } from 'react';
+
+import { useSuspenseQuery } from '@tanstack/react-query';
+
+import axios from 'axios';
 
 interface Props {
   fetchUrl: string;
 }
 
-const Stats = memo((props: Props) => {
+const CurrentSeasonStats = memo((props: Props) => {
   const fetchStatsData = async () => {
     const url = props.fetchUrl
     try {
@@ -25,7 +27,7 @@ const Stats = memo((props: Props) => {
 
   const playerGeneralStats = playerStatsData.splits.categories.find(item => item.name === "general")
   const playerOffensiveStats = playerStatsData.splits.categories.find(item => item.name === "offensive")
-  console.log(playerGeneralStats);
+
   const thisSeasonStats = [
     { id: 1, name: "APP", value: playerGeneralStats?.stats.find(item => item.name === "appearances")?.value },
     { id: 2, name: "G", value: playerOffensiveStats?.stats.find(item => item.name === "totalGoals")?.value },
@@ -51,4 +53,4 @@ const Stats = memo((props: Props) => {
   );
 });
 
-export default Stats;
+export default CurrentSeasonStats;
