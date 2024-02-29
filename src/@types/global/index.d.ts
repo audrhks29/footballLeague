@@ -316,3 +316,12 @@ interface DateTimeFormatOptions {
   second?: 'numeric' | '2-digit';
   timeZoneName?: 'long' | 'short';
 }
+
+interface playerTransactionsTypes {
+  items: {
+    from: { $ref: string }
+    to: { $ref: string }
+    displayAmount: string;
+    date: string;
+  }[]
+}

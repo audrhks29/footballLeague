@@ -16,7 +16,7 @@ const SummarizeStats = memo(() => {
     <div className='pb-5'>
 
       <ul className='w-full flex justify-around'>
-        <li className='p-2 w-40 flex justify-center items-center h-20 border rounded-2xl'>
+        <li className='p-2 w-40 flex justify-center items-center h-22 border rounded-2xl'>
           {teamData && <img src={leagueLogo?.href} alt="" className='w-16' />}
         </li>
 

@@ -1,28 +1,35 @@
 import { useSuspenseQueries } from '@tanstack/react-query';
+
 import axios from 'axios';
+
 import { memo } from 'react';
+
 import { useParams } from 'react-router-dom';
-import Stats from '../components/teams/Squad/player/CurrentSeasonStats';
+
 import { FaRegQuestionCircle } from 'react-icons/fa';
+
+import CurrentSeasonStats from '../components/teams/Squad/player/CurrentSeasonStats';
 import Transactions from '../components/teams/Squad/player/Transactions';
+import OtherPlayer from '../components/teams/Squad/player/OtherPlayer';
+import ErrorCurrentSeasonStats from './../components/teams/Squad/player/error/ErrorCurrentSeasonStats';
+import ErrorTransactions from '../components/teams/Squad/player/error/ErrorTransactions';
+import NextMatch from '../components/teams/Squad/player/NextMatch';
 
 const Player = memo(() => {
   const { slugId, teamId, playerId } = useParams()
 
   const fetchPlayerData = async () => {
     const url = `http://sports.core.api.espn.com/v2/sports/soccer/leagues/${slugId}/athletes/${playerId}`
-    try {
-      const response = await axios.get(url);
-      return response.data
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
+    const response = await axios.get(url);
+    return response.data
   }
+
   const getTeamLogo = async () => {
     const url = `http://sports.core.api.espn.com/v2/sports/soccer/teams/${teamId}?lang=en&region=us`
     const response = await axios.get(url);
     return response.data
   }
+
   const [{ data: playerData }, { data: playerTeamData }]
     = useSuspenseQueries({
       queries: [
@@ -38,11 +45,12 @@ const Player = memo(() => {
       ]
     });
 
-  const logoImage = playerTeamData.logos[1] ? playerTeamData.logos[1] : playerTeamData.logos[0]
-  const height = (playerData.height * 2.54).toFixed(1);
-  const weight = (playerData.weight * 0.453592).toFixed(1);
+  // console.log(playerData);
+  const logoImage = playerTeamData.logos.length > 0 ? playerTeamData.logos[1] : playerTeamData.logos[0]
+  const height = isNaN(playerData.height) ? "-" : (playerData.height * 2.54).toFixed(1)
+  const weight = isNaN(playerData.weight) ? "-" : (playerData.weight * 0.453592).toFixed(1);
   const name = playerData.displayName.split(" ")
-  console.log(playerData);
+  // console.log(playerData);
   return (
     <div className='inner'>
       <div className='h-48 py-3 px-5 flex shadow-[#ffffff] shadow-md overflow-hidden'>
@@ -77,14 +85,29 @@ const Player = memo(() => {
             <span>{playerData.citizenship}</span>
           </div>
         </div>
-
-        <Stats
-          fetchUrl={playerData.statistics.$ref} />
+        {
+          playerData.statistics
+            ? <CurrentSeasonStats
+              fetchUrl={playerData.statistics.$ref}
+            /> : <ErrorCurrentSeasonStats />
+        }
       </div>
-      <Transactions
-        fetchUrl={playerData.transactions.$ref}
-        playerData={playerData}
-      />
+      <div className='grid grid-cols-[350px_minmax(950px,_5fr)] items-start mt-6'>
+        <OtherPlayer
+          playerData={playerData}
+        />
+
+        {playerData.transactions
+          ? <Transactions
+            fetchUrl={playerData.transactions.$ref}
+            playerData={playerData}
+          /> : <ErrorTransactions />}
+
+        <NextMatch
+          fetchUrl={playerData.events.$ref} />
+      </div>
+
+
     </div >
   );
 });

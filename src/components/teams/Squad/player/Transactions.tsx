@@ -2,7 +2,7 @@ import { useSuspenseQueries, useSuspenseQuery } from '@tanstack/react-query';
 
 import axios from 'axios';
 
-import { memo } from 'react';
+import React, { memo } from 'react';
 import { FaRegQuestionCircle } from 'react-icons/fa';
 
 interface Props {
@@ -13,98 +13,89 @@ interface Props {
 const Transactions = memo((props: Props) => {
   const fetchTransactionsData = async () => {
     const url = props.fetchUrl
-    try {
-      const response = await axios.get(url);
-      return response.data
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
+    const response = await axios.get(url);
+    return response.data
   }
 
-  const { data: playerTransactionsData }: { data: Statistics }
+  const { data: playerTransactionsData }: { data: playerTransactionsTypes }
     = useSuspenseQuery({
       queryKey: ['playerTransactionsData', props.fetchUrl],
       queryFn: () => fetchTransactionsData()
     });
-
-  // console.log(playerTransactionsData.items);
-
+  console.log(playerTransactionsData);
   const fetchFromTeamData = async () => {
-    try {
-      const responses = await Promise.all(playerTransactionsData.items.map(item => axios.get(item.from.$ref)));
-      const responseData = responses.map(response => response.data);
-      return responseData;
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
+    const responses = await Promise.all(playerTransactionsData.items.map(item => axios.get(item.from.$ref)));
+    const responseData = responses.map(response => response.data);
+    return responseData;
   }
+
   const fetchToTeamData = async () => {
-    try {
-      const responses = await Promise.all(playerTransactionsData.items.map(item => axios.get(item.to.$ref)));
-      const responseData = responses.map(response => response.data);
-      return responseData;
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
+    const responses = await Promise.all(playerTransactionsData.items.map(item => axios.get(item.to.$ref)));
+    const responseData = responses.map(response => response.data);
+    return responseData;
   }
+
   const [{ data: fromData }, { data: toData }]
     = useSuspenseQueries({
       queries: [
         {
-          queryKey: ['fromData'],
+          queryKey: ['fromData', props.fetchUrl],
           queryFn: () => fetchFromTeamData()
         },
         {
-          queryKey: ['toData'],
+          queryKey: ['toData', props.fetchUrl],
           queryFn: () => fetchToTeamData()
         },
-
       ]
     });
-  console.log(fromData);
-  console.log(toData);
+  // console.log(fromData);
+  // console.log(toData);
   return (
-    <div className='border'>
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>From</th>
-            <th>To</th>
-          </tr>
-        </thead>
-        <tbody>
-          {playerTransactionsData.items.map((item, index) => {
-            const fromTeamLogo = fromData[index].logos[1] ? fromData[index].logos[1] : fromData[index].logos[0]
-            const toTeamLogo = toData[index].logos[1] ? toData[index].logos[1] : toData[index].logos[0]
-            const fromTeamLink = fromData[index].id
-            const toTeamLink = toData[index].id
+    <div className='border w-[950px] rounded-2xl p-5 mb-6'>
+      <h3 className='border-b border-hoverColor text-[22px]'>Player's Transactions</h3>
+      <div className='grid grid-cols-4 p-2'>
+        <p className='text-center h-8 leading-8 border-b text-[16px]'>Date</p>
+        <p className='text-center h-8 leading-8 border-b text-[16px]'>From</p>
+        <p className='text-center h-8 leading-8 border-b text-[16px]'>To</p>
+        <p className='text-center h-8 leading-8 border-b text-[16px]'>Type</p>
+        {fromData && toData && playerTransactionsData.items.map((item, index) => {
+          const fromTeamLogo = Array.isArray(fromData[index].logos) ? fromData[index].logos[1] : fromData[index].logos;
+          const toTeamLogo = Array.isArray(toData[index].logos) ? toData[index].logos[1] : toData[index].logos;
+          const type = item.displayAmount;
+          const date = item.date.slice(0, 10);
 
-            return (
-              <tr key={index}>
-                <td>{item.date}</td>
-                <td>
-                  {fromTeamLogo ?
-                    <img src={fromTeamLogo.href} alt="" />
-                    : <i className='text-[96px] mr-2 mb-3'>
-                      <FaRegQuestionCircle />
-                    </i>}
-                  {fromData[index].displayName}
-                </td>
+          return (
+            <React.Fragment key={index} >
+              <p className='flex items-center px-2 h-[36px] justify-center'>{date}</p>
+              <p className='flex items-center px-2 h-[36px]'>
+                {fromTeamLogo ?
+                  <img
+                    src={fromTeamLogo.href}
+                    className='w-6 h-6 mr-2' />
+                  : <i className='text-[24px] mr-2'>
+                    <FaRegQuestionCircle />
+                  </i>
+                }
+                <span>{fromData[index].displayName}</span>
+              </p>
 
-                <td>
-                  {toTeamLogo ?
-                    <img src={toTeamLogo.href} alt="" />
-                    : <i className='text-[96px] mr-2 mb-3'>
-                      <FaRegQuestionCircle />
-                    </i>}
-                  {toData[index].displayName}
-                </td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+              <p className='flex items-center px-2 h-[36px]'>
+                {toTeamLogo ?
+                  <img src={toTeamLogo.href}
+                    className='w-6 h-6 mr-2' />
+                  : <i className='text-[24px] mr-2'>
+                    <FaRegQuestionCircle />
+                  </i>}
+                <span>{toData[index].displayName}</span>
+              </p>
+
+              <p className='flex items-center px-2 h-[36px] justify-center'>
+                {type}
+              </p>
+            </React.Fragment>
+          )
+        })}
+      </div>
     </div>
   );
 });

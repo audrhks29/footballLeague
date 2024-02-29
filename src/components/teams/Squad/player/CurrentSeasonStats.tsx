@@ -39,7 +39,7 @@ const CurrentSeasonStats = memo((props: Props) => {
     <div className='w-[400px] border border-white rounded-2xl ml-auto'>
       <p className='text-center text-[20px] py-3 rounded-t-2xl'>Current Season</p>
       <ul className='flex justify-around p-3'>
-        {thisSeasonStats.map(item => (
+        {props.fetchUrl && thisSeasonStats.map(item => (
           <li
             key={item.id}
             className='w-20 border text-center p-1'

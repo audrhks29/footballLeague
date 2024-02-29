@@ -17,7 +17,6 @@ const TeamListItem = memo(({ item, index, selectedNationValue, selectedDivisionV
   return (
     <Link to={`${selectedNationValue}.${selectedDivisionValue}/${item.team.id}`} key={index}>
       <li className={`w-auto items-center flex flex-col p-3 cursor-pointer hover:bg-hoverColor`}>
-
         {teamLogos
           ? <img src={teamLogos.href}
             alt={item.team.displayName}
