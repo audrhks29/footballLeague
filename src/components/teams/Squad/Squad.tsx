@@ -1,8 +1,5 @@
 import { memo } from 'react';
 
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
-
 import useRosterDataStore from '../../../store/rosterData-store';
 import { goalKeeperTh, outfieldPlayerTh } from '../../../assets/ArrayData';
 
@@ -10,14 +7,7 @@ import OutfieldPlayer from './OutfieldPlayer';
 import GoalKeeper from './GoalKeeper';
 
 const Squad = memo(() => {
-  const { teamId, slugId } = useParams<string>();
-  const { fetchRosterData } = useRosterDataStore()
-
-  const { data: rosterData }
-    = useSuspenseQuery({
-      queryKey: ['rosterData', slugId, teamId],
-      queryFn: () => fetchRosterData(slugId, teamId)
-    });
+  const { rosterData } = useRosterDataStore()
 
   return (
     <div>

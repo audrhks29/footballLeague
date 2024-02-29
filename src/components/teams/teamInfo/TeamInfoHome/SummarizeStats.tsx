@@ -3,22 +3,14 @@ import { memo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import useTeamDataStore from '../../../../store/teamData-store';
-import { useSuspenseQuery } from '@tanstack/react-query';
 import useStandingsDataStore from '../../../../store/standings-store';
 
 const SummarizeStats = memo(() => {
-  const { slugId, teamId } = useParams()
-  const { fetchSummarizeStatsData } = useStandingsDataStore()
+  const { slugId } = useParams()
+  const { summarizeStatsData } = useStandingsDataStore()
   const { teamData } = useTeamDataStore()
 
   const statList = ["rank", "gamesPlayed", "wins", "ties", "losses", "points",]
-
-  const { data: summarizeStatsData }
-    = useSuspenseQuery({
-      queryKey: ['summarizeStatsData', slugId, teamId],
-      queryFn: () => fetchSummarizeStatsData(slugId, teamId)
-    });
-
   const leagueLogo = teamData && teamData.defaultLeague.logos[1] ? teamData.defaultLeague.logos[1] : teamData?.defaultLeague.logos[0]
   return (
     <div className='pb-5'>

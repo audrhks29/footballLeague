@@ -5,6 +5,8 @@ import axios from 'axios';
 interface StandingsDataStoreType {
   standingsData: StandingsDataType | null;
   seasonData: SeasonDataType[] | null;
+  summarizeStatsData: Entries | null;
+
   fetchStandingsData: (slugId: string | undefined, yearId: string | undefined)
     => Promise<StandingsDataType>
   fetchSummarizeStatsData: (slugId: string | undefined, teamId: string | undefined)
@@ -14,6 +16,8 @@ interface StandingsDataStoreType {
 const useStandingsDataStore = create<StandingsDataStoreType>(set => ({
   standingsData: null,
   seasonData: null,
+  summarizeStatsData: null,
+
   fetchStandingsData: async (slugId, yearId) => {
     try {
       const response = await axios.get(`https://site.web.api.espn.com/apis/v2/sports/soccer/${slugId}/standings?season=${yearId}`);
@@ -37,6 +41,7 @@ const useStandingsDataStore = create<StandingsDataStoreType>(set => ({
       if (response) {
         const data: StandingsDataType = response.data.children[0].standings
         const filteredData = data.entries.find(item => item.team.id == teamId)
+        set({ summarizeStatsData: filteredData })
         return filteredData
       }
     } catch (error) {

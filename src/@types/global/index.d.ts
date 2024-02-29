@@ -170,14 +170,16 @@ interface PlayerDataType {
     leaf: boolean
     name: string
   }
-  statistics: {
-    splits: {
-      abbreviation: string;
-      categories: Category[];
-      id: string;
-      name: string;
-      type: string;
-    }
+  statistics: Statistics
+}
+
+interface Statistics {
+  splits: {
+    abbreviation: string;
+    categories: Category[];
+    id: string;
+    name: string;
+    type: string;
   }
 }
 
