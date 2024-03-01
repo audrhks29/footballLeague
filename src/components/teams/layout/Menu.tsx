@@ -8,8 +8,7 @@ const Menu = memo(({ setSelectedMenu }: Props) => {
   const MenuArray = [
     { id: 1, text: "Home", value: 1 },
     { id: 2, text: "Squad", value: 2 },
-    { id: 3, text: "Fixtures", value: 3 },
-    { id: 4, text: "Result", value: 4 }
+    { id: 3, text: "Result", value: 3 }
   ]
 
   const handleSelectedMenu = (value: number) => {

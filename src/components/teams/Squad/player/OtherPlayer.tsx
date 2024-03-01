@@ -14,8 +14,9 @@ interface Props {
 
 const OtherPlayer = memo((props: Props) => {
   const { fetchRosterData } = useRosterDataStore()
+
   const { slugId, teamId } = useParams()
-  console.log(props.playerData);
+
   const { data: otherPlayerData }
     = useSuspenseQuery({
       queryKey: ['otherPlayerData', props.playerData],
@@ -24,7 +25,7 @@ const OtherPlayer = memo((props: Props) => {
     })
 
   return (
-    <div className='w-[300px] border rounded-3xl p-5 row-span-3'>
+    <div className='w-[300px] border rounded-3xl p-5 row-span-4'>
       <h3 className='border-b border-hoverColor text-[22px] text-center'>Same Position Player</h3>
       <ul className='p-2'>
         {otherPlayerData.map(item => (

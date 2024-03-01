@@ -325,3 +325,20 @@ interface playerTransactionsTypes {
     date: string;
   }[]
 }
+
+interface fetchedDataTypes {
+  season: {
+    $ref: string;
+  }
+  splits: {
+    categories: {
+      name: string;
+      displayName: string;
+      stats: {
+        name: string;
+        displayName: string;
+        value: string
+      }[]
+    }[]
+  }
+}

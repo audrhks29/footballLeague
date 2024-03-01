@@ -22,7 +22,7 @@ const Transactions = memo((props: Props) => {
       queryKey: ['playerTransactionsData', props.fetchUrl],
       queryFn: () => fetchTransactionsData()
     });
-  console.log(playerTransactionsData);
+
   const fetchFromTeamData = async () => {
     const responses = await Promise.all(playerTransactionsData.items.map(item => axios.get(item.from.$ref)));
     const responseData = responses.map(response => response.data);
@@ -48,10 +48,9 @@ const Transactions = memo((props: Props) => {
         },
       ]
     });
-  // console.log(fromData);
-  // console.log(toData);
+
   return (
-    <div className='border w-[950px] rounded-2xl p-5 mb-6'>
+    <div className='border w-[950px] rounded-2xl p-5 mb-6 col-start-2'>
       <h3 className='border-b border-hoverColor text-[22px]'>Player's Transactions</h3>
       <div className='grid grid-cols-4 p-2'>
         <p className='text-center h-8 leading-8 border-b text-[16px]'>Date</p>

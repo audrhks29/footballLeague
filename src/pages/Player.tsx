@@ -14,6 +14,7 @@ import OtherPlayer from '../components/teams/Squad/player/OtherPlayer';
 import ErrorCurrentSeasonStats from './../components/teams/Squad/player/error/ErrorCurrentSeasonStats';
 import ErrorTransactions from '../components/teams/Squad/player/error/ErrorTransactions';
 import NextMatch from '../components/teams/Squad/player/NextMatch';
+import AllSeasonStats from '../components/teams/Squad/player/AllSeasonStats';
 
 const Player = memo(() => {
   const { slugId, teamId, playerId } = useParams()
@@ -41,16 +42,14 @@ const Player = memo(() => {
           queryKey: ['playerTeamData', slugId, teamId],
           queryFn: () => getTeamLogo()
         },
-
       ]
     });
 
-  // console.log(playerData);
   const logoImage = playerTeamData.logos.length > 0 ? playerTeamData.logos[1] : playerTeamData.logos[0]
   const height = isNaN(playerData.height) ? "-" : (playerData.height * 2.54).toFixed(1)
   const weight = isNaN(playerData.weight) ? "-" : (playerData.weight * 0.453592).toFixed(1);
   const name = playerData.displayName.split(" ")
-  // console.log(playerData);
+
   return (
     <div className='inner'>
       <div className='h-48 py-3 px-5 flex shadow-[#ffffff] shadow-md overflow-hidden'>
@@ -92,7 +91,8 @@ const Player = memo(() => {
             /> : <ErrorCurrentSeasonStats />
         }
       </div>
-      <div className='grid grid-cols-[350px_minmax(950px,_5fr)] items-start mt-6'>
+
+      <div className='grid grid-cols-[350px_minmax(950px, 2fr)] grid-rows-[280px_minmax(300px, 3fr)] items-start mt-6'>
         <OtherPlayer
           playerData={playerData}
         />
@@ -105,8 +105,13 @@ const Player = memo(() => {
 
         <NextMatch
           fetchUrl={playerData.events.$ref} />
-      </div>
 
+        {playerData.transactions && <AllSeasonStats
+          fetchUrl={playerData.seasons.$ref}
+          position={playerData.position.id}
+        />}
+
+      </div>
 
     </div >
   );

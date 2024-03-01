@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import { FaRegQuestionCircle } from 'react-icons/fa';
 
+import { FaRegQuestionCircle } from 'react-icons/fa';
 
 interface Props {
   data: TeamInfoType;

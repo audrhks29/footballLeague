@@ -1,4 +1,5 @@
 import { memo } from 'react';
+
 import { Link, useLocation } from 'react-router-dom';
 
 const Header = memo(() => {
@@ -11,7 +12,7 @@ const Header = memo(() => {
   ]
 
   return (
-    <div className='inner'>
+    <header className='inner'>
       <ul className='flex text-center items-center mb-9 h-24 leading-[96px]'>
         <Link to={"/"}>
           <li>
@@ -37,7 +38,7 @@ const Header = memo(() => {
           )
         })}
       </ul>
-    </div >
+    </header >
   );
 });
 

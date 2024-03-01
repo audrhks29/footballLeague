@@ -69,7 +69,7 @@ const NextMatch = memo((props: Props) => {
   const outputDateString = date.toLocaleDateString('en-US', options)
 
   return (
-    <div className='border w-[950px] rounded-2xl p-5 '>
+    <div className='border rounded-2xl p-5 w-[950px] mb-6'>
       <h3 className='border-b border-hoverColor text-[22px]'>Next Match</h3>
 
       <div className='p-2 text-[16px]'>

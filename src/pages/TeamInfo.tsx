@@ -6,7 +6,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Banner from '../components/teams/layout/Banner';
 import Menu from '../components/teams/layout/Menu';
 import Squad from '../components/teams/Squad/Squad';
-import Fixtures from '../components/teams/teamInfo/Fixtures';
 import Result from '../components/teams/teamInfo/result/Result';
 import TeamInfoHome from '../components/teams/teamInfo/TeamInfoHome/TeamInfoHome';
 
@@ -54,8 +53,7 @@ const TeamInfo = memo(() => {
       <Menu setSelectedMenu={setSelectedMenu} />
       {selectedMenu === 1 && <TeamInfoHome />}
       {selectedMenu === 2 && <Squad />}
-      {selectedMenu === 3 && <Fixtures />}
-      {selectedMenu === 4 && <Result />}
+      {selectedMenu === 3 && <Result />}
     </div>
   );
 });

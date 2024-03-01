@@ -10,7 +10,6 @@ import Standings from './pages/Standings';
 import News from './pages/News';
 import Teams from './pages/Teams';
 import TeamInfo from './pages/TeamInfo';
-import Match from './pages/Match';
 import MatchResult from './pages/MatchResult';
 import Loading from './components/Loading';
 import NewsBoard from './components/news/NewsBoard';
@@ -33,7 +32,6 @@ const App = memo(() => {
             <Route path="/teams" element={<Teams />} />
             <Route path="/teams/:slugId/:teamId" element={<TeamInfo />} />
             <Route path="/teams/:slugId/:teamId/player/:playerId" element={<Player />} />
-            <Route path='/match' element={<Match />} />
             <Route path='/match/:slugId/:gameId' element={<MatchResult />} />
           </Routes>
         </Suspense>

@@ -29,7 +29,7 @@ const MatchResult = memo(() => {
   const outputDateString = date.toLocaleDateString('en-US', options)
 
   return (
-    <div className='w-[1300px] m-auto'>
+    <div className='inner'>
 
       {matchResultData && <div><h2 className='text-[26px] font-bold text-center py-4'>{matchResultData.header.season.name}</h2></div>}
 
@@ -44,7 +44,7 @@ const MatchResult = memo(() => {
       }
 
       {matchResultData &&
-        <ul className='flex py-5 border-y mb-5 h-48 shadow-slate-300 shadow-md'>
+        <ul className='flex py-5 border-y mb-5 h-48'>
 
           <Link to={`/teams/${matchResultData.header.league.slug}/${matchResultData.boxscore.teams[0].team.id}`} className='flex'>
             <li className='w-[600px] flex justify-center items-center'>
