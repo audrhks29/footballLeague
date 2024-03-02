@@ -7,13 +7,13 @@ const Header = memo(() => {
 
   const headerArray = [
     { id: 1, text: "standings", link: "standings/eng.1/2023" },
-    { id: 2, text: "news", link: "news/eng.1" },
+    { id: 2, text: "news", link: "news/eng.1/page=1" },
     { id: 3, text: "teams", link: "teams" },
   ]
 
   return (
     <header className='inner'>
-      <ul className='flex text-center items-center mb-9 h-24 leading-[96px]'>
+      <ul className='flex text-center items-center mb-9 h-24 leading-[96px] absolute top-0 z-20'>
         <Link to={"/"}>
           <li>
             <img

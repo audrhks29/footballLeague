@@ -8,7 +8,7 @@ const NextEvent = memo(() => {
   const { teamData } = useTeamDataStore();
 
   return (
-    <div className='w-64 rounded-t-lg mb-5 bg-[#282828]'>
+    <div className='w-full rounded-t-lg bg-[#282828]'>
 
       <div className='p-2 rounded-t-lg border'>
         <h2 className='text-[20px] text-center text-white text-bold'>Next Match</h2>

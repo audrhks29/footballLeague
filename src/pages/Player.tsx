@@ -15,6 +15,7 @@ import ErrorCurrentSeasonStats from './../components/teams/Squad/player/error/Er
 import ErrorTransactions from '../components/teams/Squad/player/error/ErrorTransactions';
 import NextMatch from '../components/teams/Squad/player/NextMatch';
 import AllSeasonStats from '../components/teams/Squad/player/AllSeasonStats';
+import ErrorAllSeasonStats from '../components/teams/Squad/player/error/ErrorAllSeasonStats';
 
 const Player = memo(() => {
   const { slugId, teamId, playerId } = useParams()
@@ -106,10 +107,10 @@ const Player = memo(() => {
         <NextMatch
           fetchUrl={playerData.events.$ref} />
 
-        {playerData.transactions && <AllSeasonStats
+        {playerData.transactions ? <AllSeasonStats
           fetchUrl={playerData.seasons.$ref}
           position={playerData.position.id}
-        />}
+        /> : <ErrorAllSeasonStats />}
 
       </div>
 

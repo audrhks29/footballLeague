@@ -25,7 +25,7 @@ const ResultList = memo(({ item, index, matchDivision }: Props) => {
 
     <li
       key={index}
-      className='border cursor-pointer hover:bg-hoverColor'
+      className='border cursor-pointer hover:bg-hoverColor w-1/5'
       onClick={() => goToMatchIdPage(item.id)}
     >
 

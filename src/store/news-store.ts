@@ -6,7 +6,7 @@ const useNewsStore = create<NewsStoreType>(set => ({
   newsData: [],
   fetchNewsData: async (slugId) => {
     try {
-      const response = await axios.get(`https://site.api.espn.com/apis/site/v2/sports/soccer/${slugId}/news`);
+      const response = await axios.get(`https://site.api.espn.com/apis/site/v2/sports/soccer/${slugId}/news?limit=100`);
       const data = response.data.articles
       set({ newsData: data })
       return response.data.articles

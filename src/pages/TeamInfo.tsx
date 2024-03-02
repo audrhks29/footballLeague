@@ -50,7 +50,7 @@ const TeamInfo = memo(() => {
   return (
     <div className='inner'>
       <Banner data={teamData} />
-      <Menu setSelectedMenu={setSelectedMenu} />
+      <Menu selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />
       {selectedMenu === 1 && <TeamInfoHome />}
       {selectedMenu === 2 && <Squad />}
       {selectedMenu === 3 && <Result />}

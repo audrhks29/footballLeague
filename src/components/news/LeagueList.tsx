@@ -8,7 +8,7 @@ const LeagueList = memo(() => {
   const { slugId } = useParams();
 
   return (
-    <div className='w-[200px]'>
+    <div className='w-[200px] row-span-2'>
       {leagueSelectArray.map(country => (
         <div key={country.id}>
           <h3 className='text-[20px] h-11 leading-[44px] border-b border-tableBorderColor'>{country.nation}</h3>
@@ -21,7 +21,7 @@ const LeagueList = memo(() => {
                 style={{ background: country.value + "." + league.division === slugId ? "#575757" : "" }}
               >
                 <Link
-                  to={`/news/${country.value}.${league.division}`}
+                  to={`/news/${country.value}.${league.division}/page=1`}
                   className='w-full block'>
                   {league.name}
                 </Link>

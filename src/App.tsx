@@ -14,6 +14,7 @@ import MatchResult from './pages/MatchResult';
 import Loading from './components/Loading';
 import NewsBoard from './components/news/NewsBoard';
 import Player from './pages/Player';
+import NotFoundPath from './pages/NotFoundPath';
 
 const queryClient = new QueryClient()
 
@@ -25,9 +26,10 @@ const App = memo(() => {
         <Header />
         <Suspense fallback={<Loading />}>
           <Routes>
+            <Route path="/*" element={<NotFoundPath />} />
             <Route path="/" element={<Main />} />
             <Route path="/standings/:slugId/:yearId" element={<Standings />} />
-            <Route path="/news/:slugId" element={<News />} />
+            <Route path="/news/:slugId/:pageIndex" element={<News />} />
             <Route path="/news/:slugId/:newsId" element={<NewsBoard />} />
             <Route path="/teams" element={<Teams />} />
             <Route path="/teams/:slugId/:teamId" element={<TeamInfo />} />

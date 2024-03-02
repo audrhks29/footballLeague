@@ -62,13 +62,13 @@ const SummarizeResult = memo(() => {
   const displayedMatches = recentMatchResult && isCompletedMatch ? isCompletedMatch.slice(0, 5) : [];
 
   return (
-    <div className='w-64 rounded-t-lg'>
+    <div className='rounded-t-lg w-full pb-[41px]'>
 
       <div className='p-2 rounded-t-lg border'>
-        <h2 className='text-[20px] text-center text-white text-bold'>Recent Match Result</h2>
+        <h2 className='text-[20px] text-center text-bold'>Recent Match Result</h2>
       </div>
 
-      {displayedMatches && <ul>
+      {displayedMatches && <ul className='flex w-full'>
         {displayedMatches.map((item, index) => {
           return (
             <ResultList
