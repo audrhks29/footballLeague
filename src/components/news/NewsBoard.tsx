@@ -1,7 +1,11 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
+
 import axios from 'axios';
+
 import { memo } from 'react';
+
 import { useParams } from 'react-router-dom';
+
 import LeagueList from './LeagueList';
 
 const NewsBoard = memo(() => {
@@ -22,17 +26,23 @@ const NewsBoard = memo(() => {
     queryFn: () => fetchDataUseLink()
   });
 
+  const date = new Date(boardData.published);
+  const options: DateTimeFormatOptions = { year: 'numeric', weekday: 'long', month: 'long', day: 'numeric' };
+  const outputDateString = date.toLocaleDateString('en-US', options)
+
   return (
     <div className='inner flex relative'>
       <LeagueList />
       <div className='bg-hoverColor w-[900px] ml-auto'>
+
         {boardData &&
           <div className='p-6'>
-
             <div className='border-b border-tableBorderColor'>
               <p className='text-[30px] pb-3'>{boardData.headline}</p>
-              <p>{boardData.byline}</p>
-              <p>{boardData.published}</p>
+              <div className='flex justify-between'>
+                <p>{boardData.byline}</p>
+                <p>{outputDateString}</p>
+              </div>
             </div>
 
             {boardData.images.length > 0 &&
@@ -41,8 +51,8 @@ const NewsBoard = memo(() => {
                   src={boardData.images[0].url}
                   className='w-[800px] m-auto my-4'
                 />
-              </div>
-            }
+              </div>}
+
             <div
               className="text-[16px]"
               dangerouslySetInnerHTML={{ __html: boardData.story }}

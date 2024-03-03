@@ -7,6 +7,7 @@ import useNewsStore from '../store/news-store';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 import LeagueList from '../components/news/LeagueList';
+
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight, MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from 'react-icons/md';
 
 const News = memo(() => {
@@ -24,7 +25,8 @@ const News = memo(() => {
     const url = newsData[index].links.api.news.href
     const pattern = /news\/(.+)/;
     const result = url.match(pattern);
-    if (result) navigate(`/news/${slugId}/${result[1]}`)
+
+    if (result) navigate(`/news/${slugId}/${pageIndex}/${result[1]}`)
     else alert("Could not find Board")
   }
 
@@ -40,30 +42,37 @@ const News = memo(() => {
       top: 0,
     });
   }
-
+  console.log(slicedNewsData);
   return (
     <div className='inner relative'>
       <div className='grid grid-cols-[250px_minmax(950px, 2fr)] grid-rows-[280px_minmax(300px, 5fr)]'>
         <LeagueList />
         <ul className='w-[900px] ml-auto col-start-2'>
           {
-            slicedNewsData.map((item: NewsItemType, index: number) => (
-              <li
-                className='m-auto bg-hoverColor mb-5 cursor-pointer'
-                key={index}
-                onClick={() => clickNews(index)}
-              >
-                {item.images.length > 0 && <img
-                  src={item.images[0].url}
-                  alt={item.images[0].art}
-                  title={item.images[0].caption}
-                  className='w-[900px] m-auto' />}
-                <div className='w-[900px] m-auto px-3'>
-                  <h3 className='text-[20px] py-2'>{item.headline}</h3>
-                  <h4 className='pb-2'>{item.description}</h4>
-                </div>
-              </li>
-            ))
+            slicedNewsData.map((item: NewsItemType, index: number) => {
+              const date = new Date(item.published);
+              const options: DateTimeFormatOptions = { year: 'numeric', weekday: 'long', month: 'long', day: 'numeric' };
+              const outputDateString = date.toLocaleDateString('en-US', options)
+
+              return (
+                <li
+                  className='m-auto bg-hoverColor mb-5 cursor-pointer'
+                  key={index}
+                  onClick={() => clickNews(index)}
+                >
+                  {item.images.length > 0 && <img
+                    src={item.images[0].url}
+                    alt={item.images[0].art}
+                    title={item.images[0].caption}
+                    className='w-[900px] m-auto' />}
+                  <div className='w-[900px] m-auto p-3'>
+                    <h3 className='text-[20px] pb-2'>{item.headline}</h3>
+                    <h4 className='pb-2'>{item.description}</h4>
+                    <p className='text-right'>{outputDateString}</p>
+                  </div>
+                </li>
+              )
+            })
           }
         </ul>
 

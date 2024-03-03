@@ -30,7 +30,7 @@ const App = memo(() => {
             <Route path="/" element={<Main />} />
             <Route path="/standings/:slugId/:yearId" element={<Standings />} />
             <Route path="/news/:slugId/:pageIndex" element={<News />} />
-            <Route path="/news/:slugId/:newsId" element={<NewsBoard />} />
+            <Route path="/news/:slugId/:pageIndex/:newsId" element={<NewsBoard />} />
             <Route path="/teams" element={<Teams />} />
             <Route path="/teams/:slugId/:teamId" element={<TeamInfo />} />
             <Route path="/teams/:slugId/:teamId/player/:playerId" element={<Player />} />

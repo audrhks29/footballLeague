@@ -32,7 +32,7 @@ const AllSeasonStats = memo((props: Props) => {
         const url = obj.$ref.replace('?lang=en&region=us', `/types/1/athletes/${playerId}/statistics?lang=en&region=us`);
         return axios.get(url);
       });
-      const resolvedResponses = await Promise.allSettled(promises);
+      const resolvedResponses = await Promise.allSettled<PromiseSettledResult<unknown>>(promises);
       return resolvedResponses
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -121,7 +121,8 @@ const AllSeasonStats = memo((props: Props) => {
             const foulsCommitted = generalData?.stats.find(stat => stat.name === 'foulsCommitted');
             const yellowCard = generalData?.stats.find(stat => stat.name === 'yellowCards');
             const redCard = generalData?.stats.find(stat => stat.name === 'redCards');
-            const seasonName = seasonNameData[index].displayName
+            const seasonName = seasonNameData && seasonNameData[index].displayName
+
             if (props.position === "1") {
               const goalKeepingData = item.splits.categories.find(category => category.name == "goalKeeping")
               const goalsConceded = goalKeepingData?.stats.find(stat => stat.name === 'goalsConceded');
