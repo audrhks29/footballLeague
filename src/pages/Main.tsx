@@ -12,12 +12,10 @@ const MainText = [
 const Main = memo(() => {
   const navigate = useNavigate()
 
-  const goToPage = (link: string) => {
-    navigate(link)
-  }
+  const goToPage = (link: string) => navigate(link)
 
   return (
-    <div className="bg-[url('images/background/bg.jpg')] h-screen bg-no-repeat bg-cover">
+    <div className="bg-[url('../images/background/bg.jpg')] h-screen bg-no-repeat bg-cover">
 
       <div className='inner'>
         <h2 className='text-[60px] text-center'>Check out the simple soccer data!</h2>
