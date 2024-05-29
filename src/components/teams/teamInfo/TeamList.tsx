@@ -1,43 +1,58 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { memo } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-import axios from 'axios';
+import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { memo } from 'react';
+import { fetchTeamData } from "@/server/fetchData";
+import { FaRegQuestionCircle } from "react-icons/fa";
 
-import TeamListItem from './TeamListItem';
+import { Card, CardDescription } from "@/components/ui/card";
 
-interface Props {
-  selectedNationValue: string;
-  selectedDivisionValue: string;
-}
+const TeamList = memo(() => {
+  const { slugId } = useParams();
+  const navigate = useNavigate();
+  const { data: teamsData } = useSuspenseQuery({
+    queryKey: ["teamsData", slugId],
+    queryFn: () => fetchTeamData(slugId ? slugId : "eng.1"),
+  });
 
-const TeamList = memo(({ selectedNationValue, selectedDivisionValue }: Props) => {
-
-  const fetchTeamData = async (selectedNationValue: string, selectedDivisionValue: string) => {
-    const response = await axios.get(`https://site.api.espn.com/apis/site/v2/sports/soccer/${selectedNationValue}.${selectedDivisionValue}/teams`);
-    return response.data.sports[0].leagues[0]
-  }
-
-  const { data: teamsData }
-    = useSuspenseQuery({ queryKey: ['teamsData', selectedNationValue, selectedDivisionValue], queryFn: () => fetchTeamData(selectedNationValue, selectedDivisionValue) });
+  const handleClickTeam = (item: Teams) => {
+    navigate(`/teams/${slugId}/${item.team.id}`);
+  };
 
   return (
     <>
-      <h2 className='text-[30px] p-5'>{teamsData && teamsData.name}</h2>
-      <ul className='grid grid-cols-5'>
+      <h2 className="text-[30px] p-5">{teamsData && teamsData.name}</h2>
+
+      <div className="grid grid-cols-5 gap-2">
         {teamsData.teams.map((item: Teams, index: number) => {
-          // const isHovered = index === hoveredIndex;
+          const teamLogos = item.team.logos[0];
+
           return (
-            <TeamListItem
-              item={item}
+            <Card
               key={index}
-              index={index}
-              selectedNationValue={selectedNationValue}
-              selectedDivisionValue={selectedDivisionValue}
-            />
-          )
+              className="w-auto items-center flex flex-col p-3 cursor-pointer hover:bg-muted"
+              onClick={() => handleClickTeam(item)}
+            >
+              {teamLogos ? (
+                <img
+                  src={teamLogos.href}
+                  alt={item.team.displayName}
+                  title={item.team.displayName}
+                  className="w-24 mb-3"
+                />
+              ) : (
+                <i className="text-[96px] mr-2 mb-3">
+                  <FaRegQuestionCircle />
+                </i>
+              )}
+              <CardDescription className="text-base font-semibold text-primary">
+                {item.team.name}
+              </CardDescription>
+            </Card>
+          );
         })}
-      </ul>
+      </div>
     </>
   );
 });

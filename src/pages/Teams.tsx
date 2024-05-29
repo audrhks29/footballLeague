@@ -1,70 +1,76 @@
-import { memo, useState } from 'react';
+import { memo } from "react";
 
-import NationSelectBox from '../components/teams/NationSelectBox';
-import DivisionSelectBox from '../components/teams/DivisionSelectBox';
-
-import TeamList from '../components/teams/teamInfo/TeamList';
+import TeamList from "../components/teams/teamInfo/TeamList";
+import { leagueSelectArray } from "@/assets/ArrayData";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Teams = memo(() => {
+  const navigate = useNavigate();
+  const { slugId } = useParams();
 
-  const [selectedNationName, setSelectedNationName] = useState("England")
-  const [selectedNationValue, setSelectedNationValue] = useState("eng");
+  const paramsNation = slugId?.slice(0, 3);
+  const paramsDivision = slugId?.slice(4, 5);
 
-  const [selectedDivisionValue, setSelectedDivisionValue] = useState("1");
-  const [selectedDivisionName, setSelectedDivisionName] = useState("Premier League");
+  const nation = leagueSelectArray.find((item) => item.value == paramsNation);
+  const division = nation?.league.find(
+    (item) => item.division === paramsDivision
+  );
 
-  const [isNationSelectBox, setIsNationSelectBox] = useState(false);
-  const [isDivisionSelectBox, setIsDivisionSelectBox] = useState(false);
+  const changeNation = (nation: string) => {
+    navigate(`/teams/${nation}.1`);
+  };
 
-  const changeNation = (value: string, name: string, firstDivision: string) => {
-    setSelectedNationValue(value);
-    setSelectedNationName(name);
-    setSelectedDivisionValue("1");
-    setSelectedDivisionName(firstDivision);
-    setIsNationSelectBox(false);
-  }
-
-  const changeDivision = (division: string, name: string) => {
-    setSelectedDivisionValue(division);
-    setSelectedDivisionName(name);
-    setIsDivisionSelectBox(false);
-  }
-
-  const handleNationSelectBox = () => {
-    setIsNationSelectBox(!isNationSelectBox);
-    setIsDivisionSelectBox(false);
-  }
-
-  const handleDivisionSelectBox = () => {
-    setIsDivisionSelectBox(!isDivisionSelectBox);
-    setIsNationSelectBox(false);
-  }
+  const changeDivision = (division: string) => {
+    navigate(`/teams/${paramsNation}.${division}`);
+  };
 
   return (
-    <div className='inner'>
-      <div className='flex'>
+    <div className="inner">
+      <div className="flex gap-2">
+        {/* 국가 선택 */}
+        <Select value={nation?.value} onValueChange={changeNation}>
+          <SelectTrigger className="w-[220px]">
+            <SelectValue />
+          </SelectTrigger>
 
-        <NationSelectBox
-          selectedName={selectedNationName}
-          change={changeNation}
-          isSelectBox={isNationSelectBox}
-          handleSelectBox={handleNationSelectBox}
-        />
+          <SelectContent>
+            {leagueSelectArray.map((item, idx) => (
+              <SelectItem key={idx} value={item.value}>
+                {item.nation}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
-        <DivisionSelectBox
-          selectedName={selectedDivisionName}
-          change={changeDivision}
-          isSelectBox={isDivisionSelectBox}
-          nationValue={selectedNationValue}
-          handleSelectBox={handleDivisionSelectBox}
-        />
+        {/* 리그 선택 */}
+        <Select value={division?.division} onValueChange={changeDivision}>
+          <SelectTrigger className="w-[220px]">
+            <SelectValue />
+          </SelectTrigger>
 
+          <SelectContent>
+            {leagueSelectArray.map((item) => {
+              if (item.value === paramsNation) {
+                return item.league.map((league, idx) => (
+                  <SelectItem key={idx} value={league.division}>
+                    {league.name}
+                  </SelectItem>
+                ));
+              }
+            })}
+          </SelectContent>
+        </Select>
       </div>
-      <TeamList
-        selectedNationValue={selectedNationValue}
-        selectedDivisionValue={selectedDivisionValue}
-      />
-    </div >
+
+      <TeamList />
+    </div>
   );
 });
 
