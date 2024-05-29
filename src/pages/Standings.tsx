@@ -49,7 +49,7 @@ const Standings = memo(() => {
 
   return (
     <div className="inner">
-      <div className="w-[680px] flex justify-between">
+      <div className="flex gap-1">
         <NationSelectBox paramsNation={paramsNation} />
         <DivisionSelectBox
           paramsNation={paramsNation}
