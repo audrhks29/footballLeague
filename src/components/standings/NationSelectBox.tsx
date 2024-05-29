@@ -1,50 +1,47 @@
-import { memo } from 'react';
+import { memo } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { leagueSelectArray } from '../../assets/ArrayData';
+import { leagueSelectArray } from "../../assets/ArrayData";
 
-import { AiOutlineCaretDown, AiOutlineCaretUp } from 'react-icons/ai';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 interface Props {
-  handleSelectBox: () => void;
-  change: (nation: string) => void;
   paramsNation: string | undefined;
-  isSelectBox: boolean;
 }
 
 const NationSelectBox = memo((props: Props) => {
+  const navigate = useNavigate();
 
-  const nation = leagueSelectArray.find(item => item.value == props.paramsNation)
+  const nation = leagueSelectArray.find(
+    (item) => item.value == props.paramsNation
+  );
+
+  const changeNation = (nation: string) => {
+    navigate(`/standings/${nation}.1/2023`);
+  };
 
   return (
-    <div className='relative w-56 h-10 border mr-3'>
+    <Select onValueChange={changeNation} value={nation?.value}>
+      <SelectTrigger className="w-[220px]">
+        <SelectValue />
+      </SelectTrigger>
 
-      <div
-        onClick={props.handleSelectBox}
-        className='w-full h-full flex items-center p-3 justify-between cursor-pointer'
-      >
-        <span>{nation?.nation}</span>
-        <span>{props.isSelectBox ? <AiOutlineCaretUp /> : <AiOutlineCaretDown />}</span>
-      </div>
-
-      {props.isSelectBox &&
-        <ul className='absolute top-11 border w-56 bg-[#282828] max-h-[200px] overflow-y-auto'>
-          {leagueSelectArray.map((item, index) => {
-            return (
-              <li
-                key={index}
-                onClick={() => props.change(item.value)}
-                className='w-full text-left hover:bg-hoverColor'
-              >
-                <button type="button"
-                  className='w-full text-left h-10 px-3'
-                >
-                  {item.nation}
-                </button>
-              </li>
-            )
-          })}
-        </ul>}
-    </div>
+      <SelectContent>
+        {leagueSelectArray.map((item, idx) => {
+          return (
+            <SelectItem key={idx} value={item.value}>
+              {item.nation}
+            </SelectItem>
+          );
+        })}
+      </SelectContent>
+    </Select>
   );
 });
 
