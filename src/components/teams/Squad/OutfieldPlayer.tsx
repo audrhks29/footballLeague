@@ -1,17 +1,18 @@
-import { memo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { TableCell, TableRow } from "@/components/ui/table";
+import { memo } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   item: PlayerDataType;
   index: number;
 }
 
-const OutfieldPlayer = memo(({ item, index }: Props) => {
-  const navigate = useNavigate()
+const OutFieldPlayer = memo(({ item, index }: Props) => {
+  const navigate = useNavigate();
 
   const goToPlayerPage = () => {
-    navigate(`player/${item.id}`)
-  }
+    navigate(`player/${item.id}`);
+  };
 
   if (item.position.name !== "Goalkeeper" && item.statistics) {
     const name = item.displayName;
@@ -22,44 +23,69 @@ const OutfieldPlayer = memo(({ item, index }: Props) => {
     const country = item.flag ? item.flag.alt : "-";
     const countryImage = item.flag ? item.flag.href : "-";
 
-    const generalCategory = item.statistics.splits.categories.find(category => category.name === 'general')
-    const offensiveCategory = item.statistics.splits.categories.find(category => category.name === 'offensive')
+    const generalCategory = item.statistics.splits.categories.find(
+      (category) => category.name === "general"
+    );
+    const offensiveCategory = item.statistics.splits.categories.find(
+      (category) => category.name === "offensive"
+    );
 
-    const app = generalCategory?.stats.find(stat => stat.name === 'appearances');
-    const subIn = generalCategory?.stats.find(stat => stat.name === 'subIns');
-    const totalGoals = offensiveCategory?.stats.find(stat => stat.name === 'totalGoals');
-    const goalAssists = offensiveCategory?.stats.find(stat => stat.name === 'goalAssists');
-    const totalShots = offensiveCategory?.stats.find(stat => stat.name === 'totalShots');
-    const shotsOnTarget = offensiveCategory?.stats.find(stat => stat.name === 'shotsOnTarget');
-    const foulsCommitted = generalCategory?.stats.find(stat => stat.name === 'foulsCommitted');
-    const foulsSuffered = generalCategory?.stats.find(stat => stat.name === 'foulsSuffered');
-    const yellowCard = generalCategory?.stats.find(stat => stat.name === 'yellowCards');
-    const redCard = generalCategory?.stats.find(stat => stat.name === 'redCards');
+    const app = generalCategory?.stats.find(
+      (stat) => stat.name === "appearances"
+    );
+    const subIn = generalCategory?.stats.find((stat) => stat.name === "subIns");
+    const totalGoals = offensiveCategory?.stats.find(
+      (stat) => stat.name === "totalGoals"
+    );
+    const goalAssists = offensiveCategory?.stats.find(
+      (stat) => stat.name === "goalAssists"
+    );
+    const totalShots = offensiveCategory?.stats.find(
+      (stat) => stat.name === "totalShots"
+    );
+    const shotsOnTarget = offensiveCategory?.stats.find(
+      (stat) => stat.name === "shotsOnTarget"
+    );
+    const foulsCommitted = generalCategory?.stats.find(
+      (stat) => stat.name === "foulsCommitted"
+    );
+    const foulsSuffered = generalCategory?.stats.find(
+      (stat) => stat.name === "foulsSuffered"
+    );
+    const yellowCard = generalCategory?.stats.find(
+      (stat) => stat.name === "yellowCards"
+    );
+    const redCard = generalCategory?.stats.find(
+      (stat) => stat.name === "redCards"
+    );
     return (
-      <tr
-        key={index}
-        className='h-7 border-b border-tableBorderColor hover:bg-hoverColor cursor-pointer'
-        onClick={goToPlayerPage}
-      >
-        <td className='text-left'>{name}</td>
-        <td>{no}</td>
-        <td>{age}</td>
-        <td>{height !== "NaN" ? height + "cm" : "-"}</td>
-        <td>{weight !== "NaN" ? weight + "kg" : "-"}</td>
-        <td className='text-left indent-2'><img src={countryImage} alt="" className='h-4 inline-block mr-2' />{country} </td>
-        <td>{app?.value}</td>
-        <td>{subIn?.value}</td>
-        <td>{totalGoals?.value}</td>
-        <td>{goalAssists?.value}</td>
-        <td>{totalShots?.value}</td>
-        <td>{shotsOnTarget?.value}</td>
-        <td>{foulsCommitted?.value}</td>
-        <td>{foulsSuffered?.value}</td>
-        <td>{yellowCard?.value}</td>
-        <td>{redCard?.value}</td>
-      </tr>
+      <TableRow key={index} className="cursor-pointer" onClick={goToPlayerPage}>
+        <TableCell className="text-left">{name}</TableCell>
+        <TableCell>{no}</TableCell>
+        <TableCell>{age}</TableCell>
+        <TableCell>{height !== "NaN" ? height + "cm" : "-"}</TableCell>
+        <TableCell>{weight !== "NaN" ? weight + "kg" : "-"}</TableCell>
+        <TableCell className="text-left indent-2">
+          <img
+            src={countryImage}
+            alt="countryImage"
+            className="h-4 inline-block mr-2"
+          />
+          <span>{country}</span>
+        </TableCell>
+        <TableCell>{app?.value}</TableCell>
+        <TableCell>{subIn?.value}</TableCell>
+        <TableCell>{totalGoals?.value}</TableCell>
+        <TableCell>{goalAssists?.value}</TableCell>
+        <TableCell>{totalShots?.value}</TableCell>
+        <TableCell>{shotsOnTarget?.value}</TableCell>
+        <TableCell>{foulsCommitted?.value}</TableCell>
+        <TableCell>{foulsSuffered?.value}</TableCell>
+        <TableCell>{yellowCard?.value}</TableCell>
+        <TableCell>{redCard?.value}</TableCell>
+      </TableRow>
     );
   }
 });
 
-export default OutfieldPlayer;
+export default OutFieldPlayer;
