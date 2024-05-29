@@ -1,8 +1,15 @@
-import { memo } from 'react';
+import { memo } from "react";
 
-import { leagueSelectArray } from '../../assets/ArrayData';
+import { leagueSelectArray } from "../../assets/ArrayData";
 
-import { AiOutlineCaretDown, AiOutlineCaretUp } from 'react-icons/ai';
+import { AiOutlineCaretDown, AiOutlineCaretUp } from "react-icons/ai";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 interface Props {
   handleSelectBox: () => void;
@@ -13,45 +20,48 @@ interface Props {
 }
 
 const DivisionSelectBox = memo((props: Props) => {
-  const nation = leagueSelectArray.find(item => item.value == props.paramsNation)
-  const division = nation?.league.find(item => item.division === props.paramsDivision)
+  const nation = leagueSelectArray.find(
+    (item) => item.value == props.paramsNation
+  );
+  const division = nation?.league.find(
+    (item) => item.division === props.paramsDivision
+  );
 
   // const division = leagueSelectArray.find(item => item.value == paramsDivision)
   return (
-    <div className='relative w-56 h-10 border mr-3'>
-
-      <div
+    <>
+      {/* <div
         onClick={props.handleSelectBox}
-        className='w-full h-full flex items-center p-3 justify-between cursor-pointer'
+        className="w-full h-full flex items-center p-3 justify-between cursor-pointer"
       >
         <span>{division?.name}</span>
-        <span>{props.isSelectBox ? <AiOutlineCaretUp /> : <AiOutlineCaretDown />}</span>
-      </div>
+        <span>
+          {props.isSelectBox ? <AiOutlineCaretUp /> : <AiOutlineCaretDown />}
+        </span>
+      </div> */}
 
-      {props.isSelectBox &&
-        <ul className='absolute top-11 border w-56 bg-[#282828] max-h-[200px] overflow-y-auto'>
-          {leagueSelectArray.map(item => {
+      <Select>
+        <SelectTrigger className="w-[280px]">
+          <SelectValue placeholder="Division" />
+        </SelectTrigger>
+
+        <SelectContent className="w-full text-left hover:bg-hoverColor">
+          {leagueSelectArray.map((item) => {
             if (item.value === props.paramsNation) {
-              return (
-                item.league.map((league, idx) => (
-                  <li
-                    key={idx}
-                    onClick={() => props.change(league.division)}
-                    className='w-full text-left hover:bg-hoverColor'
-                  >
-                    <button
-                      type="button"
-                      className='w-full text-left h-10 px-3'
-                    >
-                      {league.name}
-                    </button>
-                  </li>
-                ))
-              )
+              return item.league.map((league, idx) => (
+                <SelectItem
+                  key={idx}
+                  value={league.name}
+                  // className="w-full text-left h-10 px-3"
+                >
+                  {league.name}
+                </SelectItem>
+              ));
             }
           })}
-        </ul>}
-    </div>
+        </SelectContent>
+      </Select>
+    </>
   );
 });
 
