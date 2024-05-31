@@ -4,8 +4,8 @@
 
 1. [프로젝트정보](#프로젝트-정보)
 2. [로고](#로고)
-3. [주요기능](#주요-기능)
-4. [UI](#ui)
+3. [UI](#ui)
+4. [주요기능](#주요-기능)
 5. [Trouble shooting](#trouble-shooting)
 6. [기능개선](#기능-개선)
 
@@ -26,11 +26,6 @@
 ## 🛞로고
 
 ![favicon-32x32](https://github.com/audrhks29/footballLeague/assets/130128690/b8c5b78a-9c5a-4c20-899d-068b6927b150)
-
-## 🛠주요 기능
-
-1. React를 이용한 SPA 웹 사이트 제작
-2. ESPN API를 이용하여 축구 통계데이터 제공
 
 ## 👀UI
 
@@ -58,6 +53,10 @@
 
 ![녹화_2024_03_03_21_29_22_47](https://github.com/audrhks29/footballLeague/assets/130128690/c635ebd5-fc0f-46b3-bbf7-e3f82ecc3d82)
 
+## 🛠주요 기능
+
+1. React를 이용한 SPA 웹 사이트 제작
+2. ESPN API를 이용하여 축구 통계데이터 제공
 <!-- ## ❌Trouble Shooting -->
 
 ## 🚧기능 개선
