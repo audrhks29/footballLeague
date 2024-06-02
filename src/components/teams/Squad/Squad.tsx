@@ -4,7 +4,6 @@ import useRosterDataStore from "../../../store/rosterData-store";
 import { goalKeeperTh, outfieldPlayerTh } from "../../../assets/ArrayData";
 
 import GoalKeeper from "./GoalKeeper";
-import OutFieldPlayer from "./OutFieldPlayer";
 
 import {
   Table,
@@ -66,12 +65,12 @@ const Squad = memo(() => {
             ))}
           </TableRow>
         </TableHeader>
-        <TableBody>
+        {/* <TableBody>
           {rosterData &&
             rosterData.map((item, index) => {
               return <OutFieldPlayer item={item} index={index} key={index} />;
             })}
-        </TableBody>
+        </TableBody> */}
       </Table>
     </div>
   );
