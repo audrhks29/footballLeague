@@ -22,7 +22,7 @@ const AwayTeam = memo(({ data }: Props) => {
         <colgroup>
           <col width={45} />
           <col width={32} />
-          <col width={140} />
+          <col width={190} />
           {data.roster[1].stats && (
             <>
               <col width={28} />
@@ -79,7 +79,7 @@ const AwayTeam = memo(({ data }: Props) => {
         <colgroup>
           <col width={45} />
           <col width={32} />
-          <col width={140} />
+          <col width={190} />
           {data.roster[1].stats && (
             <>
               <col width={28} />

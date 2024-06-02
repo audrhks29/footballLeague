@@ -105,27 +105,25 @@ const MatchResult = memo(() => {
         </Card>
       )}
 
-      <div className="grid grid-cols-2">
-        <HomeTeam data={matchResultData.rosters[0]} />
+      <section className="grid gap-3">
+        <div className="grid grid-cols-2 gap-6">
+          <HomeTeam data={matchResultData.rosters[0]} />
 
-        {/* {matchResultData.boxscore.teams[0].statistics ? (
-          <MatchResultTable data={matchResultData} />
-        ) : (
-          <p>Sorry, There is No Statistics Data</p>
-        )} */}
+          <AwayTeam data={matchResultData.rosters[1]} />
+        </div>
 
-        <AwayTeam data={matchResultData.rosters[1]} />
-      </div>
+        <div>
+          {matchResultData.boxscore.teams[0].statistics ? (
+            <MatchResultTable data={matchResultData} />
+          ) : (
+            <p>Sorry, There is No Statistics Data</p>
+          )}
+        </div>
 
-      <div
-        className="w-full text-center border h-10 leading-10 cursor-pointer mt-10"
-        onClick={toggleViewCommentary}
-      >
-        <span>{!isCommentary ? "View Commentary" : "Hide Commentary"}</span>
-      </div>
-      {matchResultData && matchResultData.keyEvents && isCommentary && (
-        <Commentary data={matchResultData} />
-      )}
+        {matchResultData && matchResultData.keyEvents && isCommentary && (
+          <Commentary data={matchResultData} />
+        )}
+      </section>
     </div>
   );
 });

@@ -31,9 +31,9 @@ const MatchResultTable = memo(({ data }: Props) => {
   return (
     <Table className="m-auto w-fit">
       <colgroup>
-        <col width={80} />
+        <col width={150} />
         <col width={200} />
-        <col width={80} />
+        <col width={150} />
       </colgroup>
 
       <TableBody>
