@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo } from "react";
 
 import { Link, useParams } from "react-router-dom";
 
@@ -16,14 +16,10 @@ const MatchResult = memo(() => {
   const { fetchMatchResultData } = useMatchResultDataStore();
   const { slugId, gameId } = useParams();
 
-  const [isCommentary, SetIsCommentary] = useState(false);
-
   const { data: matchResultData } = useSuspenseQuery({
     queryKey: ["matchResultData", slugId, gameId],
     queryFn: () => fetchMatchResultData(slugId, gameId),
   });
-
-  const toggleViewCommentary = () => SetIsCommentary(!isCommentary);
 
   const date = new Date(matchResultData.header.competitions[0].date);
   const options: DateTimeFormatOptions = {
@@ -120,7 +116,7 @@ const MatchResult = memo(() => {
           )}
         </div>
 
-        {matchResultData && matchResultData.keyEvents && isCommentary && (
+        {matchResultData && matchResultData.keyEvents && (
           <Commentary data={matchResultData} />
         )}
       </section>

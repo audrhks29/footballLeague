@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import React, { memo, useState } from "react";
 
 import axios, { AxiosResponse } from "axios";
 
@@ -157,16 +157,15 @@ const Result = memo(() => {
 
             if (resultData && isCompletedMatch) {
               return (
-                <>
+                <React.Fragment key={index}>
                   <ResultList
-                    key={index}
                     item={item}
                     index={index}
                     matchDivision={matchDivision}
                     round={resultData.length - index}
                   />
                   <Separator />
-                </>
+                </React.Fragment>
               );
             }
           })}
