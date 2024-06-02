@@ -3,8 +3,8 @@ import { memo } from "react";
 import useRosterDataStore from "../../../store/rosterData-store";
 import { goalKeeperTh, outfieldPlayerTh } from "../../../assets/ArrayData";
 
-import OutFieldPlayer from "./OutFieldPlayer";
 import GoalKeeper from "./GoalKeeper";
+import OutFieldPlayer from "./OutFieldPlayer";
 import {
   Table,
   TableBody,
