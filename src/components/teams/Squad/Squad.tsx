@@ -5,6 +5,7 @@ import { goalKeeperTh, outfieldPlayerTh } from "../../../assets/ArrayData";
 
 import GoalKeeper from "./GoalKeeper";
 import OutFieldPlayer from "./OutFieldPlayer";
+
 import {
   Table,
   TableBody,
