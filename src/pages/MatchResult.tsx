@@ -9,11 +9,10 @@ import Commentary from "../components/matchResult/Commentary";
 import HomeTeam from "../components/matchResult/roster/HomeTeam";
 import AwayTeam from "../components/matchResult/roster/AwayTeam";
 
-import useMatchResultDataStore from "../store/matchResult-store";
 import { Card } from "@/components/ui/card";
+import { fetchMatchResultData } from "@/server/fetchData";
 
 const MatchResult = memo(() => {
-  const { fetchMatchResultData } = useMatchResultDataStore();
   const { slugId, gameId } = useParams();
 
   const { data: matchResultData } = useSuspenseQuery({

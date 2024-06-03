@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { fetchTeamData } from "@/server/fetchData";
+import { fetchTeamsData } from "@/server/fetchData";
 import { FaRegQuestionCircle } from "react-icons/fa";
 
 import { Card, CardDescription } from "@/components/ui/card";
@@ -13,7 +13,7 @@ const TeamList = memo(() => {
   const navigate = useNavigate();
   const { data: teamsData } = useSuspenseQuery({
     queryKey: ["teamsData", slugId],
-    queryFn: () => fetchTeamData(slugId ? slugId : "eng.1"),
+    queryFn: () => fetchTeamsData(slugId ? slugId : "eng.1"),
   });
 
   const handleClickTeam = (item: Teams) => {

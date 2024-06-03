@@ -2,14 +2,27 @@ import { memo } from "react";
 
 import { Link, useParams } from "react-router-dom";
 
-import useTeamDataStore from "../../../../store/teamData-store";
-import useStandingsDataStore from "../../../../store/standings-store";
 import { Card } from "@/components/ui/card";
+import { useSuspenseQueries } from "@tanstack/react-query";
+import { fetchSummarizeStatsData, fetchTeamData } from "@/server/fetchData";
 
 const SummarizeStats = memo(() => {
-  const { slugId } = useParams();
-  const { summarizeStatsData } = useStandingsDataStore();
-  const { teamData } = useTeamDataStore();
+  const { slugId, teamId } = useParams();
+
+  const [{ data: teamData }, { data: summarizeStatsData }] = useSuspenseQueries(
+    {
+      queries: [
+        {
+          queryKey: ["teamData", slugId, teamId],
+          queryFn: () => fetchTeamData(slugId, teamId),
+        },
+        {
+          queryKey: ["summarizeStatsData", slugId, teamId],
+          queryFn: () => fetchSummarizeStatsData(slugId, teamId),
+        },
+      ],
+    }
+  );
 
   const statList = ["rank", "gamesPlayed", "wins", "ties", "losses", "points"];
   const leagueLogo = teamData && teamData.defaultLeague.logos[0];
@@ -23,7 +36,7 @@ const SummarizeStats = memo(() => {
 
         {teamData &&
           teamData.record.items &&
-          teamData.record.items.map((item) =>
+          teamData.record.items.map((item: RecordItems) =>
             statList.map((statName, index) => {
               const stats = item.stats.find((stat) => stat.name === statName);
               if (stats) {
@@ -44,7 +57,7 @@ const SummarizeStats = memo(() => {
         {teamData &&
           summarizeStatsData &&
           !teamData.record.items &&
-          summarizeStatsData.stats.map((item) =>
+          summarizeStatsData.stats.map((item: StatsDataTypes) =>
             statList.map((statName, index) => {
               const findArray = item.name === statName;
               // const stats = item.stats.find(stat => stat.name === statName);

@@ -2,9 +2,7 @@ import { memo } from "react";
 
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
-import { useSuspenseQuery } from "@tanstack/react-query";
-
-import useStandingsDataStore from "../store/standings-store";
+import { useSuspenseQueries } from "@tanstack/react-query";
 
 import NationSelectBox from "../components/standings/NationSelectBox";
 import DivisionSelectBox from "../components/standings/DivisionSelectBox";
@@ -13,6 +11,7 @@ import YearSelectBox from "../components/standings/YearSelectBox";
 import { useNavigate, useParams } from "react-router-dom";
 
 import StandingsTable from "../components/standings/StandingsTable";
+import { fetchStandingSeasonData } from "@/server/fetchData";
 
 const Standings = memo(() => {
   const { slugId, yearId } = useParams();
@@ -22,11 +21,19 @@ const Standings = memo(() => {
   const paramsNation = slugId?.slice(0, 3);
   const paramsDivision = slugId?.slice(4, 5);
 
-  const { fetchStandingsData, seasonData } = useStandingsDataStore();
-
-  const { data: standingsData } = useSuspenseQuery({
-    queryKey: ["standingData", slugId, yearId],
-    queryFn: () => fetchStandingsData(slugId, yearId),
+  const [{ data: seasonData }, { data: standingsData }] = useSuspenseQueries({
+    queries: [
+      {
+        queryKey: ["seasonData", slugId, yearId],
+        queryFn: () => fetchStandingSeasonData(slugId, yearId),
+        select: (data: StandingSeasonDataTypes) => data.seasons,
+      },
+      {
+        queryKey: ["standingData", slugId, yearId],
+        queryFn: () => fetchStandingSeasonData(slugId, yearId),
+        select: (data: StandingSeasonDataTypes) => data.children[0].standings,
+      },
+    ],
   });
 
   const handleCountYear = (num: number) => {

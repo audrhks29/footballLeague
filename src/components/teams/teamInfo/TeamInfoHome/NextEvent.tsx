@@ -2,11 +2,18 @@ import { memo } from "react";
 
 import { FaRegQuestionCircle } from "react-icons/fa";
 
-import useTeamDataStore from "../../../../store/teamData-store";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
+import { fetchTeamData } from "@/server/fetchData";
 
 const NextEvent = memo(() => {
-  const { teamData } = useTeamDataStore();
+  const { slugId, teamId } = useParams();
+
+  const { data: teamData } = useSuspenseQuery({
+    queryKey: ["teamData", slugId, teamId],
+    queryFn: () => fetchTeamData(slugId, teamId),
+  });
 
   return (
     <Card className="w-full">
@@ -16,7 +23,7 @@ const NextEvent = memo(() => {
 
       <div>
         {teamData && teamData.nextEvent.length > 0 ? (
-          teamData.nextEvent.map((item, index) => {
+          teamData.nextEvent.map((item: NextEvent, index: number) => {
             const homeTeamData = item.competitions[0].competitors.find(
               (competitor) => competitor.homeAway === "home"
             );

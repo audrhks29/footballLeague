@@ -1,6 +1,5 @@
 import { memo } from "react";
 
-import useRosterDataStore from "../../../store/rosterData-store";
 import { goalKeeperTh, outfieldPlayerTh } from "../../../assets/ArrayData";
 
 import GoalKeeper from "./GoalKeeper";
@@ -13,9 +12,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import OutfieldPlayer from "./OutFieldPlayer";
+import { useParams } from "react-router-dom";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { fetchSquadData } from "@/server/fetchData";
 
 const Squad = memo(() => {
-  const { rosterData } = useRosterDataStore();
+  const { slugId, teamId } = useParams();
+
+  const { data: squadData } = useSuspenseQuery({
+    queryKey: ["squadData", slugId, teamId],
+    queryFn: () => fetchSquadData(slugId, teamId),
+  });
 
   return (
     <div>
@@ -30,6 +37,7 @@ const Squad = memo(() => {
           <col width={75} />
           <col width={190} />
         </colgroup>
+
         <TableHeader>
           <TableRow>
             {goalKeeperTh.map((item, index) => (
@@ -39,9 +47,10 @@ const Squad = memo(() => {
             ))}
           </TableRow>
         </TableHeader>
+
         <TableBody>
-          {rosterData &&
-            rosterData.map((item, index) => {
+          {squadData &&
+            squadData.map((item: PlayerDataType, index: number) => {
               return <GoalKeeper item={item} index={index} key={index} />;
             })}
         </TableBody>
@@ -57,6 +66,7 @@ const Squad = memo(() => {
           <col width={75} />
           <col width={190} />
         </colgroup>
+
         <TableHeader>
           <TableRow>
             {outfieldPlayerTh.map((item, index) => (
@@ -66,9 +76,10 @@ const Squad = memo(() => {
             ))}
           </TableRow>
         </TableHeader>
+
         <TableBody>
-          {rosterData &&
-            rosterData.map((item, index) => {
+          {squadData &&
+            squadData.map((item: PlayerDataType, index: number) => {
               return <OutfieldPlayer item={item} index={index} key={index} />;
             })}
         </TableBody>

@@ -2,8 +2,6 @@ import { memo } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
 
-import useNewsStore from "../store/news-store";
-
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import LeagueList from "../components/news/LeagueList";
@@ -22,12 +20,11 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { fetchNewsData } from "@/server/fetchData";
 
 const News = memo(() => {
   const { slugId, pageIndex } = useParams();
   const navigate = useNavigate();
-
-  const { fetchNewsData } = useNewsStore();
 
   const { data: newsData } = useSuspenseQuery({
     queryKey: ["newsData", slugId],

@@ -8,15 +8,17 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { leagueSelectArray } from "../../../../../assets/ArrayData";
 
-import useTeamDataStore from "../../../../../store/teamData-store";
-
 import ResultList from "./ResultList";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { fetchTeamData } from "@/server/fetchData";
 
 const SummarizeResult = memo(() => {
-  const { teamData } = useTeamDataStore();
+  const { slugId, teamId } = useParams();
 
-  const { teamId, slugId } = useParams<string>();
+  const { data: teamData } = useSuspenseQuery({
+    queryKey: ["teamData", slugId, teamId],
+    queryFn: () => fetchTeamData(slugId, teamId),
+  });
 
   const [matchDivision, setMatchDivision] = useState<string | undefined>(
     slugId
