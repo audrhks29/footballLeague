@@ -13,7 +13,7 @@
 
 #### 사이트 바로가기
 
-[사이트 바로가기](https://audrhks29.github.io/footballLeague/dist/)
+[사이트 바로가기](https://football-league-pi.vercel.app/)
 
 |              | `설명`                                                                                                                                                                                                                                                                                                               |
 | :----------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -29,29 +29,43 @@
 
 ## 👀UI
 
-### 1. 리그, 년도별 순위 확인
+### 1. 메인
 
-![녹화_2024_03_03_21_20_04_967](https://github.com/audrhks29/footballLeague/assets/130128690/53ee8f03-4fa1-4da8-b4f1-5d8e651575a4)
+![main](https://github.com/audrhks29/footballLeague/assets/130128690/71221ccc-055a-4976-9173-668eebd3410f)
 
-### 2. 리그별 뉴스 확인
+### 2. 리그별 팀 순위
 
-![녹화_2024_03_03_21_23_10_771](https://github.com/audrhks29/footballLeague/assets/130128690/0dfb1469-b80e-4ad6-b4dc-eeb2b4b5a85d)
+![standing](https://github.com/audrhks29/footballLeague/assets/130128690/8cb06e8c-f40c-4ca9-99fc-9edf8f27cf19)
 
-### 3. 리그별 팀 정보 확인
+### 3. 리그별 뉴스
 
-![녹화_2024_03_03_21_24_40_527](https://github.com/audrhks29/footballLeague/assets/130128690/d5905378-939e-4545-8bb5-bc1857722b0b)
+![news](https://github.com/audrhks29/footballLeague/assets/130128690/7e5c06ba-49aa-41d9-80af-3ad6f5fb77c5)
 
-### 4. 팀정보에서 Recent Match클릭시 매치 정보 확인
+![newsdetail](https://github.com/audrhks29/footballLeague/assets/130128690/f79a84a1-03f3-4e2c-ab17-c54c5f305eda)
 
-![녹화_2024_03_03_21_27_27_924](https://github.com/audrhks29/footballLeague/assets/130128690/9d840d3a-3356-4fd8-a9c7-ff5d72bf093a)
+### 4. 리그별 팀
 
-### 5. 팀정보 -> Squad 메뉴에서 선수 클릭시 선수정보 확인
+![teams](https://github.com/audrhks29/footballLeague/assets/130128690/d4608199-a026-4f2d-9a4b-31fa8e0ed9b6)
 
-![녹화_2024_03_03_21_25_43_546](https://github.com/audrhks29/footballLeague/assets/130128690/bc9af2af-0a36-4bf5-961a-ab4d4888ad53)
+### 5. 팀 정보
 
-### 6. 팀정보 -> Result 메뉴에서 년도별 매치 결과 및 세부내용 확인
+![teaminfo](https://github.com/audrhks29/footballLeague/assets/130128690/5346494e-9901-4f45-afb3-14a2e5317210)
 
-![녹화_2024_03_03_21_29_22_47](https://github.com/audrhks29/footballLeague/assets/130128690/c635ebd5-fc0f-46b3-bbf7-e3f82ecc3d82)
+### 6. 스쿼드
+
+![squad](https://github.com/audrhks29/footballLeague/assets/130128690/b69635a0-da84-42d6-bdea-6446fdc5db67)
+
+### 7. 선수
+
+![player](https://github.com/audrhks29/footballLeague/assets/130128690/86902eda-9a7d-439d-ad93-878128cd835b)
+
+### 8. 일정별 경기 결과
+
+![result](https://github.com/audrhks29/footballLeague/assets/130128690/4fe46e20-3526-4ecc-a941-b0ad8d0a9f67)
+
+### 9. 경기 결과 자세히 보기
+
+![matchresult](https://github.com/audrhks29/footballLeague/assets/130128690/c054e161-8644-4c98-9399-ffddb220aed1)
 
 ## 🛠주요 기능
 
