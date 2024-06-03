@@ -1,5 +1,11 @@
 import { memo } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
 import { useNavigate } from "react-router-dom";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { fetchNewsData } from "@/server/fetchData";
@@ -20,10 +26,17 @@ const RecentNews = memo(({ slugId }: { slugId: string }) => {
     else alert("Could not find Board");
   };
 
+  const handleClickMore = () => {
+    navigate(`/news/${slugId}/page=1`);
+  };
+
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex-row justify-between">
         <CardTitle>Recent News</CardTitle>
+        <CardDescription onClick={handleClickMore} className="cursor-pointer">
+          more +
+        </CardDescription>
       </CardHeader>
 
       <CardContent>

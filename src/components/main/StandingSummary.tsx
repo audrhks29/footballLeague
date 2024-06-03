@@ -1,5 +1,11 @@
 import { memo } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { fetchStandingSeasonData } from "@/server/fetchData";
 import {
@@ -10,6 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
+import { useNavigate } from "react-router-dom";
 
 const StandingSummary = memo(({ slugId }: { slugId: string }) => {
   const { data: standingsData } = useSuspenseQuery({
@@ -19,11 +26,23 @@ const StandingSummary = memo(({ slugId }: { slugId: string }) => {
       data.children[0].standings.entries,
   });
 
-  console.log(standingsData);
+  const navigate = useNavigate();
+
+  const handleClickRow = (id: string) => {
+    navigate(`/teams/${slugId}/${id}`);
+  };
+
+  const handleClickMore = () => {
+    navigate(`/standings/${slugId}/2023`);
+  };
+
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex-row justify-between">
         <CardTitle>Standings</CardTitle>
+        <CardDescription onClick={handleClickMore} className="cursor-pointer">
+          more +
+        </CardDescription>
       </CardHeader>
 
       <CardContent>
@@ -42,7 +61,11 @@ const StandingSummary = memo(({ slugId }: { slugId: string }) => {
 
           <TableBody className="text-center">
             {standingsData.map((item, index) => (
-              <TableRow key={index}>
+              <TableRow
+                key={index}
+                onClick={() => handleClickRow(item.team.id)}
+                className="cursor-pointer"
+              >
                 <TableCell>
                   {item.stats.find((stat) => stat.name === "rank")?.value}
                 </TableCell>
