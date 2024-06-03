@@ -24,7 +24,7 @@ const ScoreBoard = memo(({ slugId }: { slugId: string }) => {
   };
 
   return (
-    <Card>
+    <Card className="col-start-2 row-start-1 row-span-2">
       <CardHeader>
         <CardTitle>Recent Match</CardTitle>
         <CardDescription>{scoreboardData.day.date}</CardDescription>

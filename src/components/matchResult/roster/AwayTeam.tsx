@@ -17,7 +17,7 @@ const AwayTeam = memo(({ data }: Props) => {
   const hideFieldTh = ["FC", "FA", "OG", "SHF", "SUB", "GA", "OF", "SV"];
 
   return (
-    <div className="">
+    <div>
       <Table className="text-center">
         <colgroup>
           <col width={45} />
