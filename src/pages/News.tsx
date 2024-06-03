@@ -27,8 +27,8 @@ const News = memo(() => {
   const navigate = useNavigate();
 
   const { data: newsData } = useSuspenseQuery({
-    queryKey: ["newsData", slugId],
-    queryFn: () => fetchNewsData(slugId),
+    queryKey: [`newsData${slugId}`, slugId],
+    queryFn: () => fetchNewsData(slugId, 100),
   });
 
   const clickNews = (index: number) => {

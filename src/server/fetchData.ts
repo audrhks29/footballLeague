@@ -81,10 +81,13 @@ export const fetchStandingSeasonData = async (
 };
 
 // 뉴스 데이터
-export const fetchNewsData = async (slugId: string | undefined) => {
+export const fetchNewsData = async (
+  slugId: string | undefined,
+  limit: number
+) => {
   try {
     const response = await axios.get(
-      `https://site.api.espn.com/apis/site/v2/sports/soccer/${slugId}/news?limit=100`
+      `https://site.api.espn.com/apis/site/v2/sports/soccer/${slugId}/news?limit=${limit}`
     );
     return response.data.articles;
   } catch (error) {
@@ -101,4 +104,11 @@ export const fetchMatchResultData = async (
     `https://site.api.espn.com/apis/site/v2/sports/soccer/${slugId}/summary?event=${gameId}`
   );
   return responseMatchResult.data;
+};
+
+export const fetchScoreboardData = async (slugId: string | undefined) => {
+  const response = await axios.get(
+    `https://site.api.espn.com/apis/site/v2/sports/soccer/${slugId}/scoreboard`
+  );
+  return response.data;
 };

@@ -291,22 +291,6 @@ interface MatchResultType {
   }[];
 }
 
-interface Rosters {
-  roster: {
-    stats: {
-      abbreviation: string;
-      displayName: string;
-      value: number;
-    }[];
-    position: {
-      abbreviation: string;
-    };
-    jersey: string;
-    athlete: {
-      fullName: string;
-    };
-  }[];
-}
 interface DateTimeFormatOptions {
   localeMatcher?: "best fit" | "lookup";
   weekday?: "long" | "short" | "narrow";

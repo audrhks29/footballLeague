@@ -27,11 +27,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: (
-          <Suspense fallback={<Loading />}>
-            <Main />
-          </Suspense>
-        ),
+        element: <Main />,
       },
       {
         path: "standings/:slugId/:yearId",
