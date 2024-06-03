@@ -329,3 +329,20 @@ interface fetchedDataTypes {
     }[];
   };
 }
+
+interface Rosters {
+  roster: {
+    stats: {
+      abbreviation: string;
+      displayName: string;
+      value: number;
+    }[];
+    position: {
+      abbreviation: string;
+    };
+    jersey: string;
+    athlete: {
+      fullName: string;
+    };
+  }[];
+}
