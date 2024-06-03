@@ -1,6 +1,6 @@
-import { Suspense, memo } from "react";
+import { Suspense } from "react";
 
-import { HashRouter, Route, Routes } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -11,40 +11,129 @@ import News from "./pages/News";
 import Teams from "./pages/Teams";
 import TeamInfo from "./pages/TeamInfo";
 import MatchResult from "./pages/MatchResult";
-import Loading from "./components/Loading";
+
 import NewsBoard from "./components/news/NewsBoard";
 import Player from "./pages/Player";
 import NotFoundPath from "./pages/NotFoundPath";
+import Loading from "./components/Loading";
 
 const queryClient = new QueryClient();
 
-const App = memo(() => {
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Header />,
+    errorElement: <NotFoundPath />,
+    children: [
+      {
+        index: true,
+        element: (
+          <Suspense fallback={<Loading />}>
+            <Main />
+          </Suspense>
+        ),
+      },
+      {
+        path: "standings/:slugId/:yearId",
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <Standings />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      {
+        path: "news/:slugId/:pageIndex",
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <News />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      {
+        path: "news/:slugId/:pageIndex/:newsId",
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <NewsBoard />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      {
+        path: "teams/:slugId",
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <Teams />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      {
+        path: "teams/:slugId/:teamId",
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <TeamInfo />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      {
+        path: "teams/:slugId/:teamId/player/:playerId",
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <Player />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      {
+        path: "match/:slugId/:gameId",
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <MatchResult />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+    ],
+  },
+]);
+
+const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <HashRouter>
-        <Header />
-        <Suspense fallback={<Loading />}>
-          <Routes>
-            <Route path="/*" element={<NotFoundPath />} />
-            <Route path="/" element={<Main />} />
-            <Route path="/standings/:slugId/:yearId" element={<Standings />} />
-            <Route path="/news/:slugId/:pageIndex" element={<News />} />
-            <Route
-              path="/news/:slugId/:pageIndex/:newsId"
-              element={<NewsBoard />}
-            />
-            <Route path="/teams/:slugId" element={<Teams />} />
-            <Route path="/teams/:slugId/:teamId" element={<TeamInfo />} />
-            <Route
-              path="/teams/:slugId/:teamId/player/:playerId"
-              element={<Player />}
-            />
-            <Route path="/match/:slugId/:gameId" element={<MatchResult />} />
-          </Routes>
-        </Suspense>
-      </HashRouter>
+      <RouterProvider router={router} />
     </QueryClientProvider>
   );
-});
+};
 
 export default App;

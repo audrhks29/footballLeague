@@ -14,7 +14,7 @@ import {
 interface Props {
   paramsNation: string | undefined;
   paramsDivision: string | undefined;
-  standingsData: StandingsDataType;
+  standingsData: StandingsDataTypes;
 }
 
 const StandingsTable = memo(

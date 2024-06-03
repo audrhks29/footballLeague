@@ -4,6 +4,8 @@ import { Link, useParams } from "react-router-dom";
 
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { fetchSquadData } from "@/server/fetchData";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 const OtherPlayer = memo(() => {
   const { slugId, teamId, playerId } = useParams();
@@ -16,14 +18,16 @@ const OtherPlayer = memo(() => {
   });
 
   return (
-    <div className="w-[300px] border rounded-3xl p-5 row-span-4">
-      <h3 className="border-b border-hoverColor text-[22px] text-center">
-        Same Position Player
-      </h3>
+    <Card className="w-[300px] row-span-4">
+      <CardHeader>
+        <CardTitle className="text-center">Same Position Player</CardTitle>
+      </CardHeader>
 
-      <ul className="p-2">
+      <Separator />
+
+      <CardContent className="p-2">
         {otherPlayerData.map((item) => (
-          <li key={item.id}>
+          <div key={item.id}>
             <Link
               to={`/teams/${slugId}/${teamId}/player/${item.id}`}
               className="flex justify-between items-center h-8 hover:bg-hoverColor"
@@ -31,10 +35,10 @@ const OtherPlayer = memo(() => {
               <span>{item.displayName}</span>
               <span>#{item.jersey}</span>
             </Link>
-          </li>
+          </div>
         ))}
-      </ul>
-    </div>
+      </CardContent>
+    </Card>
   );
 });
 

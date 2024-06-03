@@ -17,6 +17,7 @@ import NextMatch from "../components/teams/Squad/player/NextMatch";
 import AllSeasonStats from "../components/teams/Squad/player/AllSeasonStats";
 import ErrorAllSeasonStats from "../components/teams/Squad/player/error/ErrorAllSeasonStats";
 import { fetchPlayerData } from "@/server/fetchData";
+import { Card } from "@/components/ui/card";
 
 const Player = memo(() => {
   const { slugId, teamId, playerId } = useParams();
@@ -40,10 +41,7 @@ const Player = memo(() => {
     ],
   });
 
-  const logoImage =
-    playerTeamData.logos.length > 0
-      ? playerTeamData.logos[1]
-      : playerTeamData.logos[0];
+  const logoImage = playerTeamData.logos[0];
 
   const height = isNaN(playerData.height)
     ? "-"
@@ -57,7 +55,7 @@ const Player = memo(() => {
 
   return (
     <div className="inner">
-      <div className="h-48 py-3 px-5 flex shadow-[#ffffff] shadow-md overflow-hidden">
+      <Card className="h-48 py-3 px-5 flex overflow-hidden">
         {logoImage ? (
           <img
             src={logoImage.href}
@@ -81,7 +79,7 @@ const Player = memo(() => {
           </li>
         </ul>
 
-        <div className="flex flex-col justify-center px-7 w-[350px] text-[16px]">
+        <div className="flex flex-col justify-center px-7 w-[350px] text-[16px] gap-2">
           <div className="flex justify-between">
             <p className="w-[130px]">HT(cm) / WT(kg)</p>
             <span>
@@ -104,10 +102,10 @@ const Player = memo(() => {
         ) : (
           <ErrorCurrentSeasonStats />
         )}
-      </div>
+      </Card>
 
-      <div className="grid grid-cols-[350px_minmax(950px, 2fr)] grid-rows-[280px_minmax(300px, 3fr)] items-start mt-6">
-        <OtherPlayer playerData={playerData} />
+      <div className="grid grid-cols-[350px_minmax(950px, 2fr)] gap-4 grid-rows-[280px_minmax(300px, 3fr)] items-start mt-6">
+        <OtherPlayer />
 
         {playerData.transactions ? (
           <Transactions

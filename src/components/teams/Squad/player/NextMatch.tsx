@@ -1,3 +1,5 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { useSuspenseQueries, useSuspenseQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { memo } from "react";
@@ -81,10 +83,14 @@ const NextMatch = memo((props: Props) => {
   const outputDateString = date.toLocaleDateString("en-US", options);
 
   return (
-    <div className="border rounded-2xl p-5 w-[950px] mb-6">
-      <h3 className="border-b border-hoverColor text-[22px]">Next Match</h3>
+    <Card>
+      <CardHeader>
+        <CardTitle>Next Match</CardTitle>
+      </CardHeader>
 
-      <div className="p-2 text-[16px]">
+      <Separator />
+
+      <CardContent>
         <p className="text-center h-9 leading-9">{outputDateString}</p>
         <div className="flex items-center w-4/5 m-auto">
           <div className="flex items-center justify-center w-1/2">
@@ -109,8 +115,8 @@ const NextMatch = memo((props: Props) => {
             <span className="ml-2">{fetchedAwayTeamData.displayName}</span>
           </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 });
 
