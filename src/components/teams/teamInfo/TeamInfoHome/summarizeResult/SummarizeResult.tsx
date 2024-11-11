@@ -1,19 +1,22 @@
 import { memo, useState } from "react";
-
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
 import axios, { AxiosResponse } from "axios";
 
-import { useSuspenseQuery } from "@tanstack/react-query";
-
 import { leagueSelectArray } from "../../../../../assets/ArrayData";
 
 import ResultList from "./ResultList";
+
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+
 import { fetchTeamData } from "@/server/fetchData";
+
+import getCurrentYear from "@/utils/getCurrentDate";
 
 const SummarizeResult = memo(() => {
   const { slugId, teamId } = useParams();
+  const currentYear = getCurrentYear();
 
   const { data: teamData } = useSuspenseQuery({
     queryKey: ["teamData", slugId, teamId],
@@ -29,7 +32,7 @@ const SummarizeResult = memo(() => {
     slugId: string | undefined
   ) => {
     try {
-      const selectedYear = 2023;
+      const selectedYear = Number(currentYear);
       const nextYear = selectedYear + 1;
       const findDivision = leagueSelectArray.find((item) =>
         slugId?.includes(item.value)

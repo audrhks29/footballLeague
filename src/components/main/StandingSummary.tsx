@@ -1,4 +1,9 @@
 import { memo } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSuspenseQuery } from "@tanstack/react-query";
+
+import { fetchStandingSeasonData } from "@/server/fetchData";
+
 import {
   Card,
   CardContent,
@@ -6,8 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { fetchStandingSeasonData } from "@/server/fetchData";
 import {
   Table,
   TableBody,
@@ -16,12 +19,15 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { useNavigate } from "react-router-dom";
+
+import getCurrentYear from "@/utils/getCurrentDate";
 
 const StandingSummary = memo(({ slugId }: { slugId: string }) => {
+  const currentYear = getCurrentYear();
+
   const { data: standingsData } = useSuspenseQuery({
     queryKey: ["standingData", slugId],
-    queryFn: () => fetchStandingSeasonData(slugId, "2023"),
+    queryFn: () => fetchStandingSeasonData(slugId, currentYear),
     select: (data: StandingSeasonDataTypes) =>
       data.children[0].standings.entries,
   });
@@ -33,7 +39,7 @@ const StandingSummary = memo(({ slugId }: { slugId: string }) => {
   };
 
   const handleClickMore = () => {
-    navigate(`/standings/${slugId}/2023`);
+    navigate(`/standings/${slugId}/${currentYear}`);
   };
 
   return (

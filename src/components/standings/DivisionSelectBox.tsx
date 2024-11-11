@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import getCurrentYear from "@/utils/getCurrentDate";
 
 interface Props {
   paramsNation: string | undefined;
@@ -17,6 +18,7 @@ interface Props {
 }
 
 const DivisionSelectBox = memo((props: Props) => {
+  const currentYear = getCurrentYear();
   const navigate = useNavigate();
 
   const nation = leagueSelectArray.find(
@@ -27,7 +29,7 @@ const DivisionSelectBox = memo((props: Props) => {
   );
 
   const changeDivision = (division: string) => {
-    navigate(`/standings/${props.paramsNation}.${division}/2023`);
+    navigate(`/standings/${props.paramsNation}.${division}/${currentYear}`);
   };
 
   return (

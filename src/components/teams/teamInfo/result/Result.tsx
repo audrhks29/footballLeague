@@ -1,14 +1,13 @@
 import React, { memo, useState } from "react";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 
 import axios, { AxiosResponse } from "axios";
 
-import { useParams } from "react-router-dom";
-
 import { leagueSelectArray } from "../../../../assets/ArrayData";
 
-import { useSuspenseQuery } from "@tanstack/react-query";
-
 import ResultList from "./ResultList";
+
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -18,11 +17,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import getCurrentYear from "@/utils/getCurrentDate";
 
 const Result = memo(() => {
   const { teamId, slugId } = useParams();
+  const currentYear = Number(getCurrentYear());
 
-  const [selectedYear, setSelectedYear] = useState(2023);
+  const [selectedYear, setSelectedYear] = useState(currentYear);
   const [matchDivision, setMatchDivision] = useState<string | undefined>(
     slugId
   );

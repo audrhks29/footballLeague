@@ -1,3 +1,4 @@
+import getCurrentYear from "@/utils/getCurrentDate";
 import axios from "axios";
 
 // 선택한 팀 데이터
@@ -35,9 +36,10 @@ export const fetchSummarizeStatsData = async (
   slugId: string | undefined,
   teamId: string | undefined
 ) => {
+  const currentYear = getCurrentYear();
   try {
     const response = await axios.get(
-      `https://site.web.api.espn.com/apis/v2/sports/soccer/${slugId}/standings?season=2023`
+      `https://site.web.api.espn.com/apis/v2/sports/soccer/${slugId}/standings?season=${currentYear}`
     );
     if (response) {
       const data: StandingsDataTypes = response.data.children[0].standings;

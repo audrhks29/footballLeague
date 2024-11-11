@@ -5,9 +5,11 @@ import { Link, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { useSuspenseQueries } from "@tanstack/react-query";
 import { fetchSummarizeStatsData, fetchTeamData } from "@/server/fetchData";
+import getCurrentYear from "@/utils/getCurrentDate";
 
 const SummarizeStats = memo(() => {
   const { slugId, teamId } = useParams();
+  const currentYear = getCurrentYear();
 
   const [{ data: teamData }, { data: summarizeStatsData }] = useSuspenseQueries(
     {
@@ -77,7 +79,10 @@ const SummarizeStats = memo(() => {
       </ul>
 
       <div className="text-right">
-        <Link to={`/standings/${slugId}/2023`} className="cursor-pointer">
+        <Link
+          to={`/standings/${slugId}/${currentYear}`}
+          className="cursor-pointer"
+        >
           more +
         </Link>
       </div>
