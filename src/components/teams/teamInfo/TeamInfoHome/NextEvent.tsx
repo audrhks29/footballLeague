@@ -5,7 +5,7 @@ import { FaRegQuestionCircle } from "react-icons/fa";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { fetchTeamData } from "@/server/fetchData";
+import { fetchTeamData } from "@/services/fetchData";
 
 const NextEvent = memo(() => {
   const { slugId, teamId } = useParams();

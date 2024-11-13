@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { fetchTeamsData } from "@/server/fetchData";
+import { fetchTeamsData } from "@/services/fetchData";
 import { FaRegQuestionCircle } from "react-icons/fa";
 
 import { Card, CardDescription } from "@/components/ui/card";

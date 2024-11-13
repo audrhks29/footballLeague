@@ -16,7 +16,7 @@ import ErrorTransactions from "../components/teams/Squad/player/error/ErrorTrans
 import NextMatch from "../components/teams/Squad/player/NextMatch";
 import AllSeasonStats from "../components/teams/Squad/player/AllSeasonStats";
 import ErrorAllSeasonStats from "../components/teams/Squad/player/error/ErrorAllSeasonStats";
-import { fetchPlayerData } from "@/server/fetchData";
+import { fetchPlayerData } from "@/services/fetchData";
 import { Card } from "@/components/ui/card";
 
 const Player = memo(() => {

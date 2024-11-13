@@ -11,7 +11,7 @@ import YearSelectBox from "../components/standings/YearSelectBox";
 import { useNavigate, useParams } from "react-router-dom";
 
 import StandingsTable from "../components/standings/StandingsTable";
-import { fetchStandingSeasonData } from "@/server/fetchData";
+import { fetchStandingSeasonData } from "@/services/fetchData";
 
 const Standings = memo(() => {
   const { slugId, yearId } = useParams();

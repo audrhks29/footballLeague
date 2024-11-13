@@ -14,7 +14,7 @@ import {
 import OutfieldPlayer from "./OutFieldPlayer";
 import { useParams } from "react-router-dom";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { fetchSquadData } from "@/server/fetchData";
+import { fetchSquadData } from "@/services/fetchData";
 
 const Squad = memo(() => {
   const { slugId, teamId } = useParams();

@@ -20,7 +20,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { fetchNewsData } from "@/server/fetchData";
+import { fetchNewsData } from "@/services/fetchData";
 
 const News = memo(() => {
   const { slugId, pageIndex } = useParams();

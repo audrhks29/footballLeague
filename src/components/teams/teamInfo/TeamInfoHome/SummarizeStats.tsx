@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 
 import { Card } from "@/components/ui/card";
 import { useSuspenseQueries } from "@tanstack/react-query";
-import { fetchSummarizeStatsData, fetchTeamData } from "@/server/fetchData";
+import { fetchSummarizeStatsData, fetchTeamData } from "@/services/fetchData";
 import getCurrentYear from "@/utils/getCurrentDate";
 
 const SummarizeStats = memo(() => {

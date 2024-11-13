@@ -1,4 +1,4 @@
-import { fetchScoreboardData } from "@/server/fetchData";
+import { fetchScoreboardData } from "@/services/fetchData";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { memo } from "react";
 import {

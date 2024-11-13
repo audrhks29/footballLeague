@@ -10,7 +10,7 @@ import ResultList from "./ResultList";
 
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { fetchTeamData } from "@/server/fetchData";
+import { fetchTeamData } from "@/services/fetchData";
 
 import getCurrentYear from "@/utils/getCurrentDate";
 

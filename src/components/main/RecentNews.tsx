@@ -1,4 +1,8 @@
 import { memo } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { useSuspenseQuery } from "@tanstack/react-query";
+
 import {
   Card,
   CardContent,
@@ -6,12 +10,12 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { useNavigate } from "react-router-dom";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { fetchNewsData } from "@/server/fetchData";
+
+import { fetchNewsData } from "@/services/fetchData";
 
 const RecentNews = memo(({ slugId }: { slugId: string }) => {
   const navigate = useNavigate();
+
   const { data: newsData } = useSuspenseQuery({
     queryKey: [`newsDat${slugId}`],
     queryFn: () => fetchNewsData(slugId, 5),

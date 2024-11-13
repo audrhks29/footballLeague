@@ -9,7 +9,7 @@ import TeamInfoHome from "../components/teams/teamInfo/TeamInfoHome/TeamInfoHome
 
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { fetchTeamData } from "@/server/fetchData";
+import { fetchTeamData } from "@/services/fetchData";
 
 const TeamInfo = memo(() => {
   const { slugId, teamId } = useParams<string>();

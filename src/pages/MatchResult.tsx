@@ -10,7 +10,7 @@ import HomeTeam from "../components/matchResult/roster/HomeTeam";
 import AwayTeam from "../components/matchResult/roster/AwayTeam";
 
 import { Card } from "@/components/ui/card";
-import { fetchMatchResultData } from "@/server/fetchData";
+import { fetchMatchResultData } from "@/services/fetchData";
 
 const MatchResult = memo(() => {
   const { slugId, gameId } = useParams();

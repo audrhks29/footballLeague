@@ -2,7 +2,7 @@ import { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { fetchStandingSeasonData } from "@/server/fetchData";
+import { fetchStandingSeasonData } from "@/services/fetchData";
 
 import {
   Card,
