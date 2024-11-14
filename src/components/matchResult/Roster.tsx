@@ -1,3 +1,4 @@
+import { memo } from "react";
 import {
   Table,
   TableBody,
@@ -6,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { memo } from "react";
 
 interface Props {
   data: Rosters;

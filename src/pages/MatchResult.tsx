@@ -1,16 +1,13 @@
 import { memo } from "react";
-
 import { Link, useParams } from "react-router-dom";
-
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-import MatchResultTable from "../components/matchResult/MatchResultTable";
-import Commentary from "../components/matchResult/Commentary";
-import HomeTeam from "../components/matchResult/roster/HomeTeam";
-import AwayTeam from "../components/matchResult/roster/AwayTeam";
-
 import { Card } from "@/components/ui/card";
+
 import { fetchMatchResultData } from "@/services/fetchData";
+import Roster from "@/components/matchResult/Roster";
+import MatchResultTable from "@/components/matchResult/MatchResultTable";
+import Commentary from "@/components/matchResult/Commentary";
 
 const MatchResult = memo(() => {
   const { slugId, gameId } = useParams();
@@ -102,9 +99,9 @@ const MatchResult = memo(() => {
 
       <section className="grid gap-3">
         <div className="grid grid-cols-2 gap-6">
-          <HomeTeam data={matchResultData.rosters[0]} />
+          <Roster data={matchResultData.rosters[0]} />
 
-          <AwayTeam data={matchResultData.rosters[1]} />
+          <Roster data={matchResultData.rosters[1]} />
         </div>
 
         <div>
