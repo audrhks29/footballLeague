@@ -1,3 +1,6 @@
+import { memo } from "react";
+import { useParams } from "react-router-dom";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -8,13 +11,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useSuspenseQuery } from "@tanstack/react-query";
 
-import axios from "axios";
-
-import { memo } from "react";
-
-import { useParams } from "react-router-dom";
+import {
+  usePlayerSeasons,
+  useSeasonNames,
+  useSeasonStats,
+} from "@/hooks/usePlayerStats";
 
 interface Props {
   fetchUrl: string;
@@ -24,65 +26,9 @@ interface Props {
 const AllSeasonStats = memo((props: Props) => {
   const { playerId } = useParams();
 
-  const fetchSeasonsData = async () => {
-    const url = `http://sports.core.api.espn.com/v2/sports/soccer/leagues/all/athletes/${playerId}/seasons?lang=en&region=us&limit=1000`;
-    const response = await axios.get(url);
-    return response.data.items;
-  };
-
-  const { data: playerSeasonsData } = useSuspenseQuery({
-    queryKey: ["playerSeasonsData", playerId],
-    queryFn: () => fetchSeasonsData(),
-  });
-
-  const fetchData = async () => {
-    try {
-      const promises = playerSeasonsData.map((obj: { $ref: string }) => {
-        const url = obj.$ref.replace(
-          "?lang=en&region=us",
-          `/types/1/athletes/${playerId}/statistics?lang=en&region=us`
-        );
-        return axios.get(url);
-      });
-      const resolvedResponses = await Promise.allSettled<
-        PromiseSettledResult<unknown>
-      >(promises);
-      return resolvedResponses;
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  const { data: fetchedData }: { data: fetchedDataTypes[] | undefined } =
-    useSuspenseQuery({
-      queryKey: ["fetchedData", playerId],
-      queryFn: () => fetchData(),
-      select: (data) =>
-        data?.filter((item) => item.value).map((item) => item.value.data),
-    });
-
-  const fetchSeasonName = async () => {
-    try {
-      if (!fetchedData) return [];
-      const promises = fetchedData?.map((obj) => {
-        const url = obj.season.$ref;
-        return axios.get(url);
-      });
-      const resolvedResponses = await Promise.allSettled(promises);
-      return resolvedResponses;
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  const { data: seasonNameData } = useSuspenseQuery({
-    queryKey: ["seasonNameData", playerId],
-    queryFn: () => fetchSeasonName(),
-    select: (data) =>
-      data
-        ?.filter((item) => item.value)
-        .map((item) => item.value.data.displayName),
-  });
+  const { data: playerSeasonsData } = usePlayerSeasons(playerId);
+  const { data: fetchedData } = useSeasonStats(playerId, playerSeasonsData);
+  const { data: seasonNameData } = useSeasonNames(playerId, fetchedData);
 
   const goalKeeperTh = [
     { id: 1, name: "Season" },
@@ -108,7 +54,12 @@ const AllSeasonStats = memo((props: Props) => {
     { id: 9, name: "Yellow Card" },
     { id: 10, name: "Red Card" },
   ];
-
+  const findStatValue = (
+    categoryData: SplitsDataTypes | undefined,
+    statName: string
+  ) => categoryData?.stats.find((stat) => stat.name === statName)?.value;
+  const findCategory = (categories: SplitsDataTypes[], categoryName: string) =>
+    categories.find((category) => category.name === categoryName);
   return (
     <Card>
       <CardHeader>
@@ -136,80 +87,78 @@ const AllSeasonStats = memo((props: Props) => {
 
           <TableBody>
             {fetchedData?.map((item, index) => {
-              const generalData = item.splits.categories.find(
-                (category) => category.name == "general"
+              console.log(item.splits.categories);
+              const generalData = findCategory(
+                item.splits.categories,
+                "general"
               );
-              const offensiveData = item.splits.categories.find(
-                (category) => category.name == "offensive"
-              );
-              const app = generalData?.stats.find(
-                (stat) => stat.name === "appearances"
-              );
-              const subIn = generalData?.stats.find(
-                (stat) => stat.name === "subIns"
-              );
-              const totalGoals = offensiveData?.stats.find(
-                (stat) => stat.name === "totalGoals"
-              );
-              const goalAssists = offensiveData?.stats.find(
-                (stat) => stat.name === "goalAssists"
-              );
-              const totalShots = offensiveData?.stats.find(
-                (stat) => stat.name === "totalShots"
-              );
-              const shotsOnTarget = offensiveData?.stats.find(
-                (stat) => stat.name === "shotsOnTarget"
-              );
-              const foulsCommitted = generalData?.stats.find(
-                (stat) => stat.name === "foulsCommitted"
-              );
-              const yellowCard = generalData?.stats.find(
-                (stat) => stat.name === "yellowCards"
-              );
-              const redCard = generalData?.stats.find(
-                (stat) => stat.name === "redCards"
+              const offensiveData = findCategory(
+                item.splits.categories,
+                "offensive"
               );
               const seasonName = seasonNameData && seasonNameData[index];
 
-              if (props.position === "1") {
-                const goalKeepingData = item.splits.categories.find(
-                  (category) => category.name == "goalKeeping"
+              const stats: {
+                appearances: number | undefined;
+                subIns: number | undefined;
+                foulsCommitted: number | undefined;
+                yellowCards: number | undefined;
+                redCards: number | undefined;
+                totalGoals?: number | undefined;
+                goalAssists: number | undefined;
+                totalShots?: number | undefined;
+                shotsOnTarget?: number | undefined;
+                goalsConceded?: number | undefined;
+                saves?: number | undefined;
+              } = {
+                appearances: findStatValue(generalData, "appearances"),
+                subIns: findStatValue(generalData, "subIns"),
+                foulsCommitted: findStatValue(generalData, "foulsCommitted"),
+                yellowCards: findStatValue(generalData, "yellowCards"),
+                redCards: findStatValue(generalData, "redCards"),
+                totalGoals: findStatValue(offensiveData, "totalGoals"),
+                goalAssists: findStatValue(offensiveData, "goalAssists"),
+                totalShots: findStatValue(offensiveData, "totalShots"),
+                shotsOnTarget: findStatValue(offensiveData, "shotsOnTarget"),
+              };
+
+              const isGoalKeeper = props.position === "1";
+
+              if (isGoalKeeper) {
+                const goalKeepingData = findCategory(
+                  item.splits.categories,
+                  "goalKeeping"
                 );
-                const goalsConceded = goalKeepingData?.stats.find(
-                  (stat) => stat.name === "goalsConceded"
+                stats.goalsConceded = findStatValue(
+                  goalKeepingData,
+                  "goalsConceded"
                 );
-                const save = goalKeepingData?.stats.find(
-                  (stat) => stat.name === "saves"
-                );
-                return (
-                  <TableRow key={index}>
-                    <TableCell className="text-left">{seasonName}</TableCell>
-                    <TableCell>{app?.value}</TableCell>
-                    <TableCell>{subIn?.value}</TableCell>
-                    <TableCell>{save?.value}</TableCell>
-                    <TableCell>{goalsConceded?.value}</TableCell>
-                    <TableCell>{goalAssists?.value}</TableCell>
-                    <TableCell>{foulsCommitted?.value}</TableCell>
-                    <TableCell>{yellowCard?.value}</TableCell>
-                    <TableCell>{redCard?.value}</TableCell>
-                  </TableRow>
-                );
-              } else {
-                return (
-                  <TableRow key={index}>
-                    <TableCell className="text-left">{seasonName}</TableCell>
-                    <TableCell>{app?.value}</TableCell>
-                    <TableCell>{subIn?.value}</TableCell>
-                    <TableCell>{totalGoals?.value}</TableCell>
-                    <TableCell>{goalAssists?.value}</TableCell>
-                    <TableCell>{totalShots?.value}</TableCell>
-                    <TableCell>{shotsOnTarget?.value}</TableCell>
-                    <TableCell>{foulsCommitted?.value}</TableCell>
-                    <TableCell>{yellowCard?.value}</TableCell>
-                    <TableCell>{redCard?.value}</TableCell>
-                  </TableRow>
-                );
+                stats.saves = findStatValue(goalKeepingData, "saves");
               }
+
+              return (
+                <TableRow key={index}>
+                  <TableCell className="text-left">{seasonName}</TableCell>
+                  <TableCell>{stats.appearances}</TableCell>
+                  <TableCell>{stats.subIns}</TableCell>
+                  {isGoalKeeper ? (
+                    <>
+                      <TableCell>{stats.saves}</TableCell>
+                      <TableCell>{stats.goalsConceded}</TableCell>
+                    </>
+                  ) : (
+                    <>
+                      <TableCell>{stats.totalGoals}</TableCell>
+                      <TableCell>{stats.totalShots}</TableCell>
+                      <TableCell>{stats.shotsOnTarget}</TableCell>
+                    </>
+                  )}
+                  <TableCell>{stats.goalAssists}</TableCell>
+                  <TableCell>{stats.foulsCommitted}</TableCell>
+                  <TableCell>{stats.yellowCards}</TableCell>
+                  <TableCell>{stats.redCards}</TableCell>
+                </TableRow>
+              );
             })}
           </TableBody>
         </Table>

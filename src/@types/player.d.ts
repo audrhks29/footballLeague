@@ -132,3 +132,20 @@ interface AthletesDataTypes {
     $ref: string;
   };
 }
+
+interface SplitsDataTypes {
+  name: string;
+  displayName: string;
+  shortDisplayName: string;
+  abbreviation: string;
+  summary: string;
+  stats: Array<{
+    name: string;
+    displayName: string;
+    shortDisplayName: string;
+    description: string;
+    abbreviation: string;
+    value: number;
+    displayValue: string;
+  }>;
+}
