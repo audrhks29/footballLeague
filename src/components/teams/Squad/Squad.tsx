@@ -1,8 +1,8 @@
 import { memo } from "react";
+import { useParams } from "react-router-dom";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { goalKeeperTh, outfieldPlayerTh } from "../../../assets/ArrayData";
-
-import GoalKeeper from "./GoalKeeper";
 
 import {
   Table,
@@ -11,9 +11,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import OutfieldPlayer from "./OutFieldPlayer";
-import { useParams } from "react-router-dom";
-import { useSuspenseQuery } from "@tanstack/react-query";
+
+import PlayerLists from "./PlayerLists";
+
 import { fetchSquadData } from "@/services/fetchData";
 
 const Squad = memo(() => {
@@ -23,6 +23,14 @@ const Squad = memo(() => {
     queryKey: ["squadData", slugId, teamId],
     queryFn: () => fetchSquadData(slugId, teamId),
   });
+
+  const goalkeepers = squadData?.filter(
+    (player: PlayerDataType) => player.position.displayName === "Goalkeeper"
+  );
+
+  const fieldPlayers = squadData?.filter(
+    (player: PlayerDataType) => player.position.displayName !== "Goalkeeper"
+  );
 
   return (
     <div>
@@ -49,9 +57,9 @@ const Squad = memo(() => {
         </TableHeader>
 
         <TableBody>
-          {squadData &&
-            squadData.map((item: PlayerDataType, index: number) => {
-              return <GoalKeeper item={item} index={index} key={index} />;
+          {goalkeepers &&
+            goalkeepers.map((item: PlayerDataType, index: number) => {
+              return <PlayerLists item={item} index={index} key={index} />;
             })}
         </TableBody>
       </Table>
@@ -78,9 +86,9 @@ const Squad = memo(() => {
         </TableHeader>
 
         <TableBody>
-          {squadData &&
-            squadData.map((item: PlayerDataType, index: number) => {
-              return <OutfieldPlayer item={item} index={index} key={index} />;
+          {fieldPlayers &&
+            fieldPlayers.map((item: PlayerDataType, index: number) => {
+              return <PlayerLists item={item} index={index} key={index} />;
             })}
         </TableBody>
       </Table>

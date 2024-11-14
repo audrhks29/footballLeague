@@ -1,9 +1,9 @@
 import { memo } from "react";
-
 import { Link, useParams } from "react-router-dom";
-
 import { useSuspenseQuery } from "@tanstack/react-query";
+
 import { fetchSquadData } from "@/services/fetchData";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 

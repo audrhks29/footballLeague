@@ -1,3 +1,7 @@
+import { memo } from "react";
+import { useSuspenseQueries, useSuspenseQuery } from "@tanstack/react-query";
+import axios from "axios";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -8,11 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useSuspenseQueries, useSuspenseQuery } from "@tanstack/react-query";
 
-import axios from "axios";
-
-import { memo } from "react";
 import { FaRegQuestionCircle } from "react-icons/fa";
 
 interface Props {
@@ -21,43 +21,32 @@ interface Props {
 }
 
 const Transactions = memo((props: Props) => {
-  const fetchTransactionsData = async () => {
-    const url = props.fetchUrl;
-    const response = await axios.get(url);
-    return response.data;
-  };
-
   const { data: playerTransactionsData }: { data: playerTransactionsTypes } =
     useSuspenseQuery({
       queryKey: ["playerTransactionsData", props.fetchUrl],
-      queryFn: () => fetchTransactionsData(),
+      queryFn: async () => {
+        const url = props.fetchUrl;
+        const response = await axios.get(url);
+        return response.data;
+      },
     });
 
-  const fetchFromTeamData = async () => {
+  const fetchTransactionsTeamData = async (key: "from" | "to") => {
     const responses = await Promise.all(
-      playerTransactionsData.items.map((item) => axios.get(item.from.$ref))
+      playerTransactionsData.items.map((item) => axios.get(item[key].$ref))
     );
-    const responseData = responses.map((response) => response.data);
-    return responseData;
-  };
-
-  const fetchToTeamData = async () => {
-    const responses = await Promise.all(
-      playerTransactionsData.items.map((item) => axios.get(item.to.$ref))
-    );
-    const responseData = responses.map((response) => response.data);
-    return responseData;
+    return responses.map((response) => response.data);
   };
 
   const [{ data: fromData }, { data: toData }] = useSuspenseQueries({
     queries: [
       {
         queryKey: ["fromData", props.fetchUrl],
-        queryFn: () => fetchFromTeamData(),
+        queryFn: () => fetchTransactionsTeamData("from"),
       },
       {
         queryKey: ["toData", props.fetchUrl],
-        queryFn: () => fetchToTeamData(),
+        queryFn: () => fetchTransactionsTeamData("to"),
       },
     ],
   });

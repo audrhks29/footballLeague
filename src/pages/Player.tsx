@@ -1,10 +1,7 @@
-import { useSuspenseQueries } from "@tanstack/react-query";
-
-import axios from "axios";
-
 import { memo } from "react";
-
+import { useSuspenseQueries } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 import { FaRegQuestionCircle } from "react-icons/fa";
 
@@ -16,8 +13,10 @@ import ErrorTransactions from "../components/teams/Squad/player/error/ErrorTrans
 import NextMatch from "../components/teams/Squad/player/NextMatch";
 import AllSeasonStats from "../components/teams/Squad/player/AllSeasonStats";
 import ErrorAllSeasonStats from "../components/teams/Squad/player/error/ErrorAllSeasonStats";
-import { fetchPlayerData } from "@/services/fetchData";
+
 import { Card } from "@/components/ui/card";
+
+import { fetchPlayerData } from "@/services/fetchData";
 
 const Player = memo(() => {
   const { slugId, teamId, playerId } = useParams();
