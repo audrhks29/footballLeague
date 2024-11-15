@@ -1,8 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 #root {
-  max-width: 1280px;
+  font-size: 14px;
+  min-height: 100vh;
+  position: relative;
+}
+
+header.inner,
+div.inner {
+  width: 1300px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+}
+
+div.inner {
+  padding-top: 126px;
+  padding-bottom: 30px;
 }
 
 .logo {
@@ -31,10 +45,6 @@
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
   }
-}
-
-.card {
-  padding: 2em;
 }
 
 .read-the-docs {

@@ -1,8 +1,7 @@
+import React, { Suspense, memo, useState } from "react";
+
 import Loading from "@/components/Loading";
 import Index from "@/components/main/Index";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-import { Suspense, memo, useState } from "react";
 
 const tabArrays = [
   {
@@ -37,19 +36,30 @@ const Main = memo(() => {
 
   return (
     <div className="inner">
-      <Tabs defaultValue="eng.1" onValueChange={setSlugId}>
-        <TabsList className="w-[600px] grid grid-cols-5">
-          {tabArrays.map((item) => (
-            <TabsTrigger value={item.slugId}>{item.name}</TabsTrigger>
-          ))}
-        </TabsList>
+      <div role="tablist" className="tabs tabs-lifted">
+        {tabArrays.map((item) => (
+          <React.Fragment key={item.id}>
+            <input
+              type="radio"
+              name="my_tabs_2"
+              role="tab"
+              className="tab min-w-36"
+              aria-label={item.name}
+              onChange={() => setSlugId(item.slugId)}
+              defaultChecked={item.id === 1}
+            />
 
-        <Suspense fallback={<Loading />}>
-          <TabsContent value={slugId}>
-            <Index slugId={slugId} />
-          </TabsContent>
-        </Suspense>
-      </Tabs>
+            <div
+              role="tabpanel"
+              className="tab-content bg-base-100 border-base-300 rounded-box p-6"
+            >
+              <Suspense fallback={<Loading />}>
+                <Index slugId={slugId} />
+              </Suspense>
+            </div>
+          </React.Fragment>
+        ))}
+      </div>
     </div>
   );
 });

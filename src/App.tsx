@@ -1,7 +1,5 @@
 import { Suspense } from "react";
-
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import Header from "./layout/Header";
@@ -16,6 +14,8 @@ import NewsBoard from "./components/news/NewsBoard";
 import Player from "./pages/Player";
 import NotFoundPath from "./pages/NotFoundPath";
 import Loading from "./components/Loading";
+
+import "./App.css";
 
 const queryClient = new QueryClient();
 

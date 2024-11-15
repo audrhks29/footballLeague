@@ -1,7 +1,5 @@
 import { memo } from "react";
-
 import { useNavigate, useParams } from "react-router-dom";
-
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import LeagueList from "../components/news/LeagueList";
@@ -32,7 +30,9 @@ const News = memo(() => {
   });
 
   const clickNews = (index: number) => {
-    const url = newsData[index].links.api.news.href;
+    const url =
+      newsData[index].links.api.self.href ||
+      newsData[index].links.api.news.href;
     const pattern = /news\/(.+)/;
     const result = url.match(pattern);
 

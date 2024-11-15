@@ -1,14 +1,8 @@
-import { fetchScoreboardData } from "@/services/fetchData";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { memo } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
 import { useNavigate } from "react-router-dom";
+import { useSuspenseQuery } from "@tanstack/react-query";
+
+import { fetchScoreboardData } from "@/services/fetchData";
 
 const ScoreBoard = memo(({ slugId }: { slugId: string }) => {
   const navigate = useNavigate();
@@ -24,64 +18,73 @@ const ScoreBoard = memo(({ slugId }: { slugId: string }) => {
   };
 
   return (
-    <Card className="col-start-2 row-start-1 row-span-2">
-      <CardHeader>
-        <CardTitle>Recent Match</CardTitle>
-        <CardDescription>{scoreboardData.day.date}</CardDescription>
-      </CardHeader>
+    <section className="card border bg-base shadow-xl col-start-2 row-start-1 row-span-2">
+      <div className="card-body">
+        <h2 className="card-title">Recent Match</h2>
+        <span className="text-[12px] font-normal">
+          {scoreboardData.day.date}
+        </span>
 
-      <CardContent className="grid gap-3">
-        {scoreboardData ? (
-          scoreboardData.events.map((data: EventDataTypes, index: number) => {
-            const homeTeamData = data.competitions[0].competitors.find(
-              (homeTeam) => homeTeam.homeAway === "home"
-            );
+        <div className="text-center flex flex-col gap-3">
+          {scoreboardData ? (
+            scoreboardData.events.map((data: EventDataTypes, index: number) => {
+              const homeTeamData = data.competitions[0].competitors.find(
+                (homeTeam) => homeTeam.homeAway === "home"
+              );
 
-            const awayTeamData = data.competitions[0].competitors.find(
-              (awayTeam) => awayTeam.homeAway === "away"
-            );
+              const awayTeamData = data.competitions[0].competitors.find(
+                (awayTeam) => awayTeam.homeAway === "away"
+              );
 
-            return (
-              <Card
-                className="p-3 flex gap-3 justify-center items-center cursor-pointer hover:bg-muted/50"
-                onClick={() => handleClickMatch(data.id)}
-                key={index}
-              >
-                <div className="grid gap-1">
-                  {homeTeamData?.team.logo && (
-                    <img src={homeTeamData?.team.logo} width={40} height={40} />
-                  )}
-                  <span className="text-center font-bold">
-                    {homeTeamData?.team.abbreviation}
-                  </span>
+              return (
+                <div
+                  className="p-3 flex gap-3 justify-center items-center cursor-pointer hover:bg-muted/50 border"
+                  onClick={() => handleClickMatch(data.id)}
+                  key={index}
+                >
+                  {/* 홈 팀 로고 & 팀 명 */}
+                  <div>
+                    {homeTeamData?.team.logo && (
+                      <img
+                        src={homeTeamData?.team.logo}
+                        width={40}
+                        height={40}
+                      />
+                    )}
+                    <span className="text-center font-bold">
+                      {homeTeamData?.team.abbreviation}
+                    </span>
+                  </div>
+
+                  {/* 스코어 */}
+                  <div>
+                    <span className="font-bold">{homeTeamData?.score}</span>
+                    <span className="font-bold"> - </span>
+                    <span className="font-bold">{awayTeamData?.score}</span>
+                  </div>
+
+                  {/* 어웨이 팀 로고 & 팀 명 */}
+                  <div className="grid gap-1">
+                    {awayTeamData?.team.logo && (
+                      <img
+                        src={awayTeamData?.team.logo}
+                        width={40}
+                        height={40}
+                      />
+                    )}
+                    <span className="text-center font-bold">
+                      {awayTeamData?.team.abbreviation}
+                    </span>
+                  </div>
                 </div>
-
-                <CardDescription className="font-bold">
-                  {homeTeamData?.score}
-                </CardDescription>
-
-                <span className="font-bold"> - </span>
-
-                <CardDescription className="font-bold">
-                  {awayTeamData?.score}
-                </CardDescription>
-
-                <div className="grid gap-1">
-                  {awayTeamData?.team.logo && (
-                    <img src={awayTeamData?.team.logo} width={40} height={40} />
-                  )}
-                  <span className="text-center font-bold">
-                    {awayTeamData?.team.abbreviation}
-                  </span>
-                </div>
-              </Card>
-            );
-          })
-        ) : (
-          <span>No Recent Match</span>
-        )}
-      </CardContent>
-    </Card>
+              );
+            })
+          ) : (
+            <span>No Recent Match</span>
+          )}
+        </div>
+      </div>
+    </section>
   );
 });
 

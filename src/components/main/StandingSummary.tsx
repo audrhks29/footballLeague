@@ -4,23 +4,9 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { fetchStandingSeasonData } from "@/services/fetchData";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../ui/table";
-
 import getCurrentYear from "@/utils/getCurrentDate";
+
+const theadArray = ["Rank", "Name", "GP", "W", "D", "L", "P"];
 
 const StandingSummary = memo(({ slugId }: { slugId: string }) => {
   const currentYear = getCurrentYear();
@@ -34,75 +20,71 @@ const StandingSummary = memo(({ slugId }: { slugId: string }) => {
 
   const navigate = useNavigate();
 
-  const handleClickRow = (id: string) => {
-    navigate(`/teams/${slugId}/${id}`);
-  };
-
-  const handleClickMore = () => {
-    navigate(`/standings/${slugId}/${currentYear}`);
-  };
-
   return (
-    <Card>
-      <CardHeader className="flex-row justify-between">
-        <CardTitle>Standings</CardTitle>
-        <CardDescription onClick={handleClickMore} className="cursor-pointer">
-          more +
-        </CardDescription>
-      </CardHeader>
+    <section className="card border bg-base shadow-xl">
+      <div className="card-body">
+        <h2 className="card-title flex justify-between">
+          <span>Standings</span>
+          <span
+            onClick={() => navigate(`/standings/${slugId}/${currentYear}`)}
+            className="link link-hover text-[12px] font-normal"
+          >
+            more +
+          </span>
+        </h2>
 
-      <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="text-center">Rank</TableHead>
-              <TableHead className="text-center">Name</TableHead>
-              <TableHead className="text-center">GP</TableHead>
-              <TableHead className="text-center">W</TableHead>
-              <TableHead className="text-center">D</TableHead>
-              <TableHead className="text-center">L</TableHead>
-              <TableHead className="text-center">P</TableHead>
-            </TableRow>
-          </TableHeader>
+        <table className="table">
+          <thead>
+            <tr>
+              {theadArray.map((thead) => (
+                <td className="text-center">{thead}</td>
+              ))}
+            </tr>
+          </thead>
 
-          <TableBody className="text-center">
+          <tbody className="text-center">
             {standingsData.map((item, index) => (
-              <TableRow
+              <tr
                 key={index}
-                onClick={() => handleClickRow(item.team.id)}
+                onClick={() => navigate(`/teams/${slugId}/${item.team.id}`)}
                 className="cursor-pointer"
               >
-                <TableCell>
+                <td>
                   {item.stats.find((stat) => stat.name === "rank")?.value}
-                </TableCell>
-                <TableCell className="flex gap-3">
-                  <img src={item.team.logos[0].href} width={20} height={20} />
+                </td>
+                <td className="flex gap-3">
+                  <img
+                    src={item.team.logos[0].href}
+                    alt={item.team.displayName}
+                    width={20}
+                    height={20}
+                  />
                   <span>{item.team.abbreviation}</span>
-                </TableCell>
-                <TableCell>
+                </td>
+                <td>
                   {
                     item.stats.find((stat) => stat.name === "gamesPlayed")
                       ?.value
                   }
-                </TableCell>
-                <TableCell>
+                </td>
+                <td>
                   {item.stats.find((stat) => stat.name === "wins")?.value}
-                </TableCell>
-                <TableCell>
+                </td>
+                <td>
                   {item.stats.find((stat) => stat.name === "ties")?.value}
-                </TableCell>
-                <TableCell>
+                </td>
+                <td>
                   {item.stats.find((stat) => stat.name === "losses")?.value}
-                </TableCell>
-                <TableCell>
+                </td>
+                <td>
                   {item.stats.find((stat) => stat.name === "points")?.value}
-                </TableCell>
-              </TableRow>
+                </td>
+              </tr>
             ))}
-          </TableBody>
-        </Table>
-      </CardContent>
-    </Card>
+          </tbody>
+        </table>
+      </div>
+    </section>
   );
 });
 
