@@ -281,7 +281,7 @@ interface MatchResultType {
       displayValue: string;
     };
   }[];
-  rosters: Rosters[];
+  rosters: RosterDataTypes[];
   keyEvents: {
     id: string;
     clock: { displayValue: string };
@@ -330,15 +330,17 @@ interface fetchedDataTypes {
   };
 }
 
-interface Rosters {
+interface RosterDataTypes {
   roster: {
     stats: {
       abbreviation: string;
       displayName: string;
       value: number;
+      shortDisplayName: string;
     }[];
     position: {
       abbreviation: string;
+      name: string;
     };
     jersey: string;
     athlete: {

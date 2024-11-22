@@ -1,139 +1,97 @@
 import { memo } from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 
 interface Props {
-  data: Rosters;
+  matchResultData: RosterDataTypes;
 }
 
-const HomeTeam = memo(({ data }: Props) => {
-  const hideGKTh = ["FC", "FA", "OG", "G", "SH", "A", "ST", "SUB"];
-  const hideFieldTh = ["FC", "FA", "OG", "SHF", "SUB", "GA", "OF", "SV"];
+const RosterTable = ({
+  players,
+  statsTh,
+}: {
+  players: RosterDataTypes["roster"];
+  statsTh: string[];
+}) => {
+  return (
+    <table className="table text-center">
+      <colgroup>
+        <col width={45} />
+        <col width={32} />
+        <col width={"auto"} />
+        {players[0]?.stats && (
+          <>
+            <col width={28} />
+            <col width={28} />
+            <col width={28} />
+            <col width={28} />
+            <col width={28} />
+            <col width={28} />
+            <col width={28} />
+          </>
+        )}
+      </colgroup>
+
+      <thead>
+        <tr>
+          <th className="p-1" title="position">
+            POS
+          </th>
+          <th className="p-1" title="jersey">
+            NO
+          </th>
+          <th className="text-center p-1">Name</th>
+          {players[0]?.stats &&
+            players[0].stats.map(
+              (item, index) =>
+                statsTh.includes(item.abbreviation) && (
+                  <th title={item.displayName} key={index} className="p-1">
+                    {item.abbreviation}
+                  </th>
+                )
+            )}
+        </tr>
+      </thead>
+
+      <tbody>
+        {players.map((player, index) => (
+          <tr key={index}>
+            <td className="p-1">{player.position.abbreviation}</td>
+            <td className="p-1">{player.jersey}</td>
+            <td className="p-1">{player.athlete.fullName}</td>
+
+            {player.stats &&
+              player.stats.map(
+                (stat, idx) =>
+                  statsTh.includes(stat.abbreviation) && (
+                    <td key={idx} className="p-1">
+                      {stat.value}
+                    </td>
+                  )
+              )}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
+
+const Roster = memo(({ matchResultData }: Props) => {
+  const goalkeepers = matchResultData.roster.filter(
+    (item) => item.position.name === "Goalkeeper"
+  );
+
+  const fieldPlayers = matchResultData.roster.filter(
+    (item) => item.position.name !== "Goalkeeper"
+  );
+
+  const gkTh = ["APP", "RC", "YC", "GA", "SV", "SHF"];
+  const fieldTh = ["APP", "RC", "YC", "A", "ST", "G", "SH"];
 
   return (
-    <div className="">
-      <Table className="text-center">
-        <colgroup>
-          <col width={45} />
-          <col width={32} />
-          <col width={190} />
-          {data.roster[0].stats && (
-            <>
-              <col width={28} />
-              <col width={28} />
-              <col width={28} />
-              <col width={28} />
-              <col width={28} />
-              <col width={28} />
-            </>
-          )}
-        </colgroup>
-
-        <TableHeader>
-          <TableRow>
-            <TableHead title="position">POS</TableHead>
-            <TableHead title="jersey">NO</TableHead>
-            <TableHead className="text-center">Name</TableHead>
-            {data.roster[0].stats &&
-              data.roster[0].stats.map((item, index) =>
-                hideGKTh.includes(item.abbreviation) ? (
-                  ""
-                ) : (
-                  <TableHead title={item.displayName} key={index}>
-                    {item.abbreviation}
-                  </TableHead>
-                )
-              )}
-          </TableRow>
-        </TableHeader>
-
-        <TableBody>
-          {data.roster.map((item, index) => {
-            if (item.position.abbreviation === "G")
-              return (
-                <TableRow key={index}>
-                  <TableCell>{item.position.abbreviation}</TableCell>
-                  <TableCell>{item.jersey}</TableCell>
-                  <TableCell>{item.athlete.fullName}</TableCell>
-                  {item.stats &&
-                    item.stats.map((stat, idx) =>
-                      hideGKTh.includes(stat.abbreviation) ? (
-                        ""
-                      ) : (
-                        <TableCell key={idx}>{stat.value}</TableCell>
-                      )
-                    )}
-                </TableRow>
-              );
-          })}
-        </TableBody>
-      </Table>
-
-      <Table className="text-center">
-        <colgroup>
-          <col width={45} />
-          <col width={32} />
-          <col width={190} />
-          {data.roster[0].stats && (
-            <>
-              <col width={28} />
-              <col width={28} />
-              <col width={28} />
-              <col width={28} />
-              <col width={28} />
-              <col width={28} />
-              <col width={28} />
-            </>
-          )}
-        </colgroup>
-
-        <TableHeader>
-          <TableRow>
-            <TableHead title="position">POS</TableHead>
-            <TableHead title="jersey">NO</TableHead>
-            <TableHead className="text-center">Name</TableHead>
-            {data.roster[1].stats &&
-              data.roster[1].stats.map((item, index) =>
-                hideFieldTh.includes(item.abbreviation) ? (
-                  ""
-                ) : (
-                  <TableHead title={item.displayName} key={index}>
-                    {item.abbreviation}
-                  </TableHead>
-                )
-              )}
-          </TableRow>
-        </TableHeader>
-
-        <TableBody>
-          {data.roster.map((item, index) => {
-            if (item.position.abbreviation !== "G")
-              return (
-                <TableRow key={index}>
-                  <TableCell>{item.position.abbreviation}</TableCell>
-                  <TableCell>{item.jersey}</TableCell>
-                  <TableCell>{item.athlete.fullName}</TableCell>
-                  {item.stats &&
-                    item.stats.map((stat, idx) =>
-                      hideFieldTh.includes(stat.abbreviation) ? (
-                        ""
-                      ) : (
-                        <TableCell key={idx}>{stat.value}</TableCell>
-                      )
-                    )}
-                </TableRow>
-              );
-          })}
-        </TableBody>
-      </Table>
+    <div>
+      <RosterTable players={goalkeepers} statsTh={gkTh} />
+      <RosterTable players={fieldPlayers} statsTh={fieldTh} />
     </div>
   );
 });
 
-export default HomeTeam;
+export default Roster;
