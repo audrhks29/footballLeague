@@ -37,7 +37,7 @@ const MatchResultTable = memo(({ matchResultData }: Props) => {
     labels,
     datasets: [
       {
-        label: matchResultData.boxscore.teams[0].team.displayName,
+        label: homeTeamName,
         data: homeTeamData.map(
           (item, index) =>
             -(
@@ -53,7 +53,7 @@ const MatchResultTable = memo(({ matchResultData }: Props) => {
         categoryPercentage: 1,
       },
       {
-        label: matchResultData.boxscore.teams[1].team.displayName,
+        label: awayTeamName,
         data: awayTeamData.map(
           (item, index) =>
             (Number(item.displayValue) /
