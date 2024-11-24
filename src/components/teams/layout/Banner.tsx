@@ -1,17 +1,11 @@
-import { Card } from "@/components/ui/card";
 import { memo } from "react";
-
 import { FaRegQuestionCircle } from "react-icons/fa";
 
-interface Props {
-  data: TeamInfoType;
-}
-
-const Banner = memo(({ data }: Props) => {
+const Banner = memo(({ data }: { data: TeamInfoType }) => {
   const teamLogo = data.logos[1] ? data.logos[1] : data.logos[0];
 
   return (
-    <Card className="h-48 flex flex-col items-center justify-center shadow-[#ffffff] shadow-md">
+    <div className="h-48 flex flex-col items-center justify-center border card bg-base-100">
       {data.logos ? (
         <img
           src={teamLogo.href}
@@ -25,7 +19,7 @@ const Banner = memo(({ data }: Props) => {
         </i>
       )}
       <h2 className="text-[44px] font-bold">{data.displayName}</h2>
-    </Card>
+    </div>
   );
 });
 

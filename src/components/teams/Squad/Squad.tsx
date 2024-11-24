@@ -4,17 +4,57 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { goalKeeperTh, outfieldPlayerTh } from "../../../assets/ArrayData";
 
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
 import PlayerLists from "./PlayerLists";
 
 import { fetchSquadData } from "@/services/fetchData";
+
+const SquadTable = memo(
+  ({
+    position,
+    thArray,
+    playerPosition,
+  }: {
+    position: string;
+    thArray: { id: number; text: string; title: string }[];
+    playerPosition: PlayerDataType[];
+  }) => {
+    return (
+      <article>
+        <h2 className="text-[20px] font-semibold mb-2">{position}</h2>
+
+        <table className="table text-center">
+          <colgroup>
+            <col width={190} />
+            <col width={60} />
+            <col width={60} />
+            <col width={75} />
+            <col width={75} />
+            <col width={190} />
+          </colgroup>
+
+          <thead>
+            <tr>
+              {thArray.map((item, index) => (
+                <th className="text-center" key={index} title={item.title}>
+                  {item.text}
+                </th>
+              ))}
+            </tr>
+          </thead>
+
+          <tbody>
+            {playerPosition &&
+              playerPosition.map((player: PlayerDataType, index: number) => {
+                return (
+                  <PlayerLists player={player} index={index} key={index} />
+                );
+              })}
+          </tbody>
+        </table>
+      </article>
+    );
+  }
+);
 
 const Squad = memo(() => {
   const { slugId, teamId } = useParams();
@@ -33,66 +73,21 @@ const Squad = memo(() => {
   );
 
   return (
-    <div>
-      <h2 className="text-[20px] font-semibold mb-2">GoalKeepers</h2>
+    <section>
+      <SquadTable
+        position={"GoalKeepers"}
+        thArray={goalKeeperTh}
+        playerPosition={goalkeepers}
+      />
 
-      <Table className="w-full text-center">
-        <colgroup>
-          <col width={190} />
-          <col width={60} />
-          <col width={60} />
-          <col width={75} />
-          <col width={75} />
-          <col width={190} />
-        </colgroup>
+      <div className="divider"></div>
 
-        <TableHeader>
-          <TableRow>
-            {goalKeeperTh.map((item, index) => (
-              <TableHead className="text-center" key={index} title={item.title}>
-                {item.text}
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-
-        <TableBody>
-          {goalkeepers &&
-            goalkeepers.map((item: PlayerDataType, index: number) => {
-              return <PlayerLists item={item} index={index} key={index} />;
-            })}
-        </TableBody>
-      </Table>
-
-      <h2 className="text-[20px] font-semibold mt-6 mb-2">FieldPlayers</h2>
-      <Table className="w-full text-center">
-        <colgroup>
-          <col width={190} />
-          <col width={60} />
-          <col width={60} />
-          <col width={75} />
-          <col width={75} />
-          <col width={190} />
-        </colgroup>
-
-        <TableHeader>
-          <TableRow>
-            {outfieldPlayerTh.map((item, index) => (
-              <TableHead className="text-center" key={index} title={item.title}>
-                {item.text}
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-
-        <TableBody>
-          {fieldPlayers &&
-            fieldPlayers.map((item: PlayerDataType, index: number) => {
-              return <PlayerLists item={item} index={index} key={index} />;
-            })}
-        </TableBody>
-      </Table>
-    </div>
+      <SquadTable
+        position={"FieldPlayers"}
+        thArray={outfieldPlayerTh}
+        playerPosition={fieldPlayers}
+      />
+    </section>
   );
 });
 
