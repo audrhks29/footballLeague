@@ -1,9 +1,7 @@
-import { memo } from "react";
-
+import React, { memo } from "react";
 import { Link, useParams } from "react-router-dom";
-
-import { Card } from "@/components/ui/card";
 import { useSuspenseQueries } from "@tanstack/react-query";
+
 import { fetchSummarizeStatsData, fetchTeamData } from "@/services/fetchData";
 import getCurrentYear from "@/utils/getCurrentDate";
 
@@ -27,56 +25,41 @@ const SummarizeStats = memo(() => {
   );
 
   const statList = ["rank", "gamesPlayed", "wins", "ties", "losses", "points"];
-  const leagueLogo = teamData && teamData.defaultLeague.logos[0];
-
+  const leagueLogo = teamData && teamData.defaultLeague.logos[1];
+  const statsData =
+    teamData?.record?.items || (teamData && summarizeStatsData?.stats);
   return (
-    <div>
-      <ul className="w-full flex justify-between">
-        <Card className="p-2 w-40 flex justify-center items-center h-22 border rounded-2xl">
-          {teamData && <img src={leagueLogo?.href} alt="" className="w-16" />}
-        </Card>
+    <article>
+      <div className="pb-2 flex items-end h-22">
+        {teamData && (
+          <React.Fragment>
+            <img
+              src={leagueLogo?.href}
+              alt={leagueLogo?.href}
+              className="w-16"
+            />
+            <h2 className="text-[20px] font-semibold mb-2">
+              Current Season Team Stats
+            </h2>
+          </React.Fragment>
+        )}
+      </div>
 
-        {teamData &&
-          teamData.record.items &&
-          teamData.record.items.map((item: RecordItems) =>
-            statList.map((statName, index) => {
-              const stats = item.stats.find((stat) => stat.name === statName);
-              if (stats) {
-                return (
-                  <Card
-                    key={index}
-                    className="w-40 flex flex-col justify-between p-4"
-                  >
-                    <p className="text-[16px]">{stats.name}</p>
-                    <p className="text-[20px] font-bold">{stats.value}</p>
-                  </Card>
-                );
-              }
-            })
-          )}
-
-        {/* record.items가 없을때 standingsData에서 가져와야함 */}
-        {teamData &&
-          summarizeStatsData &&
-          !teamData.record.items &&
-          summarizeStatsData.stats.map((item: StatsDataTypes) =>
-            statList.map((statName, index) => {
-              const findArray = item.name === statName;
-              // const stats = item.stats.find(stat => stat.name === statName);
-              if (findArray) {
-                return (
-                  <Card
-                    key={index}
-                    className="w-40 flex flex-col justify-between p-4"
-                  >
-                    <p className="text-[16px]">{item.name}</p>
-                    <p className="text-[20px] font-bold">{item.value}</p>
-                  </Card>
-                );
-              }
-            })
-          )}
-      </ul>
+      <div className="stats stats-vertical lg:stats-horizontal shadow w-full">
+        {statsData.map((item: RecordItems) =>
+          statList.map((statName, index) => {
+            const stats = item.stats.find((stat) => stat.name === statName);
+            if (stats) {
+              return (
+                <div key={index} className="stat">
+                  <div className="stat-title">{stats.name}</div>
+                  <div className="stat-value text-right">{stats.value}</div>
+                </div>
+              );
+            }
+          })
+        )}
+      </div>
 
       <div className="text-right">
         <Link
@@ -86,7 +69,7 @@ const SummarizeStats = memo(() => {
           more +
         </Link>
       </div>
-    </div>
+    </article>
   );
 });
 

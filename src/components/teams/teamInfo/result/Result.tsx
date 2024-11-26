@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import { memo, useState } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
@@ -8,15 +8,6 @@ import { leagueSelectArray } from "../../../../assets/ArrayData";
 
 import ResultList from "./ResultList";
 
-import { Card } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import getCurrentYear from "@/utils/getCurrentDate";
 
 const Result = memo(() => {
@@ -117,37 +108,28 @@ const Result = memo(() => {
     queryFn: () => fetchTeamResultData(teamId, slugId, selectedYear),
   });
 
-  const changeYear = (selectedYear: number) => {
-    setSelectedYear(selectedYear);
-  };
-
   return (
-    <div>
-      <div className="flex items-center">
+    <section>
+      <article className="flex items-center">
         <span className="font-bold mr-3">Season</span>
-
-        <Select
-          onValueChange={(value) => changeYear(Number(value))}
-          value={selectedYear.toString()}
+        <select
+          className="select select-bordered w-full max-w-xs"
+          onChange={(e) => {
+            setSelectedYear(Number(e.target.value));
+          }}
         >
-          <SelectTrigger className="w-[220px]">
-            <SelectValue />
-          </SelectTrigger>
+          {seasonData &&
+            seasonData.map((item: SeasonDataType, idx: number) => {
+              return (
+                <option key={idx} value={item.year.toString()}>
+                  {item.year}-{item.year + 1}
+                </option>
+              );
+            })}
+        </select>
+      </article>
 
-          <SelectContent>
-            {seasonData &&
-              seasonData.map((item: SeasonDataType, idx: number) => {
-                return (
-                  <SelectItem key={idx} value={item.year.toString()}>
-                    {item.year}-{item.year + 1}
-                  </SelectItem>
-                );
-              })}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <Card className="mt-5">
+      <ul className="mt-5">
         {resultData && resultData.length === 0 && (
           <li>there is no data, please retry</li>
         )}
@@ -158,20 +140,18 @@ const Result = memo(() => {
 
             if (resultData && isCompletedMatch) {
               return (
-                <React.Fragment key={index}>
-                  <ResultList
-                    item={item}
-                    index={index}
-                    matchDivision={matchDivision}
-                    round={resultData.length - index}
-                  />
-                  <Separator />
-                </React.Fragment>
+                <ResultList
+                  key={index}
+                  item={item}
+                  index={index}
+                  matchDivision={matchDivision}
+                  round={resultData.length - index}
+                />
               );
             }
           })}
-      </Card>
-    </div>
+      </ul>
+    </section>
   );
 });
 

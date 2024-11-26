@@ -8,8 +8,6 @@ import { leagueSelectArray } from "../../../../../assets/ArrayData";
 
 import ResultList from "./ResultList";
 
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-
 import { fetchTeamData } from "@/services/fetchData";
 
 import getCurrentYear from "@/utils/getCurrentDate";
@@ -108,13 +106,11 @@ const SummarizeResult = memo(() => {
     recentMatchResult && isCompletedMatch ? isCompletedMatch.slice(0, 5) : [];
 
   return (
-    <Card>
-      <CardHeader className="text-center">
-        <CardTitle>Recent Match Result</CardTitle>
-      </CardHeader>
+    <article>
+      <h2 className="text-[20px] font-semibold mb-2">Recent Match Result</h2>
 
       {displayedMatches && (
-        <div className="flex w-full">
+        <ul className="flex w-full">
           {displayedMatches.map((item, index) => {
             return (
               <ResultList
@@ -126,9 +122,9 @@ const SummarizeResult = memo(() => {
               />
             );
           })}
-        </div>
+        </ul>
       )}
-    </Card>
+    </article>
   );
 });
 

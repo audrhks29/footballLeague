@@ -1,11 +1,10 @@
 import { memo } from "react";
 
 import { FaRegQuestionCircle } from "react-icons/fa";
-
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { fetchTeamData } from "@/services/fetchData";
+import dateFormat from "@/utils/dateFormat";
 
 const NextEvent = memo(() => {
   const { slugId, teamId } = useParams();
@@ -16,34 +15,19 @@ const NextEvent = memo(() => {
   });
 
   return (
-    <Card className="w-full">
-      <CardHeader className="text-center">
-        <CardTitle>Next Match</CardTitle>
-      </CardHeader>
+    <article className="w-full">
+      <h2 className="text-[20px] font-semibold mb-2">Next Match</h2>
 
-      <div>
+      <ul className="flex">
         {teamData && teamData.nextEvent.length > 0 ? (
           teamData.nextEvent.map((item: NextEvent, index: number) => {
-            const homeTeamData = item.competitions[0].competitors.find(
-              (competitor) => competitor.homeAway === "home"
-            );
-            const awayTeamData = item.competitions[0].competitors.find(
-              (competitor) => competitor.homeAway === "away"
-            );
-
-            const date = new Date(item.date);
-            const options: DateTimeFormatOptions = {
-              weekday: "long",
-              month: "long",
-              day: "numeric",
-            };
-            const outputDateString = date.toLocaleDateString("en-US", options);
-            const outputTime = item.date.substr(11, 5);
+            const homeTeamData = item.competitions[0].competitors[0];
+            const awayTeamData = item.competitions[0].competitors[1];
 
             return (
-              <Card key={index}>
+              <li key={index}>
                 <div className="text-[18px] text-center p-2 font-bold">
-                  {outputDateString}
+                  {dateFormat(item.date)}
                 </div>
 
                 <div className="flex items-center justify-center p-2">
@@ -53,7 +37,7 @@ const NextEvent = memo(() => {
 
                   {homeTeamData?.team.logos ? (
                     <img
-                      src={homeTeamData?.team.logos[0].href}
+                      src={homeTeamData?.team.logos[1].href}
                       className="h-8 mr-1"
                     />
                   ) : (
@@ -63,12 +47,12 @@ const NextEvent = memo(() => {
                   )}
 
                   <div className="p-1 text-bold border">
-                    <span>{outputTime}</span>
+                    <span>{item.date.substr(11, 5)}</span>
                   </div>
 
                   {awayTeamData?.team.logos ? (
                     <img
-                      src={awayTeamData?.team.logos[0].href}
+                      src={awayTeamData?.team.logos[1].href}
                       className="h-8 ml-1"
                     />
                   ) : (
@@ -81,16 +65,16 @@ const NextEvent = memo(() => {
                     {awayTeamData?.team.abbreviation}
                   </span>
                 </div>
-              </Card>
+              </li>
             );
           })
         ) : (
-          <Card className="text-[18px] text-center p-2 font-bold border">
+          <li className="text-[18px] text-center p-2 font-bold border">
             There is no information on the Next Match
-          </Card>
+          </li>
         )}
-      </div>
-    </Card>
+      </ul>
+    </article>
   );
 });
 
