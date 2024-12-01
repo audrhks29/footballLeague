@@ -14,9 +14,7 @@ const Teams = memo(() => {
   const divisionArray =
     paramsNation &&
     leagueSelectArray.find((a) => a.value.includes(paramsNation));
-  console.log(paramsNation);
 
-  // console.log(division);
   return (
     <div className="inner">
       <div className="flex gap-2">
