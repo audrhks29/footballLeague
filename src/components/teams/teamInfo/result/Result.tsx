@@ -110,8 +110,9 @@ const Result = memo(() => {
 
   return (
     <section>
-      <article className="flex items-center">
+      <div className="flex items-center">
         <span className="font-bold mr-3">Season</span>
+
         <select
           className="select select-bordered w-full max-w-xs"
           onChange={(e) => {
@@ -127,15 +128,25 @@ const Result = memo(() => {
               );
             })}
         </select>
-      </article>
+      </div>
 
-      <ul className="mt-5">
-        {resultData && resultData.length === 0 && (
-          <li>there is no data, please retry</li>
-        )}
+      {resultData && resultData.length === 0 && (
+        <div>there is no data, please retry</div>
+      )}
 
-        {resultData &&
-          resultData.map((item, index) => {
+      <table className="table mt-5">
+        <thead>
+          <tr>
+            <th>Round</th>
+            <th>Date</th>
+            <th>Result</th>
+            <th>Stadium</th>
+            <th>Season</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {resultData?.map((item, index) => {
             const isCompletedMatch = item.status.type.completed;
 
             if (resultData && isCompletedMatch) {
@@ -150,7 +161,8 @@ const Result = memo(() => {
               );
             }
           })}
-      </ul>
+        </tbody>
+      </table>
     </section>
   );
 });

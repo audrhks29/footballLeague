@@ -1,72 +1,56 @@
 import { memo } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import TeamList from "../components/teams/teamInfo/TeamList";
+
 import { leagueSelectArray } from "@/assets/ArrayData";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useNavigate, useParams } from "react-router-dom";
 
 const Teams = memo(() => {
   const navigate = useNavigate();
   const { slugId } = useParams();
-
+  // console.log(slugId);
   const paramsNation = slugId?.slice(0, 3);
   const paramsDivision = slugId?.slice(4, 5);
+  const divisionArray =
+    paramsNation &&
+    leagueSelectArray.find((a) => a.value.includes(paramsNation));
+  console.log(paramsNation);
 
-  const nation = leagueSelectArray.find((item) => item.value == paramsNation);
-  const division = nation?.league.find(
-    (item) => item.division === paramsDivision
-  );
-
-  const changeNation = (nation: string) => {
-    navigate(`/teams/${nation}.1`);
-  };
-
-  const changeDivision = (division: string) => {
-    navigate(`/teams/${paramsNation}.${division}`);
-  };
-
+  // console.log(division);
   return (
     <div className="inner">
       <div className="flex gap-2">
-        {/* 국가 선택 */}
-        <Select value={nation?.value} onValueChange={changeNation}>
-          <SelectTrigger className="w-[220px]">
-            <SelectValue />
-          </SelectTrigger>
-
-          <SelectContent>
-            {leagueSelectArray.map((item, idx) => (
-              <SelectItem key={idx} value={item.value}>
-                {item.nation}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <select
+          className="select select-bordered w-[200px] max-w-xs"
+          onChange={(e) => navigate(`/teams/${e.target.value}.1`)}
+        >
+          {leagueSelectArray.map((item, idx) => (
+            <option
+              key={idx}
+              value={item.value}
+              selected={item.value === paramsNation}
+            >
+              {item.nation}
+            </option>
+          ))}
+        </select>
 
         {/* 리그 선택 */}
-        <Select value={division?.division} onValueChange={changeDivision}>
-          <SelectTrigger className="w-[220px]">
-            <SelectValue />
-          </SelectTrigger>
-
-          <SelectContent>
-            {leagueSelectArray.map((item) => {
-              if (item.value === paramsNation) {
-                return item.league.map((league, idx) => (
-                  <SelectItem key={idx} value={league.division}>
-                    {league.name}
-                  </SelectItem>
-                ));
-              }
-            })}
-          </SelectContent>
-        </Select>
+        <select
+          className="select select-bordered w-[200px] max-w-xs"
+          onChange={(e) => navigate(`/teams/${paramsNation}.${e.target.value}`)}
+        >
+          {divisionArray !== "" &&
+            divisionArray?.league.map((item) => (
+              <option
+                key={item.id}
+                value={item.division}
+                selected={item.division === paramsDivision}
+              >
+                {item.name}
+              </option>
+            ))}
+        </select>
       </div>
 
       <TeamList />

@@ -1,5 +1,5 @@
-import { memo, useEffect } from "react";
-
+import React, { memo, useEffect } from "react";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Banner from "../components/teams/layout/Banner";
@@ -7,8 +7,6 @@ import Squad from "../components/teams/Squad/Squad";
 import Result from "../components/teams/teamInfo/result/Result";
 import TeamInfoHome from "../components/teams/teamInfo/TeamInfoHome/TeamInfoHome";
 
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchTeamData } from "@/services/fetchData";
 
 const TeamInfo = memo(() => {
@@ -27,35 +25,36 @@ const TeamInfo = memo(() => {
     }
   }, [navigate, slugId, teamData.defaultLeague.slug, teamId]);
 
+  const tabArray = [
+    { id: 1, component: <TeamInfoHome />, label: "Home" },
+    { id: 2, component: <Squad />, label: "Squad" },
+    { id: 3, component: <Result />, label: "Result" },
+  ];
+
   return (
     <div className="inner">
       <Banner data={teamData} />
 
-      <Tabs defaultValue="home">
-        <TabsList className="my-3">
-          <TabsTrigger value="home" className="w-24">
-            Home
-          </TabsTrigger>
-          <TabsTrigger value="squad" className="w-24">
-            Squad
-          </TabsTrigger>
-          <TabsTrigger value="result" className="w-24">
-            Result
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="home">
-          <TeamInfoHome />
-        </TabsContent>
-
-        <TabsContent value="squad">
-          <Squad />
-        </TabsContent>
-
-        <TabsContent value="result">
-          <Result />
-        </TabsContent>
-      </Tabs>
+      <div role="tablist" className="tabs tabs-lifted mt-6">
+        {tabArray.map((tab) => (
+          <React.Fragment key={tab.id}>
+            <input
+              type="radio"
+              name="my_tabs_2"
+              role="tab"
+              className="tab"
+              aria-label={tab.label}
+              defaultChecked={tab.id === 1}
+            />
+            <div
+              role="tabpanel"
+              className="tab-content bg-base-100 border-base-300 rounded-box p-6"
+            >
+              {tab.component}
+            </div>
+          </React.Fragment>
+        ))}
+      </div>
     </div>
   );
 });
