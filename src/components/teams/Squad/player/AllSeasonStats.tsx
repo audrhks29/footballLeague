@@ -1,29 +1,13 @@
 import { memo } from "react";
 import { useParams } from "react-router-dom";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
 import {
   usePlayerSeasons,
   useSeasonNames,
   useSeasonStats,
 } from "@/hooks/usePlayerStats";
 
-interface Props {
-  fetchUrl: string;
-  position: string;
-}
-
-const AllSeasonStats = memo((props: Props) => {
+const AllSeasonStats = memo((props: { fetchUrl: string; position: string }) => {
   const { playerId } = useParams();
 
   const { data: playerSeasonsData } = usePlayerSeasons(playerId);
@@ -54,40 +38,40 @@ const AllSeasonStats = memo((props: Props) => {
     { id: 9, name: "Yellow Card" },
     { id: 10, name: "Red Card" },
   ];
+
   const findStatValue = (
     categoryData: SplitsDataTypes | undefined,
     statName: string
   ) => categoryData?.stats.find((stat) => stat.name === statName)?.value;
+
   const findCategory = (categories: SplitsDataTypes[], categoryName: string) =>
     categories.find((category) => category.name === categoryName);
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>All Season Stats</CardTitle>
-      </CardHeader>
 
-      <Separator />
-      <CardContent>
-        <Table className="text-center w-full">
-          <TableHeader>
-            <TableRow>
+  return (
+    <section className="card">
+      <div className="card-body">
+        <div className="card-title">
+          <h3>All Season Stats</h3>
+        </div>
+        <table className="table text-center w-full">
+          <thead>
+            <tr>
               {props.position === "1"
                 ? goalKeeperTh.map((item, index) => (
-                    <TableHead className="text-center" key={index}>
+                    <th className="text-center" key={index}>
                       {item.name}
-                    </TableHead>
+                    </th>
                   ))
                 : fieldTh.map((item, index) => (
-                    <TableHead className="text-center" key={index}>
+                    <th className="text-center" key={index}>
                       {item.name}
-                    </TableHead>
+                    </th>
                   ))}
-            </TableRow>
-          </TableHeader>
+            </tr>
+          </thead>
 
-          <TableBody>
+          <tbody>
             {fetchedData?.map((item, index) => {
-              console.log(item.splits.categories);
               const generalData = findCategory(
                 item.splits.categories,
                 "general"
@@ -137,33 +121,33 @@ const AllSeasonStats = memo((props: Props) => {
               }
 
               return (
-                <TableRow key={index}>
-                  <TableCell className="text-left">{seasonName}</TableCell>
-                  <TableCell>{stats.appearances}</TableCell>
-                  <TableCell>{stats.subIns}</TableCell>
+                <tr key={index}>
+                  <td className="text-left">{seasonName}</td>
+                  <td>{stats.appearances}</td>
+                  <td>{stats.subIns}</td>
                   {isGoalKeeper ? (
                     <>
-                      <TableCell>{stats.saves}</TableCell>
-                      <TableCell>{stats.goalsConceded}</TableCell>
+                      <td>{stats.saves}</td>
+                      <td>{stats.goalsConceded}</td>
                     </>
                   ) : (
                     <>
-                      <TableCell>{stats.totalGoals}</TableCell>
-                      <TableCell>{stats.totalShots}</TableCell>
-                      <TableCell>{stats.shotsOnTarget}</TableCell>
+                      <td>{stats.totalGoals}</td>
+                      <td>{stats.totalShots}</td>
+                      <td>{stats.shotsOnTarget}</td>
                     </>
                   )}
-                  <TableCell>{stats.goalAssists}</TableCell>
-                  <TableCell>{stats.foulsCommitted}</TableCell>
-                  <TableCell>{stats.yellowCards}</TableCell>
-                  <TableCell>{stats.redCards}</TableCell>
-                </TableRow>
+                  <td>{stats.goalAssists}</td>
+                  <td>{stats.foulsCommitted}</td>
+                  <td>{stats.yellowCards}</td>
+                  <td>{stats.redCards}</td>
+                </tr>
               );
             })}
-          </TableBody>
-        </Table>
-      </CardContent>
-    </Card>
+          </tbody>
+        </table>
+      </div>
+    </section>
   );
 });
 

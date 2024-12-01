@@ -105,6 +105,7 @@ interface AthletesDataTypes {
         }>;
       }>;
     };
+    $ref: string;
   };
   status: {
     id: string;

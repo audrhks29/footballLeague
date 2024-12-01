@@ -1,9 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { useSuspenseQueries, useSuspenseQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { memo } from "react";
+import { useSuspenseQueries, useSuspenseQuery } from "@tanstack/react-query";
 import { FaRegQuestionCircle } from "react-icons/fa";
+import axios from "axios";
 
 interface Props {
   fetchUrl: string;
@@ -83,14 +81,11 @@ const NextMatch = memo((props: Props) => {
   const outputDateString = date.toLocaleDateString("en-US", options);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Next Match</CardTitle>
-      </CardHeader>
-
-      <Separator />
-
-      <CardContent>
+    <section className="card">
+      <div className="card-body">
+        <div className="card-title">
+          <h3>Next Match</h3>
+        </div>
         <p className="text-center h-9 leading-9">{outputDateString}</p>
         <div className="flex items-center w-4/5 m-auto">
           <div className="flex items-center justify-center w-1/2">
@@ -115,8 +110,8 @@ const NextMatch = memo((props: Props) => {
             <span className="ml-2">{fetchedAwayTeamData.displayName}</span>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </section>
   );
 });
 
