@@ -1,48 +1,38 @@
 import { memo } from "react";
-
 import { useNavigate, useParams } from "react-router-dom";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
+const YearSelectBox = memo(
+  ({
+    paramsNation,
+    paramsDivision,
+    seasonData,
+  }: {
+    paramsNation: string | undefined;
+    paramsDivision: string | undefined;
+    seasonData: SeasonDataType[];
+  }) => {
+    const navigate = useNavigate();
+    const { yearId } = useParams();
 
-interface Props {
-  seasonData: SeasonDataType[] | null;
-}
-
-const YearSelectBox = memo((props: Props) => {
-  const navigate = useNavigate();
-  const { slugId, yearId } = useParams();
-
-  const paramsNation = slugId?.slice(0, 3);
-  const paramsDivision = slugId?.slice(4, 5);
-
-  const changeYear = (year: number) => {
-    navigate(`/standings/${paramsNation}.${paramsDivision}/${year}`);
-  };
-
-  return (
-    <Select onValueChange={(value) => changeYear(Number(value))} value={yearId}>
-      <SelectTrigger className="w-[220px]">
-        <SelectValue />
-      </SelectTrigger>
-
-      <SelectContent>
-        {props.seasonData &&
-          props.seasonData.map((item, idx) => {
-            return (
-              <SelectItem key={idx} value={item.year.toString()}>
-                {item.year}
-              </SelectItem>
-            );
-          })}
-      </SelectContent>
-    </Select>
-  );
-});
+    return (
+      <select
+        className="select select-bordered w-40"
+        onChange={(e) =>
+          navigate(
+            `/standings/${paramsNation}.${paramsDivision}/${e.target.value}`
+          )
+        }
+        value={yearId}
+      >
+        {seasonData &&
+          seasonData.map((item, idx) => (
+            <option key={idx} value={item.year.toString()}>
+              {item.year}
+            </option>
+          ))}
+      </select>
+    );
+  }
+);
 
 export default YearSelectBox;

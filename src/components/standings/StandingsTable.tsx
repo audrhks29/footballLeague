@@ -1,24 +1,17 @@
 import { memo } from "react";
-
-import { FaRegQuestionCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../ui/table";
-
-interface Props {
-  paramsNation: string | undefined;
-  paramsDivision: string | undefined;
-  standingsData: StandingsDataTypes;
-}
+import { FaRegQuestionCircle } from "react-icons/fa";
 
 const StandingsTable = memo(
-  ({ paramsNation, paramsDivision, standingsData }: Props) => {
+  ({
+    paramsNation,
+    paramsDivision,
+    standingsData,
+  }: {
+    paramsNation: string | undefined;
+    paramsDivision: string | undefined;
+    standingsData: StandingsDataTypes;
+  }) => {
     const navigate = useNavigate();
 
     const thArray = [
@@ -33,12 +26,18 @@ const StandingsTable = memo(
       "NOTE",
     ];
 
-    const goToTeamInfoPage = (teamId: string) => {
-      navigate(`/teams/${paramsNation}.${paramsDivision}/${teamId}`);
-    };
+    const statsOrderArray = [
+      "points",
+      "gamesPlayed",
+      "wins",
+      "ties",
+      "losses",
+      "pointDifferential",
+      "note",
+    ];
 
     return (
-      <Table className="text-center m-auto">
+      <table className="table text-center m-auto">
         <colgroup>
           <col width={70} />
           <col width={300} />
@@ -50,42 +49,39 @@ const StandingsTable = memo(
           <col width={60} />
           <col width={300} />
         </colgroup>
-        <TableHeader>
-          <TableRow>
+
+        <thead>
+          <tr>
             {thArray.map((item, index) => (
-              <TableHead className="text-center" key={index}>
+              <th className="text-center" key={index}>
                 {item}
-              </TableHead>
+              </th>
             ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
+          </tr>
+        </thead>
+
+        <tbody>
           {standingsData.entries.map((entry: Entries, entryIndex: number) => {
             const rankArray = Array.from(
               { length: standingsData.entries.length },
               (_, index) => index + 1
             );
-            const statsOrderArray = [
-              "points",
-              "gamesPlayed",
-              "wins",
-              "ties",
-              "losses",
-              "pointDifferential",
-              "note",
-            ];
 
             return (
-              <TableRow
+              <tr
                 key={entryIndex}
-                onClick={() => goToTeamInfoPage(entry.team.id)}
-                className="cursor-pointer"
+                onClick={() =>
+                  navigate(
+                    `/teams/${paramsNation}.${paramsDivision}/${entry.team.id}`
+                  )
+                }
+                className="cursor-pointer hover:bg-base-300"
               >
-                <TableCell className="font-bold">
-                  {rankArray[entryIndex]}
-                </TableCell>
+                <td className="font-bold">{rankArray[entryIndex]}</td>
+
+                {/* 팀 네임 */}
                 {entry.team && (
-                  <TableCell className="flex items-center px-3">
+                  <td className="flex items-center px-3">
                     {entry.team.logos ? (
                       <img
                         src={entry.team.logos[0].href}
@@ -99,8 +95,10 @@ const StandingsTable = memo(
                       </i>
                     )}
                     {entry.team.name}
-                  </TableCell>
+                  </td>
                 )}
+
+                {/* 팀 스탯 */}
                 {entry.stats && (
                   <>
                     {statsOrderArray.map((statName, index) => {
@@ -108,25 +106,27 @@ const StandingsTable = memo(
                         (stat) => stat.name === statName
                       );
 
-                      return (
-                        stat && <TableCell key={index}>{stat.value}</TableCell>
-                      );
+                      return stat && <td key={index}>{stat.value}</td>;
                     })}
                   </>
                 )}
-                {entry.note && (
-                  <TableCell
+
+                {/* 노트 */}
+                {entry.note ? (
+                  <td
                     style={{ backgroundColor: `${entry.note.color}` }}
                     className="text-[#282828]"
                   >
                     {entry.note.description}
-                  </TableCell>
+                  </td>
+                ) : (
+                  <td></td>
                 )}
-              </TableRow>
+              </tr>
             );
           })}
-        </TableBody>
-      </Table>
+        </tbody>
+      </table>
     );
   }
 );

@@ -1,16 +1,13 @@
 import { memo } from "react";
-
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
-
+import { useNavigate, useParams } from "react-router-dom";
 import { useSuspenseQueries } from "@tanstack/react-query";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 import NationSelectBox from "../components/standings/NationSelectBox";
 import DivisionSelectBox from "../components/standings/DivisionSelectBox";
 import YearSelectBox from "../components/standings/YearSelectBox";
-
-import { useNavigate, useParams } from "react-router-dom";
-
 import StandingsTable from "../components/standings/StandingsTable";
+
 import { fetchStandingSeasonData } from "@/services/fetchData";
 
 const Standings = memo(() => {
@@ -62,7 +59,11 @@ const Standings = memo(() => {
           paramsNation={paramsNation}
           paramsDivision={paramsDivision}
         />
-        <YearSelectBox seasonData={seasonData} />
+        <YearSelectBox
+          paramsNation={paramsNation}
+          paramsDivision={paramsDivision}
+          seasonData={seasonData}
+        />
       </div>
 
       <div className="flex items-center text-3xl justify-around w-[700px] m-auto p-8">

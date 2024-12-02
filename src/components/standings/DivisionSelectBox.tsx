@@ -3,54 +3,46 @@ import { useNavigate } from "react-router-dom";
 
 import { leagueSelectArray } from "../../assets/ArrayData";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
 import getCurrentYear from "@/utils/getCurrentDate";
 
-interface Props {
-  paramsNation: string | undefined;
-  paramsDivision: string | undefined;
-}
+const DivisionSelectBox = memo(
+  ({
+    paramsNation,
+    paramsDivision,
+  }: {
+    paramsNation: string | undefined;
+    paramsDivision: string | undefined;
+  }) => {
+    const currentYear = getCurrentYear();
+    const navigate = useNavigate();
 
-const DivisionSelectBox = memo((props: Props) => {
-  const currentYear = getCurrentYear();
-  const navigate = useNavigate();
+    const nation = leagueSelectArray.find((item) => item.value == paramsNation);
+    const division = nation?.league.find(
+      (item) => item.division === paramsDivision
+    );
 
-  const nation = leagueSelectArray.find(
-    (item) => item.value == props.paramsNation
-  );
-  const division = nation?.league.find(
-    (item) => item.division === props.paramsDivision
-  );
-
-  const changeDivision = (division: string) => {
-    navigate(`/standings/${props.paramsNation}.${division}/${currentYear}`);
-  };
-
-  return (
-    <Select onValueChange={changeDivision} value={division?.division}>
-      <SelectTrigger className="w-[220px]">
-        <SelectValue />
-      </SelectTrigger>
-
-      <SelectContent>
+    return (
+      <select
+        className="select select-bordered w-40"
+        onChange={(e) => {
+          navigate(
+            `/standings/${paramsNation}.${e.target.value}/${currentYear}`
+          );
+        }}
+        value={division?.division}
+      >
         {leagueSelectArray.map((item) => {
-          if (item.value === props.paramsNation) {
+          if (item.value === paramsNation) {
             return item.league.map((league, idx) => (
-              <SelectItem key={idx} value={league.division}>
+              <option key={idx} value={league.division}>
                 {league.name}
-              </SelectItem>
+              </option>
             ));
           }
         })}
-      </SelectContent>
-    </Select>
-  );
-});
+      </select>
+    );
+  }
+);
 
 export default DivisionSelectBox;

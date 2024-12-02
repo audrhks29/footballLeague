@@ -8,7 +8,7 @@ import { leagueSelectArray } from "@/assets/ArrayData";
 const Teams = memo(() => {
   const navigate = useNavigate();
   const { slugId } = useParams();
-  // console.log(slugId);
+
   const paramsNation = slugId?.slice(0, 3);
   const paramsDivision = slugId?.slice(4, 5);
   const divisionArray =
