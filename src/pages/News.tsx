@@ -4,21 +4,8 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 
 import LeagueList from "../components/news/LeagueList";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 import { fetchNewsData } from "@/services/fetchData";
+import dateFormat from "@/utils/dateFormat";
 
 const News = memo(() => {
   const { slugId, pageIndex } = useParams();
@@ -61,83 +48,65 @@ const News = memo(() => {
 
   return (
     <div className="inner relative">
-      <div className="grid grid-cols-[250px_minmax(950px, 2fr)]">
+      <section className="grid grid-cols-[250px_1fr] gap-6">
         <LeagueList />
 
-        <section className="w-[900px] ml-auto col-start-2">
+        <article className="ml-auto col-start-2 grid grid-cols-3 gap-3">
           {slicedNewsData.map((item: NewsItemType, index: number) => {
-            const date = new Date(item.published);
-            const options: DateTimeFormatOptions = {
-              year: "numeric",
-              weekday: "long",
-              month: "long",
-              day: "numeric",
-            };
-            const outputDateString = date.toLocaleDateString("en-US", options);
-
             return (
-              <Card
-                className="m-auto mb-5 cursor-pointer"
+              <div
+                className="card bg-base-300 hover:bg-base-200 cursor-pointer"
                 key={index}
                 onClick={() => clickNews(index)}
               >
-                {item.images.length > 0 && (
-                  <img
-                    src={item.images[0].url}
-                    alt={item.images[0].art}
-                    title={item.images[0].caption}
-                    className="w-[900px] m-auto"
-                  />
-                )}
+                <figure>
+                  {item.images.length > 0 && (
+                    <img
+                      src={item.images[0].url}
+                      alt={item.images[0].art}
+                      title={item.images[0].caption}
+                    />
+                  )}
+                </figure>
 
-                <div className="w-[900px] m-auto p-3">
-                  <CardTitle className="text-[20px] pb-2">
-                    {item.headline}
-                  </CardTitle>
-                  <CardContent className="p-0">{item.description}</CardContent>
-                  <CardDescription className="text-right">
-                    {outputDateString}
-                  </CardDescription>
+                <div className="card-body">
+                  <h3 className="card-title">{item.headline}</h3>
+                  <p>{item.description}</p>
+                  <div className="text-right">{dateFormat(item.published)}</div>
                 </div>
-              </Card>
+              </div>
             );
           })}
-        </section>
+        </article>
 
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem
-              onClick={() => clickPageButton(currentPage - 1)}
-              className="cursor-pointer"
-            >
-              <PaginationPrevious />
-            </PaginationItem>
-            {pageList.map((item, index) => (
-              <PaginationItem
-                onClick={() => clickPageButton(item)}
-                key={index}
-                className={`${
-                  currentPage === item
-                    ? "bg-muted cursor-pointer "
-                    : "cursor-pointer"
-                }`}
-              >
-                <PaginationLink
-                  className={`${currentPage === item ? "font-bold" : ""}`}
-                >
-                  {item}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
-            <PaginationItem
-              onClick={() => clickPageButton(pageList.length)}
-              className="cursor-pointer"
-            >
-              <PaginationNext />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+        <div className="join justify-center">
+          <button
+            className="join-item btn"
+            onClick={() => clickPageButton(currentPage - 1)}
+          >
+            Previous page
+          </button>
+
+          {pageList.map((item) => (
+            <input
+              className="join-item btn btn-square"
+              type="radio"
+              name="options"
+              onClick={() => clickPageButton(item)}
+              key={item}
+              aria-label={item.toString()}
+              checked={item === currentPage}
+            />
+          ))}
+
+          <button
+            className="join-item btn"
+            onClick={() => clickPageButton(currentPage - 1)}
+          >
+            Next
+          </button>
+        </div>
+      </section>
     </div>
   );
 });

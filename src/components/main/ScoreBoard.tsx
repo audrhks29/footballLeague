@@ -13,12 +13,8 @@ const ScoreBoard = memo(({ slugId }: { slugId: string }) => {
     select: (data) => (data ? data : null),
   });
 
-  const handleClickMatch = (gameId: string) => {
-    navigate(`/match/${slugId}/${gameId}`);
-  };
-
   return (
-    <section className="card border bg-base shadow-xl col-start-2 row-start-1 row-span-2">
+    <section className="card border bg-base shadow-xl">
       <div className="card-body">
         <h2 className="card-title">Recent Match</h2>
         <span className="text-[12px] font-normal">
@@ -38,8 +34,8 @@ const ScoreBoard = memo(({ slugId }: { slugId: string }) => {
 
               return (
                 <div
-                  className="p-3 flex gap-3 justify-center items-center cursor-pointer hover:bg-muted/50 border"
-                  onClick={() => handleClickMatch(data.id)}
+                  className="p-3 flex gap-3 justify-center items-center cursor-pointer hover:bg-base-300 border"
+                  onClick={() => navigate(`/match/${slugId}/${data.id}`)}
                   key={index}
                 >
                   {/* 홈 팀 로고 & 팀 명 */}

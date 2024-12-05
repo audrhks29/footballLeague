@@ -9,6 +9,8 @@ import getCurrentYear from "@/utils/getCurrentDate";
 const theadArray = ["Rank", "Name", "GP", "W", "D", "L", "P"];
 
 const StandingSummary = memo(({ slugId }: { slugId: string }) => {
+  const navigate = useNavigate();
+
   const currentYear = getCurrentYear();
 
   const { data: standingsData } = useSuspenseQuery({
@@ -18,10 +20,8 @@ const StandingSummary = memo(({ slugId }: { slugId: string }) => {
       data.children[0].standings.entries,
   });
 
-  const navigate = useNavigate();
-
   return (
-    <section className="card border bg-base shadow-xl">
+    <section className="card border bg-base shadow-xl row-span-2">
       <div className="card-body">
         <h2 className="card-title flex justify-between">
           <span>Standings</span>
@@ -47,7 +47,7 @@ const StandingSummary = memo(({ slugId }: { slugId: string }) => {
               <tr
                 key={index}
                 onClick={() => navigate(`/teams/${slugId}/${item.team.id}`)}
-                className="cursor-pointer"
+                className="cursor-pointer hover:bg-base-300"
               >
                 <td>
                   {item.stats.find((stat) => stat.name === "rank")?.value}
