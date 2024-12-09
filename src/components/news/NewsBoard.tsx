@@ -1,20 +1,12 @@
+import { memo } from "react";
+import { useParams } from "react-router-dom";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import axios from "axios";
 
-import { memo } from "react";
-
-import { useParams } from "react-router-dom";
-
 import LeagueList from "./LeagueList";
-import { Separator } from "../ui/separator";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
+
+import dateFormat from "@/utils/dateFormat";
 
 const NewsBoard = memo(() => {
   const { newsId } = useParams<string>();
@@ -34,48 +26,39 @@ const NewsBoard = memo(() => {
     queryFn: () => fetchDataUseLink(),
   });
 
-  const date = new Date(boardData.published);
-  const options: DateTimeFormatOptions = {
-    year: "numeric",
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-  };
-  const outputDateString = date.toLocaleDateString("en-US", options);
-
   return (
     <div className="inner flex relative">
-      <LeagueList />
+      <section className="grid grid-cols-[250px_1fr] gap-6">
+        <LeagueList />
 
-      <Card className="w-[900px] ml-auto">
-        {boardData && (
-          <div className="p-6">
-            <CardHeader>
-              <CardTitle>{boardData.headline}</CardTitle>
-            </CardHeader>
-            <div className="flex justify-between px-6">
-              <CardDescription>{boardData.byline}</CardDescription>
-              <CardDescription>{outputDateString}</CardDescription>
-            </div>
-            <Separator />
+        <article className="card bg-base-100 shadow-xl">
+          {boardData && (
+            <div className="card-body">
+              <div className="card-title">{boardData.headline}</div>
 
-            <CardContent>
-              {boardData.images.length > 0 && (
-                <img
-                  src={boardData.images[0].url}
-                  className="w-[800px] m-auto my-4"
+              <div className="flex justify-between">
+                <span>{boardData.byline}</span>
+                <span>{dateFormat(boardData.published)}</span>
+              </div>
+
+              <div className="divider my-0"></div>
+
+              <div>
+                {boardData.images.length > 0 && (
+                  <img src={boardData.images[0].url} className="m-auto my-4" />
+                )}
+
+                <div className="divider my-0"></div>
+
+                <div
+                  className="text-[16px]"
+                  dangerouslySetInnerHTML={{ __html: boardData.story }}
                 />
-              )}
-              <Separator />
-
-              <div
-                className="text-[16px]"
-                dangerouslySetInnerHTML={{ __html: boardData.story }}
-              />
-            </CardContent>
-          </div>
-        )}
-      </Card>
+              </div>
+            </div>
+          )}
+        </article>
+      </section>
     </div>
   );
 });
