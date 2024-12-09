@@ -36,7 +36,7 @@ const Main = memo(() => {
 
   return (
     <div className="inner">
-      <div role="tablist" className="tabs tabs-lifted">
+      <div role="tablist" className="tabs tabs-lifted tabs-lg">
         {tabArrays.map((item) => (
           <React.Fragment key={item.id}>
             <input

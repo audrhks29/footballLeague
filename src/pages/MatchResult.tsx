@@ -38,7 +38,7 @@ const MatchResult = memo(() => {
     <div className="inner">
       <MatchInfo data={matchResultData} />
 
-      <div role="tablist" className="tabs tabs-lifted">
+      <div role="tablist" className="tabs tabs-lifted tabs-lg">
         {tabArrays.map((item) => (
           <React.Fragment key={item.id}>
             <input

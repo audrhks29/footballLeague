@@ -35,7 +35,7 @@ const TeamInfo = memo(() => {
     <div className="inner">
       <Banner data={teamData} />
 
-      <div role="tablist" className="tabs tabs-lifted mt-6">
+      <div role="tablist" className="tabs tabs-lifted mt-6 tabs-lg">
         {tabArray.map((tab) => (
           <React.Fragment key={tab.id}>
             <input
