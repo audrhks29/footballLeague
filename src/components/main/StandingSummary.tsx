@@ -36,8 +36,10 @@ const StandingSummary = memo(({ slugId }: { slugId: string }) => {
         <table className="table">
           <thead>
             <tr>
-              {theadArray.map((thead) => (
-                <td className="text-center">{thead}</td>
+              {theadArray.map((thead, index) => (
+                <td key={index} className="text-center">
+                  {thead}
+                </td>
               ))}
             </tr>
           </thead>
