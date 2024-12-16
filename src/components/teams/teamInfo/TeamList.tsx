@@ -4,10 +4,13 @@ import { FaRegQuestionCircle } from "react-icons/fa";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { fetchTeamsData } from "@/services/fetchData";
+import useThemeStore from "@/store/theme-store";
 
 const TeamList = memo(() => {
+  const { theme } = useThemeStore();
   const { slugId } = useParams();
   const navigate = useNavigate();
+
   const { data: teamsData } = useSuspenseQuery({
     queryKey: ["teamsData", slugId],
     queryFn: () => fetchTeamsData(slugId ? slugId : "eng.1"),
@@ -20,7 +23,12 @@ const TeamList = memo(() => {
 
         <ul className="grid grid-cols-5 gap-2">
           {teamsData.teams.map((item: Teams, index: number) => {
-            const teamLogos = item.team.logos[1];
+            const teamLogos =
+              theme === "dark"
+                ? item.team.logos[1]
+                  ? item.team.logos[1]
+                  : item.team.logos[0]
+                : item.team.logos[0];
 
             return (
               <li

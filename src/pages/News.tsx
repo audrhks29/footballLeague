@@ -95,7 +95,7 @@ const News = memo(() => {
               onClick={() => clickPageButton(item)}
               key={item}
               aria-label={item.toString()}
-              checked={item === currentPage}
+              defaultChecked={item === currentPage}
             />
           ))}
 

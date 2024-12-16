@@ -1,5 +1,5 @@
-import React, { Suspense, memo, useEffect, useState } from "react";
-import { themeChange } from "theme-change";
+import React, { Suspense, memo, useState } from "react";
+
 import Loading from "@/components/Loading";
 import Index from "@/components/main/Index";
 
@@ -33,8 +33,7 @@ const tabArrays = [
 
 const Main = memo(() => {
   const [slugId, setSlugId] = useState("eng.1");
-  // const theme = document.documentElement.getAttribute("data-theme");
-  // console.log(theme);
+
   return (
     <div className="inner">
       <div role="tablist" className="tabs tabs-lifted tabs-lg">
