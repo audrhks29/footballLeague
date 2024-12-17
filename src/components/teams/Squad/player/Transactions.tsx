@@ -37,7 +37,7 @@ const Transactions = memo(
     });
 
     return (
-      <section className="col-start-2">
+      <section className="card">
         <div className="card-body">
           <div className="card-title">
             <h3>Player's Transactions</h3>

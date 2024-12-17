@@ -1,7 +1,10 @@
 import { memo } from "react";
 import { useSuspenseQueries, useSuspenseQuery } from "@tanstack/react-query";
-import { FaRegQuestionCircle } from "react-icons/fa";
 import axios from "axios";
+
+import { FaRegQuestionCircle } from "react-icons/fa";
+
+import dateFormat from "@/utils/dateFormat";
 
 interface Props {
   fetchUrl: string;
@@ -70,23 +73,13 @@ const NextMatch = memo((props: Props) => {
     ? fetchedAwayTeamData.logos[1]
     : fetchedHomeTeamData.logos;
 
-  const date = new Date(teamData.date);
-  const options: DateTimeFormatOptions = {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-  };
-  const outputDateString = date.toLocaleDateString("en-US", options);
-
   return (
     <section className="card">
       <div className="card-body">
         <div className="card-title">
           <h3>Next Match</h3>
         </div>
-        <p className="text-center h-9 leading-9">{outputDateString}</p>
+        <p className="text-center h-9 leading-9">{dateFormat(teamData.date)}</p>
         <div className="flex items-center w-4/5 m-auto">
           <div className="flex items-center justify-center w-1/2">
             <span className="mr-2">{fetchedHomeTeamData.displayName}</span>

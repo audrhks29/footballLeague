@@ -17,7 +17,7 @@ const OtherPlayer = memo(() => {
   });
 
   return (
-    <section className="card w-[300px] row-span-5">
+    <section className="card w-[300px] row-span-5 row-start-1">
       <div className="card-body p-0">
         <div className="card-title">
           <h2 className="text-center">Same Position Player</h2>

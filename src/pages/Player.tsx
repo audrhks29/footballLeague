@@ -40,29 +40,34 @@ const Player = memo(() => {
     <div className="inner">
       <PlayerInfo playerData={playerData} playerTeamData={playerTeamData} />
 
-      <div className="grid grid-cols-[350px_minmax(950px, 2fr)] gap-3 grid-rows-[280px_minmax(300px, 5fr)] items-start mt-6">
+      <div className="grid grid-cols-[350px_950px] gap-3 mt-6">
         <OtherPlayer />
 
-        {playerData.transactions ? (
-          <Transactions
-            fetchUrl={playerData.transactions.$ref}
-            playerData={playerData}
-          />
-        ) : (
-          <ErrorTransactions />
-        )}
-        <div className="divider m-0 h-0"></div>
-        <NextMatch fetchUrl={playerData.events.$ref} />
-        <div className="divider m-0 h-0"></div>
+        <div className="flex flex-col gap-3">
+          {playerData.transactions ? (
+            <Transactions
+              fetchUrl={playerData.transactions.$ref}
+              playerData={playerData}
+            />
+          ) : (
+            <ErrorTransactions />
+          )}
 
-        {playerData.transactions ? (
-          <AllSeasonStats
-            fetchUrl={playerData.seasons.$ref}
-            position={playerData.position.id}
-          />
-        ) : (
-          <ErrorAllSeasonStats />
-        )}
+          <div className="divider m-0 h-0"></div>
+
+          <NextMatch fetchUrl={playerData.events.$ref} />
+
+          <div className="divider m-0 h-0"></div>
+
+          {playerData.transactions ? (
+            <AllSeasonStats
+              fetchUrl={playerData.seasons.$ref}
+              position={playerData.position.id}
+            />
+          ) : (
+            <ErrorAllSeasonStats />
+          )}
+        </div>
       </div>
     </div>
   );

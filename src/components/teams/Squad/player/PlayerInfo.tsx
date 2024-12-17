@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { FaRegQuestionCircle } from "react-icons/fa";
+
 import CurrentSeasonStats from "./CurrentSeasonStats";
 import ErrorCurrentSeasonStats from "./error/ErrorCurrentSeasonStats";
 
