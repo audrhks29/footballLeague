@@ -13,7 +13,7 @@ const YearSelectBox = memo(
   }) => {
     const navigate = useNavigate();
     const { yearId } = useParams();
-
+    console.log(seasonData);
     return (
       <select
         className="select select-bordered w-40"

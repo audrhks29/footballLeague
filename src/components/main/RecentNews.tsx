@@ -26,7 +26,7 @@ const RecentNews = memo(({ slugId }: { slugId: string }) => {
           </span>
         </h2>
 
-        {newsData.map((news: { headline: string }, index: number) => (
+        {newsData?.map((news: { headline: string }, index: number) => (
           <span
             key={index}
             className="link hover:text-blue-500"

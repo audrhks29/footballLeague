@@ -45,7 +45,7 @@ const StandingSummary = memo(({ slugId }: { slugId: string }) => {
           </thead>
 
           <tbody className="text-center">
-            {standingsData.map((item, index) => (
+            {standingsData?.map((item, index) => (
               <tr
                 key={index}
                 onClick={() => navigate(`/teams/${slugId}/${item.team.id}`)}
