@@ -15,7 +15,7 @@ const StandingSummary = memo(({ slugId }: { slugId: string }) => {
 
   const { data: standingsData } = useSuspenseQuery({
     queryKey: ["standingData", slugId],
-    queryFn: () => fetchStandingSeasonData(slugId, currentYear),
+    queryFn: () => fetchStandingSeasonData(slugId, currentYear.toString()),
     select: (data: StandingSeasonDataTypes) =>
       data.children[0].standings.entries,
   });
